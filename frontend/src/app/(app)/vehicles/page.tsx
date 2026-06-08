@@ -1147,7 +1147,7 @@ export default function VehiclesPage() {
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 999 }}
           onClick={e => { if (e.target === e.currentTarget) { setWizard(false); setPreCustomerId(''); } }}>
           <div style={{ background: '#fff', borderRadius: 12, boxShadow: '0 8px 40px rgba(0,0,0,0.18)', overflow: 'hidden', width: '100%', maxWidth: 680 }}>
-            <div style={{ padding: '14px 20px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'linear-gradient(135deg, #0d1b2a, #1c2b44)', color: '#fff', borderBottom: '1px solid rgba(196,145,42,0.20)' }}>
+            <div style={{ padding: '14px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'linear-gradient(135deg, #0d1b2a, #1c2b44)', color: '#fff', borderBottom: '1px solid rgba(196,145,42,0.20)' }}>
               <div>
                 <div style={{ fontSize: 15, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8 }}>
                   <i className="ti ti-truck" style={{ fontSize: 16 }} /> Register New Vehicle

@@ -91,7 +91,7 @@ export default function AuthSessionsPage() {
       onClick={() => setTab(key)}
       style={{
         padding: '6px 16px', fontSize: 13, fontWeight: 500, borderRadius: 6,
-        border: 'none', cursor: 'pointer',
+        cursor: 'pointer',
         background: tab === key ? '#0d1b2a' : 'transparent',
         color: tab === key ? '#f5d07a' : 'var(--ink3)',
         border: tab === key ? '1px solid rgba(196,145,42,0.35)' : '1px solid transparent',
