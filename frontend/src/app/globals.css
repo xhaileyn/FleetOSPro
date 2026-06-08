@@ -1,0 +1,100 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+:root {
+  /* ── Backgrounds ─────────────────────────────────────────────────────── */
+  --cream:  #faf8f5;   /* warm off-white — page background  */
+  --cream2: #f3f0eb;   /* warm gray      — card secondary   */
+  --cream3: #e8e3dc;   /* warm sand      — subtle dividers  */
+
+  /* ── Text — logo navy palette ────────────────────────────────────────── */
+  --ink:  #0d1b2a;     /* logo navy — primary text          */
+  --ink2: #243b55;     /* mid navy  — secondary text        */
+  --ink3: #8a8078;     /* warm mid-gray — muted text        */
+
+  /* ── Brand — logo gold ───────────────────────────────────────────────── */
+  --teal:    #c4912a;  /* logo gold — primary action / brand */
+  --teal-lt: #fdf6e8;  /* gold-50   — light tint             */
+  --teal-dk: #7a5c1a;  /* gold-900  — dark emphasis          */
+
+  /* ── Status ──────────────────────────────────────────────────────────── */
+  --amber:     #d97706;  /* amber-600  */
+  --amber-lt:  #fffbeb;  /* amber-50   */
+  --red:       #dc2626;  /* red-600    */
+  --red-lt:    #fef2f2;  /* red-50     */
+  --green:     #16a34a;  /* green-600  */
+  --green-lt:  #f0fdf4;  /* green-50   */
+  --blue:      #3b82f6;  /* blue-500   */
+  --blue-lt:   #eff6ff;  /* blue-50    */
+  --purple:    #7c3aed;  /* violet-700 */
+  --purple-lt: #f5f3ff;  /* violet-50  */
+  --gold:      #c4912a;  /* warm gold  */
+  --gold-lt:   #fdf6e8;  /* gold-50    */
+
+  /* ── Borders ─────────────────────────────────────────────────────────── */
+  --border:  #ddd8d0;  /* warm sand border  */
+  --border2: #cac4bb;  /* warm sand border2 */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  min-height: 100vh;
+}
+
+/* ── LEAFLET FIXES ── */
+.leaflet-pane         { z-index: 400; }
+.leaflet-tile-pane    { z-index: 200; }
+.leaflet-overlay-pane { z-index: 400; }
+.leaflet-shadow-pane  { z-index: 500; }
+.leaflet-marker-pane  { z-index: 600; }
+.leaflet-tooltip-pane { z-index: 650; }
+.leaflet-popup-pane   { z-index: 700; }
+.leaflet-container    { z-index: 0; isolation: isolate; }
+
+/* ── BADGE ── */
+.badge {
+  display: inline-block;
+  padding: 2px 7px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-radius: 3px;
+}
+.badge-green  { background: var(--green-lt);  color: var(--green); }
+.badge-amber  { background: var(--amber-lt);  color: var(--amber); }
+.badge-red    { background: var(--red-lt);    color: var(--red); }
+.badge-blue   { background: var(--blue-lt);   color: var(--blue); }
+.badge-teal   { background: rgba(196,145,42,0.12);   color: #c4912a; }
+.badge-ink    { background: var(--ink);       color: #fff; }
+.badge-muted  { background: var(--cream2);    color: var(--ink3); }
+.badge-purple { background: var(--purple-lt); color: var(--purple); }
+
+/* ── ANIMATIONS ── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: pulse-dot 2s infinite;
+  flex-shrink: 0;
+}
+
+@keyframes page-in {
+  from { transform: translateY(3px); }
+  to   { transform: translateY(0); }
+}
+.page-in { animation: page-in 0.12s ease; }

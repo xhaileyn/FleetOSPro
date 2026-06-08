@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FleetOS Pro — Fleet Intelligence Platform</title>
+  <meta name="description" content="FleetOS Pro is an enterprise GPS fleet tracking and management platform. Real-time visibility, AI route optimisation, driver analytics, maintenance scheduling and full RBAC security." />
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+</head>
+<body>
+
+<!-- ══════════════════════════ NAVIGATION ══════════════════════════ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <svg width="62" height="62" viewBox="0 0 36 36" fill="none">
+        <rect x="1" y="15" width="9" height="6" rx="1.5" fill="#c4912a"/>
+        <line x1="4.5" y1="15" x2="4.5" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+        <line x1="7" y1="15" x2="7" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+        <rect x="10" y="12" width="16" height="12" rx="2.5" fill="#0d1b2a"/>
+        <rect x="12.5" y="16.5" width="11" height="3" rx="0.8" fill="none" stroke="rgba(196,145,42,0.4)" stroke-width="0.7"/>
+        <circle cx="15" cy="18" r="1.2" fill="#c4912a" opacity="0.9"/>
+        <circle cx="18" cy="18" r="0.9" fill="white" opacity="0.55"/>
+        <circle cx="21" cy="18" r="1.2" fill="rgba(100,190,255,0.7)"/>
+        <rect x="26" y="15" width="9" height="6" rx="1.5" fill="#c4912a"/>
+        <line x1="29" y1="15" x2="29" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+        <line x1="31.5" y1="15" x2="31.5" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+        <line x1="18" y1="8" x2="18" y2="12" stroke="rgba(255,255,255,0.85)" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M14.5 9 A4.5 3 0 0 1 21.5 9" stroke="rgba(255,255,255,0.85)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <line x1="14" y1="24" x2="11" y2="30" stroke="#c4912a" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="1.5 2" opacity="0.7"/>
+        <line x1="18" y1="24" x2="18" y2="31" stroke="#c4912a" stroke-width="1" stroke-linecap="round" stroke-dasharray="1.5 2" opacity="0.85"/>
+        <line x1="22" y1="24" x2="25" y2="30" stroke="#c4912a" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="1.5 2" opacity="0.7"/>
+      </svg>
+      <div class="nav-logo-lockup"><span class="logo-fleet">Fleet</span><span class="logo-os">OS</span><span class="logo-pro-badge">Pro</span></div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="https://app.fleetospro.com/login" class="btn btn-outline-sm">Sign In</a>
+      <a href="https://app.fleetospro.com/login" class="btn btn-gold-sm">Start Free Trial</a>
+    </div>
+
+    <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="nav-mobile" id="navMobile">
+    <a href="index.html">Home</a>
+    <a href="features.html">Features</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="contact.html">Contact</a>
+    <a href="https://app.fleetospro.com/login" class="btn btn-gold-sm" style="margin-top:8px;text-align:center">Launch App</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════ HERO ══════════════════════════ -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-inner">
+
+    <div class="hero-copy">
+      <div class="hero-badge">
+        <i class="ti ti-satellite"></i>
+        Enterprise Fleet Intelligence Platform
+      </div>
+      <h1 class="hero-headline">
+        Your Entire Fleet.<br/>
+        <span class="grad-text">One Command Centre.</span>
+      </h1>
+      <p class="hero-sub">
+        Real-time GPS tracking, AI-powered route optimisation, predictive maintenance, driver analytics and enterprise-grade security — all in one platform built for fleets of any scale.
+      </p>
+      <div class="hero-ctas">
+        <a href="https://app.fleetospro.com/login" class="btn btn-gold">
+          <i class="ti ti-rocket"></i> Start Free 14-Day Trial
+        </a>
+        <a href="features.html" class="btn btn-outline">
+          <i class="ti ti-layout-grid"></i> Explore Features
+        </a>
+      </div>
+      <div class="hero-trust">
+        <span><i class="ti ti-shield-check"></i> No credit card required</span>
+        <span><i class="ti ti-clock"></i> Setup in under 5 minutes</span>
+        <span><i class="ti ti-lock"></i> SOC 2 Type II certified</span>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <!-- Animated Fleet Map Globe -->
+      <svg viewBox="0 0 460 380" xmlns="http://www.w3.org/2000/svg" class="hero-globe">
+        <defs>
+          <radialGradient id="hgGlobe" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#162a4a"/>
+            <stop offset="100%" stop-color="#0a1628"/>
+          </radialGradient>
+          <radialGradient id="hgAtmo" cx="50%" cy="40%" r="55%">
+            <stop offset="0%" stop-color="#1e3a6e" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <filter id="hgGlow">
+            <feGaussianBlur stdDeviation="2.5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="hgGlowSm">
+            <feGaussianBlur stdDeviation="1.5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <clipPath id="hgClip">
+            <circle cx="230" cy="172" r="138"/>
+          </clipPath>
+        </defs>
+
+        <!-- Stars -->
+        <g opacity="0.6">
+          <circle cx="18" cy="22" r="1" fill="white"/>
+          <circle cx="52" cy="8" r="0.7" fill="white"/>
+          <circle cx="90" cy="35" r="1.2" fill="white"/>
+          <circle cx="140" cy="12" r="0.8" fill="white"/>
+          <circle cx="310" cy="18" r="1" fill="white"/>
+          <circle cx="360" cy="8" r="0.7" fill="white"/>
+          <circle cx="400" cy="30" r="1.1" fill="white"/>
+          <circle cx="440" cy="14" r="0.9" fill="white"/>
+          <circle cx="20" cy="320" r="0.8" fill="white"/>
+          <circle cx="60" cy="340" r="1" fill="white"/>
+          <circle cx="430" cy="330" r="0.9" fill="white"/>
+          <circle cx="450" cy="360" r="0.7" fill="white"/>
+        </g>
+
+        <!-- Globe body -->
+        <circle cx="230" cy="172" r="138" fill="url(#hgGlobe)"/>
+        <circle cx="230" cy="172" r="138" fill="url(#hgAtmo)"/>
+
+        <!-- Globe grid lines -->
+        <g clip-path="url(#hgClip)" stroke="rgba(100,160,255,0.12)" stroke-width="0.8" fill="none">
+          <!-- Latitude lines -->
+          <ellipse cx="230" cy="172" rx="138" ry="30"/>
+          <ellipse cx="230" cy="172" rx="138" ry="68"/>
+          <ellipse cx="230" cy="172" rx="138" ry="108"/>
+          <!-- Longitude lines -->
+          <line x1="230" y1="34" x2="230" y2="310"/>
+          <line x1="92" y1="34" x2="368" y2="310"/>
+          <line x1="368" y1="34" x2="92" y2="310"/>
+        </g>
+
+        <!-- Continents simplified -->
+        <g clip-path="url(#hgClip)" fill="rgba(100,180,120,0.18)" stroke="rgba(100,200,130,0.25)" stroke-width="0.7">
+          <!-- Europe/Africa blob -->
+          <path d="M210 108 Q224 100 238 108 L242 138 Q236 158 228 172 Q218 162 208 148 Z"/>
+          <!-- Americas blob -->
+          <path d="M168 118 Q182 112 192 122 L196 150 Q190 168 180 178 Q170 165 164 148 Z"/>
+          <!-- Asia blob -->
+          <path d="M248 100 Q270 94 286 108 L290 136 Q282 150 268 156 Q252 148 244 132 Z"/>
+        </g>
+
+        <!-- Atmosphere glow ring -->
+        <circle cx="230" cy="172" r="138" fill="none" stroke="rgba(100,160,255,0.15)" stroke-width="3"/>
+        <circle cx="230" cy="172" r="142" fill="none" stroke="rgba(100,160,255,0.06)" stroke-width="6"/>
+
+        <!-- Orbital ring 1 (tilted) -->
+        <ellipse cx="230" cy="172" rx="175" ry="52" fill="none" stroke="rgba(196,145,42,0.3)" stroke-width="1" stroke-dasharray="4 5" transform="rotate(-18 230 172)"/>
+        <!-- Orbital ring 2 -->
+        <ellipse cx="230" cy="172" rx="200" ry="42" fill="none" stroke="rgba(100,160,255,0.2)" stroke-width="1" stroke-dasharray="3 6" transform="rotate(12 230 172)"/>
+
+        <!-- Vehicle pin 1 — London area -->
+        <g filter="url(#hgGlowSm)">
+          <circle cx="224" cy="138" r="5.5" fill="#c4912a"/>
+          <circle cx="224" cy="138" r="3" fill="#fff7e0"/>
+          <circle cx="224" cy="138" r="0" stroke="#c4912a" stroke-width="1.5" fill="none" opacity="0.7">
+            <animate attributeName="r" values="3;16;3" dur="2.8s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.7;0;0.7" dur="2.8s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+
+        <!-- Vehicle pin 2 — Dubai area -->
+        <g filter="url(#hgGlowSm)">
+          <circle cx="274" cy="148" r="5.5" fill="#c4912a"/>
+          <circle cx="274" cy="148" r="3" fill="#fff7e0"/>
+          <circle cx="274" cy="148" r="0" stroke="#c4912a" stroke-width="1.5" fill="none" opacity="0.7">
+            <animate attributeName="r" values="3;14;3" dur="3.4s" begin="-1.2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.7;0;0.7" dur="3.4s" begin="-1.2s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+
+        <!-- Vehicle pin 3 — NY area -->
+        <g filter="url(#hgGlowSm)">
+          <circle cx="172" cy="145" r="5.5" fill="#3b82f6"/>
+          <circle cx="172" cy="145" r="3" fill="#dbeafe"/>
+          <circle cx="172" cy="145" r="0" stroke="#3b82f6" stroke-width="1.5" fill="none" opacity="0.7">
+            <animate attributeName="r" values="3;15;3" dur="3.1s" begin="-0.7s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.7;0;0.7" dur="3.1s" begin="-0.7s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+
+        <!-- Vehicle pin 4 — Sydney -->
+        <g filter="url(#hgGlowSm)">
+          <circle cx="300" cy="192" r="4.5" fill="#10b981"/>
+          <circle cx="300" cy="192" r="2.5" fill="#d1fae5"/>
+          <circle cx="300" cy="192" r="0" stroke="#10b981" stroke-width="1.5" fill="none" opacity="0.7">
+            <animate attributeName="r" values="2.5;13;2.5" dur="3.8s" begin="-2.1s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.7;0;0.7" dur="3.8s" begin="-2.1s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+
+        <!-- Route trace -->
+        <path d="M172 145 Q200 130 224 138 Q250 128 274 148" stroke="#c4912a" stroke-width="1.5" stroke-dasharray="5 4" fill="none" opacity="0.7">
+          <animate attributeName="stroke-dashoffset" values="0;-36;0" dur="4s" repeatCount="indefinite"/>
+        </path>
+
+        <!-- Satellite 1 (gold) -->
+        <g filter="url(#hgGlow)">
+          <g>
+            <animateMotion dur="16s" repeatCount="indefinite" path="M 30 172 A 200 52 0 0 1 430 172 A 200 52 0 0 1 30 172" rotate="auto"/>
+            <rect x="-6" y="-3" width="12" height="6" rx="1.5" fill="#c4912a"/>
+            <rect x="-11" y="-1.5" width="7" height="3" rx="1" fill="#c4912a" opacity="0.8"/>
+            <rect x="4" y="-1.5" width="7" height="3" rx="1" fill="#c4912a" opacity="0.8"/>
+            <circle cx="0" cy="0" r="2" fill="#fff7e0"/>
+          </g>
+        </g>
+
+        <!-- Satellite 2 (blue) -->
+        <g filter="url(#hgGlow)">
+          <g>
+            <animateMotion dur="11s" begin="-4s" repeatCount="indefinite" path="M 30 172 A 200 42 0 0 1 430 172 A 200 42 0 0 1 30 172" rotate="auto"/>
+            <rect x="-5" y="-2.5" width="10" height="5" rx="1.5" fill="#3b82f6"/>
+            <rect x="-10" y="-1.5" width="6" height="3" rx="1" fill="#3b82f6" opacity="0.8"/>
+            <rect x="4" y="-1.5" width="6" height="3" rx="1" fill="#3b82f6" opacity="0.8"/>
+            <circle cx="0" cy="0" r="1.5" fill="#dbeafe"/>
+          </g>
+        </g>
+
+        <!-- HUD cards -->
+        <!-- Card 1: Live Tracking -->
+        <g>
+          <rect x="18" y="240" width="118" height="52" rx="6" fill="rgba(10,20,40,0.85)" stroke="rgba(196,145,42,0.4)" stroke-width="1"/>
+          <circle cx="32" cy="253" r="4" fill="#c4912a"/>
+          <circle cx="32" cy="253" r="2" fill="white">
+            <animate attributeName="r" values="2;5;2" dur="1.8s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="1;0;1" dur="1.8s" repeatCount="indefinite"/>
+          </circle>
+          <text x="41" y="257" fill="#c4912a" font-size="7" font-weight="700" letter-spacing="0.5" font-family="Inter,sans-serif">LIVE TRACKING</text>
+          <text x="18" y="273" fill="white" font-size="18" font-weight="700" font-family="Inter,sans-serif" x="77" text-anchor="middle">247</text>
+          <text x="77" y="273" fill="white" font-size="18" font-weight="700" font-family="Inter,sans-serif" text-anchor="middle">247</text>
+          <text x="77" y="284" fill="rgba(255,255,255,0.5)" font-size="8" font-family="Inter,sans-serif" text-anchor="middle">vehicles online</text>
+        </g>
+
+        <!-- Card 2: GPS Signal -->
+        <g>
+          <rect x="324" y="240" width="118" height="52" rx="6" fill="rgba(10,20,40,0.85)" stroke="rgba(59,130,246,0.4)" stroke-width="1"/>
+          <text x="383" y="255" fill="#3b82f6" font-size="7" font-weight="700" letter-spacing="0.5" font-family="Inter,sans-serif" text-anchor="middle">GPS SIGNAL</text>
+          <text x="383" y="276" fill="white" font-size="18" font-weight="700" font-family="Inter,sans-serif" text-anchor="middle">99.7%</text>
+          <text x="383" y="286" fill="rgba(255,255,255,0.5)" font-size="8" font-family="Inter,sans-serif" text-anchor="middle">uptime this month</text>
+        </g>
+
+        <!-- Card 3: Alerts -->
+        <g>
+          <rect x="171" y="322" width="118" height="44" rx="6" fill="rgba(10,20,40,0.85)" stroke="rgba(16,185,129,0.4)" stroke-width="1"/>
+          <text x="230" y="336" fill="#10b981" font-size="7" font-weight="700" letter-spacing="0.5" font-family="Inter,sans-serif" text-anchor="middle">FLEET STATUS</text>
+          <text x="200" y="357" fill="#10b981" font-size="14" font-weight="700" font-family="Inter,sans-serif">●</text>
+          <text x="214" y="357" fill="white" font-size="11" font-weight="600" font-family="Inter,sans-serif">All Systems Normal</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#faf8f5"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════════════════ STATS RIBBON ══════════════════════════ -->
+
+<!-- ══════════════════════════ TRUSTED BY ══════════════════════════ -->
+<section class="trusted">
+  <div class="container">
+    <p class="trusted-label">Trusted by leading operators across 40+ countries</p>
+    <div class="trusted-logos">
+      <div class="trusted-logo-img-wrap" title="DHL">
+        <img src="https://logo.clearbit.com/dhl.com" alt="DHL" class="trusted-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'tli\'>DHL</span>'">
+      </div>
+      <div class="trusted-logo-img-wrap" title="Aramex">
+        <img src="https://logo.clearbit.com/aramex.com" alt="Aramex" class="trusted-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'tli\'>Aramex</span>'">
+      </div>
+      <div class="trusted-logo-img-wrap" title="Ryder">
+        <img src="https://logo.clearbit.com/ryder.com" alt="Ryder" class="trusted-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'tli\'>Ryder</span>'">
+      </div>
+      <div class="trusted-logo-img-wrap" title="Maersk">
+        <img src="https://logo.clearbit.com/maersk.com" alt="Maersk" class="trusted-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'tli\'>Maersk</span>'">
+      </div>
+      <div class="trusted-logo-img-wrap" title="Aggreko">
+        <img src="https://logo.clearbit.com/aggreko.com" alt="Aggreko" class="trusted-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'tli\'>Aggreko</span>'">
+      </div>
+      <div class="trusted-logo-img-wrap" title="ENOC">
+        <img src="https://logo.clearbit.com/enoc.com" alt="ENOC" class="trusted-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'tli\'>ENOC</span>'">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ FEATURES OVERVIEW ══════════════════════════ -->
+<section class="section" id="features-overview">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <div class="section-badge">Platform Capabilities</div>
+      <h2 class="section-title">Everything your fleet needs, <span class="grad-text">nothing it doesn't</span></h2>
+      <p class="section-sub">FleetOS Pro consolidates over 24 enterprise-grade tools into one seamless dashboard — eliminating the need for multiple vendor subscriptions.</p>
+    </div>
+
+    <div class="features-groups">
+
+      <!-- Group 1: Fleet Intelligence -->
+      <div class="feature-group" data-reveal>
+        <div class="feature-group-header">
+          <div class="feature-group-icon" style="background:rgba(196,145,42,0.12);color:#c4912a">
+            <i class="ti ti-satellite"></i>
+          </div>
+          <div>
+            <h3 class="feature-group-title">Fleet Intelligence</h3>
+            <p class="feature-group-sub">Real-time awareness and deep vehicle analytics</p>
+          </div>
+        </div>
+        <div class="feature-cards">
+          <div class="feature-card">
+            <i class="ti ti-map-pin-filled feature-card-icon" style="color:#c4912a"></i>
+            <h4>Live GPS Tracking</h4>
+            <p>Sub-second position updates with historical replay, geofence alerts, and live traffic overlays across all vehicles simultaneously.</p>
+          </div>
+          <div class="feature-card">
+            <i class="ti ti-route feature-card-icon" style="color:#c4912a"></i>
+            <h4>Trip Playback</h4>
+            <p>Replay any journey second-by-second. Review speed, stops, idle time and route deviations with visual timeline scrubbing.</p>
+          </div>
+          <div class="feature-card">
+            <i class="ti ti-polygon feature-card-icon" style="color:#c4912a"></i>
+            <h4>Geofencing</h4>
+            <p>Define unlimited zones and trigger instant alerts on entry, exit, or dwell. Support for multi-polygon and radius-based zones.</p>
+          </div>
+          <div class="feature-card">
+            <i class="ti ti-steering-wheel feature-card-icon" style="color:#c4912a"></i>
+            <h4>Driver Performance</h4>
+            <p>Score drivers on harsh braking, rapid acceleration, speeding and cornering. Automated coaching reports improve safety culture.</p>
+          </div>
+          <div class="feature-card">
+            <i class="ti ti-engine feature-card-icon" style="color:#c4912a"></i>
+            <h4>Vehicle Health</h4>
+            <p>OBD-II diagnostics, DTC fault code decoding, battery voltage monitoring and engine temperature trends in real time.</p>
+          </div>
+          <div class="feature-card">
+            <i class="ti ti-alert-triangle feature-card-icon" style="color:#c4912a"></i>
+            <h4>Unauthorised Usage</h4>
+            <p>After-hours movement detection, ignition-on alerts and driver ID verification via RFID or NFC dongle pairing.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Group 2: Operations -->
+      <div class="feature-group" data-reveal>
+        <div class="feature-group-header">
+          <div class="feature-group-icon" style="background:rgba(59,130,246,0.12);color:#3b82f6">
+            <i class="ti ti-settings-2"></i>
+          </div>
+          <div>
+            <h3 class="feature-group-title">Operations & Cost Control</h3>
+            <p class="feature-group-sub">Cut costs, streamline dispatch and eliminate waste</p>
+          </div>
+        </div>
+        <div class="feature-cards">
+          <div class="feature-card">
+            <i class="ti ti-brain feature-card-icon" style="color:#3b82f6"></i>
+            <h4>AI Route Optimisation</h4>
+            <p>Machine-learning engine balances live traffic, driver hours-of-service, vehicle capacity and priority stops to cut kilometres driven.</p>
+          </div>
+          <div class="feature-card">
+            <i class="ti ti-tool feature-card-icon" style="color:#3b82f6"></i>
+            <h4>Maintenance Scheduling</h4>
+            <p>Automated service reminders by odometer, engine hours or calendar date. Track workshop history, parts costs and downtime KPIs.</p>
+          </div>
+          <div class="feature-card">
+            <i class="ti ti-users feature-card-icon" style="color:#3b82f6"></i>
+            <h4>Customer Management</h4>
+            <p>Centralised customer portal with live ETA sharing, delivery confirmation, e-signature capture and NPS feedback loops.</p>
+          </div>
+          <div class="feature-card">
+            <i class="ti ti-gas-station feature-card-icon" style="color:#3b82f6"></i>
+            <h4>Fuel & Cost Savings</h4>
+            <p>Fuel card integration, idling cost calculator, cost-per-km breakdown per vehicle, driver and route. Average saving: 34%.</p>
+          </div>
+          <div class="feature-card">
+            <i class="ti ti-bell-ringing feature-card-icon" style="color:#3b82f6"></i>
+            <h4>Smart Alerts</h4>
+            <p>Configurable multi-channel alerts — SMS, email, push and webhook — for 40+ trigger conditions including impact detection.</p>
+          </div>
+          <div class="feature-card">
+            <i class="ti ti-cpu feature-card-icon" style="color:#3b82f6"></i>
+            <h4>IoT Device Management</h4>
+            <p>Provision and manage GPS trackers, temperature sensors, dashcams and fuel probes from a single pane of glass.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-cta" data-reveal>
+      <a href="features.html" class="btn btn-gold">
+        <i class="ti ti-layout-grid"></i> View All 24 Features
+      </a>
+      <a href="pricing.html" class="btn btn-outline">
+        <i class="ti ti-tag"></i> See Pricing
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ DASHBOARD PREVIEW ══════════════════════════ -->
+<section class="section section-dark">
+  <div class="container">
+    <div class="preview-layout" data-reveal>
+      <div class="preview-copy">
+        <div class="section-badge" style="background:rgba(196,145,42,0.15);color:#c4912a;border-color:rgba(196,145,42,0.3)">Live Dashboard</div>
+        <h2 class="section-title" style="color:white">Built for operators who move fast</h2>
+        <p class="section-sub" style="color:rgba(255,255,255,0.6)">
+          The FleetOS Pro dashboard puts live map, KPI cards, alert feeds and drill-down analytics in a single view. No more switching between tabs or logging into multiple systems.
+        </p>
+        <ul class="preview-bullets">
+          <li><i class="ti ti-check"></i> Live vehicle positions update every 2 seconds</li>
+          <li><i class="ti ti-check"></i> Click any vehicle for full diagnostics overlay</li>
+          <li><i class="ti ti-check"></i> Dispatch new job with 3 clicks from the map</li>
+          <li><i class="ti ti-check"></i> Customisable KPI cards for your key metrics</li>
+          <li><i class="ti ti-check"></i> Dark mode and multi-monitor layout support</li>
+        </ul>
+        <a href="https://app.fleetospro.com/login" class="btn btn-gold" style="margin-top:24px">
+          <i class="ti ti-rocket"></i> Try the Live Dashboard
+        </a>
+      </div>
+      <div class="preview-visual">
+        <!-- Dashboard SVG mockup -->
+        <svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" class="dashboard-svg">
+          <defs>
+            <linearGradient id="dpSidebar" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1c2b44"/>
+              <stop offset="100%" stop-color="#0f172a"/>
+            </linearGradient>
+            <linearGradient id="dpChart" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(196,145,42,0.4)"/>
+              <stop offset="100%" stop-color="rgba(196,145,42,0.02)"/>
+            </linearGradient>
+          </defs>
+          <!-- Browser frame -->
+          <rect width="640" height="400" rx="10" fill="#1a2744"/>
+          <rect width="640" height="28" rx="10" fill="#0d1b2a"/>
+          <rect y="18" width="640" height="10" fill="#0d1b2a"/>
+          <circle cx="16" cy="14" r="5" fill="#ff5f57"/>
+          <circle cx="32" cy="14" r="5" fill="#ffbd2e"/>
+          <circle cx="48" cy="14" r="5" fill="#28c840"/>
+          <rect x="80" y="7" width="300" height="14" rx="7" fill="rgba(255,255,255,0.07)"/>
+          <text x="230" y="17" fill="rgba(255,255,255,0.3)" font-size="7" font-family="Inter,sans-serif" text-anchor="middle">app.fleetos.pro/dashboard</text>
+
+          <!-- Sidebar -->
+          <rect x="0" y="28" width="52" height="372" fill="url(#dpSidebar)"/>
+          <!-- Sidebar icons -->
+          <g fill="rgba(255,255,255,0.2)" font-size="12" font-family="sans-serif">
+            <rect x="18" y="52" width="16" height="3" rx="1.5"/>
+            <rect x="18" y="58" width="16" height="3" rx="1.5"/>
+            <rect x="18" y="64" width="16" height="3" rx="1.5"/>
+          </g>
+          <rect x="11" y="88" width="30" height="22" rx="4" fill="rgba(196,145,42,0.2)"/>
+          <rect x="18" y="93" width="16" height="2" rx="1" fill="#c4912a"/>
+          <rect x="18" y="97" width="12" height="2" rx="1" fill="#c4912a"/>
+          <rect x="18" y="101" width="14" height="2" rx="1" fill="#c4912a"/>
+          <g fill="rgba(255,255,255,0.12)">
+            <rect x="18" y="122" width="16" height="2" rx="1"/>
+            <rect x="18" y="127" width="12" height="2" rx="1"/>
+            <rect x="18" y="152" width="16" height="2" rx="1"/>
+            <rect x="18" y="157" width="12" height="2" rx="1"/>
+            <rect x="18" y="182" width="16" height="2" rx="1"/>
+            <rect x="18" y="187" width="12" height="2" rx="1"/>
+          </g>
+
+          <!-- Top bar -->
+          <rect x="52" y="28" width="588" height="38" fill="#0f172a"/>
+          <text x="68" y="51" fill="#c4912a" font-size="11" font-weight="700" font-family="Inter,sans-serif">FleetOS Pro</text>
+          <rect x="450" y="35" width="80" height="22" rx="4" fill="rgba(255,255,255,0.05)"/>
+          <text x="490" y="50" fill="rgba(255,255,255,0.4)" font-size="7" font-family="Inter,sans-serif" text-anchor="middle">Search...</text>
+          <circle cx="568" cy="46" r="10" fill="rgba(196,145,42,0.15)" stroke="rgba(196,145,42,0.4)" stroke-width="1"/>
+          <text x="568" y="50" fill="#c4912a" font-size="9" font-family="Inter,sans-serif" text-anchor="middle">JD</text>
+
+          <!-- KPI Cards row -->
+          <g>
+            <rect x="60" y="76" width="115" height="52" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+            <text x="68" y="90" fill="rgba(255,255,255,0.4)" font-size="7" font-family="Inter,sans-serif">Active Vehicles</text>
+            <text x="68" y="112" fill="white" font-size="20" font-weight="700" font-family="Inter,sans-serif">247</text>
+            <text x="130" y="112" fill="#10b981" font-size="8" font-family="Inter,sans-serif">↑ 12%</text>
+
+            <rect x="185" y="76" width="115" height="52" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+            <text x="193" y="90" fill="rgba(255,255,255,0.4)" font-size="7" font-family="Inter,sans-serif">KM Today</text>
+            <text x="193" y="112" fill="white" font-size="20" font-weight="700" font-family="Inter,sans-serif">18,420</text>
+
+            <rect x="310" y="76" width="115" height="52" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+            <text x="318" y="90" fill="rgba(255,255,255,0.4)" font-size="7" font-family="Inter,sans-serif">Fuel Saved</text>
+            <text x="318" y="112" fill="#c4912a" font-size="20" font-weight="700" font-family="Inter,sans-serif">$2,841</text>
+
+            <rect x="435" y="76" width="115" height="52" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+            <text x="443" y="90" fill="rgba(255,255,255,0.4)" font-size="7" font-family="Inter,sans-serif">Active Alerts</text>
+            <text x="443" y="112" fill="#f59e0b" font-size="20" font-weight="700" font-family="Inter,sans-serif">3</text>
+            <text x="480" y="112" fill="#f59e0b" font-size="8" font-family="Inter,sans-serif">warnings</text>
+          </g>
+
+          <!-- Map area -->
+          <rect x="60" y="138" width="330" height="200" rx="6" fill="#162540"/>
+          <rect x="60" y="138" width="330" height="200" rx="6" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <!-- Map roads -->
+          <g stroke="rgba(255,255,255,0.12)" stroke-width="2" fill="none">
+            <path d="M80 220 Q160 200 230 210 Q310 220 380 200"/>
+            <path d="M140 138 L160 338"/>
+            <path d="M240 138 L230 338"/>
+            <path d="M80 260 Q200 250 380 265"/>
+          </g>
+          <!-- Map vehicle pins -->
+          <circle cx="168" cy="205" r="5" fill="#c4912a"/>
+          <circle cx="168" cy="205" r="3" fill="#fff7e0"/>
+          <circle cx="242" cy="215" r="5" fill="#c4912a"/>
+          <circle cx="242" cy="215" r="3" fill="#fff7e0"/>
+          <circle cx="310" cy="200" r="5" fill="#3b82f6"/>
+          <circle cx="310" cy="200" r="3" fill="#dbeafe"/>
+          <circle cx="130" cy="260" r="4" fill="#10b981"/>
+          <!-- Route line -->
+          <path d="M168 205 Q205 195 242 215 Q276 210 310 200" stroke="#c4912a" stroke-width="1.5" stroke-dasharray="4 3" fill="none"/>
+
+          <!-- Chart area -->
+          <rect x="400" y="138" width="225" height="100" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <text x="410" y="152" fill="rgba(255,255,255,0.4)" font-size="7" font-family="Inter,sans-serif">Fleet Activity — Last 7 days</text>
+          <!-- Chart bars -->
+          <g fill="rgba(196,145,42,0.6)">
+            <rect x="415" y="200" width="18" height="30" rx="2"/>
+            <rect x="441" y="190" width="18" height="40" rx="2"/>
+            <rect x="467" y="178" width="18" height="52" rx="2"/>
+            <rect x="493" y="184" width="18" height="46" rx="2"/>
+            <rect x="519" y="170" width="18" height="60" rx="2"/>
+            <rect x="545" y="185" width="18" height="45" rx="2"/>
+            <rect x="571" y="175" width="18" height="55" rx="2"/>
+          </g>
+          <!-- Chart top line highlight -->
+          <path d="M424 200 L450 190 L476 178 L502 184 L528 170 L554 185 L580 175" stroke="#c4912a" stroke-width="1.5" fill="none" opacity="0.8"/>
+
+          <!-- Alerts panel -->
+          <rect x="400" y="248" width="225" height="90" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <text x="410" y="262" fill="rgba(255,255,255,0.4)" font-size="7" font-family="Inter,sans-serif">Recent Alerts</text>
+          <g>
+            <circle cx="416" cy="278" r="3" fill="#f59e0b"/>
+            <text x="424" y="281" fill="rgba(255,255,255,0.7)" font-size="7" font-family="Inter,sans-serif">TRK-004 — Speed exceeded 110 km/h</text>
+            <circle cx="416" cy="294" r="3" fill="#10b981"/>
+            <text x="424" y="297" fill="rgba(255,255,255,0.7)" font-size="7" font-family="Inter,sans-serif">VH-112 — Entered depot geofence</text>
+            <circle cx="416" cy="310" r="3" fill="#3b82f6"/>
+            <text x="424" y="313" fill="rgba(255,255,255,0.7)" font-size="7" font-family="Inter,sans-serif">Maintenance due — TRK-007 in 2 days</text>
+            <circle cx="416" cy="326" r="3" fill="#ef4444"/>
+            <text x="424" y="329" fill="rgba(255,255,255,0.7)" font-size="7" font-family="Inter,sans-serif">DTC P0300 — TRK-019 engine misfire</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ HOW IT WORKS ══════════════════════════ -->
+<section class="section" id="how-it-works">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <div class="section-badge">Quick Start</div>
+      <h2 class="section-title">Up and running in <span class="grad-text">under 5 minutes</span></h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step-item" data-reveal>
+        <div class="step-number">01</div>
+        <div class="step-icon"><i class="ti ti-user-plus"></i></div>
+        <h3>Create your account</h3>
+        <p>Sign up with your business email. No credit card required for the 14-day trial. Full enterprise features unlocked from day one.</p>
+      </div>
+      <div class="step-item" data-reveal>
+        <div class="step-number">02</div>
+        <div class="step-icon"><i class="ti ti-cpu"></i></div>
+        <h3>Install GPS devices</h3>
+        <p>Plug our OBD-II tracker into any vehicle in seconds. Hardwired options available for trucks and heavy equipment. SIM activated automatically.</p>
+      </div>
+      <div class="step-item" data-reveal>
+        <div class="step-number">03</div>
+        <div class="step-icon"><i class="ti ti-settings-2"></i></div>
+        <h3>Configure your fleet</h3>
+        <p>Add drivers, set geofences, configure alert thresholds and customise the dashboard to match your operational workflow.</p>
+      </div>
+      <div class="step-item" data-reveal>
+        <div class="step-number">04</div>
+        <div class="step-icon"><i class="ti ti-chart-bar"></i></div>
+        <h3>Gain instant insights</h3>
+        <p>Within minutes, live vehicle positions, engine diagnostics and driver scores begin populating your command centre.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ DEVICE COMPATIBILITY ══════════════════════════ -->
+<section class="section" id="devices">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <div class="section-badge">Hardware Support</div>
+      <h2 class="section-title">Works with the devices <span class="grad-text">you already own</span></h2>
+      <p class="section-sub">FleetOS Pro is hardware-agnostic. Connect GPS trackers, OBD-II dongles, dashcams, temperature sensors and asset tags from 30+ leading manufacturers — no rip-and-replace required.</p>
+    </div>
+
+    <!-- Category tabs -->
+    <div class="device-cats" data-reveal>
+      <span class="device-cat active">All Devices</span>
+      <span class="device-cat">Hardwired GPS</span>
+      <span class="device-cat">OBD-II Plug-in</span>
+      <span class="device-cat">Asset Trackers</span>
+      <span class="device-cat">Dashcams</span>
+      <span class="device-cat">Sensors</span>
+    </div>
+
+    <!-- Device grid -->
+    <div class="device-grid" data-reveal>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/calamp.com" alt="CalAmp" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>CA</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">CalAmp</div>
+          <div class="device-models">LMU-2630, LMU-3030, LMUX</div>
+          <div class="device-tags"><span class="dtag dtag-hw">Hardwired</span><span class="dtag dtag-obd">OBD-II</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/starcomsystems.com" alt="StarCom" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>SC</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">StarCom / Syrus</div>
+          <div class="device-models">Syrus 4G, Syrus Apex, Syrus XS</div>
+          <div class="device-tags"><span class="dtag dtag-hw">Hardwired</span><span class="dtag dtag-asset">Asset</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/teltonika-gps.com" alt="Teltonika" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>TL</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">Teltonika</div>
+          <div class="device-models">FMB120, FMB140, FMB920, FMB130, FMC130</div>
+          <div class="device-tags"><span class="dtag dtag-hw">Hardwired</span><span class="dtag dtag-obd">OBD-II</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/queclink.com" alt="Queclink" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>QL</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">Queclink</div>
+          <div class="device-models">GV300, GV500, GV600, GL300, GL500</div>
+          <div class="device-tags"><span class="dtag dtag-hw">Hardwired</span><span class="dtag dtag-asset">Asset</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/geotab.com" alt="Geotab" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>GT</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">Geotab</div>
+          <div class="device-models">GO9, GO9+, GO Rugged, GO Anywhere</div>
+          <div class="device-tags"><span class="dtag dtag-obd">OBD-II</span><span class="dtag dtag-hw">Hardwired</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/ruptela.com" alt="Ruptela" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>RU</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">Ruptela</div>
+          <div class="device-models">FM-ECO4, FM-Pro4, FM-Plug4, Trace5</div>
+          <div class="device-tags"><span class="dtag dtag-hw">Hardwired</span><span class="dtag dtag-obd">OBD-II</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/samsara.com" alt="Samsara" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>SM</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">Samsara</div>
+          <div class="device-models">VG34, VG54, CM32, AG26</div>
+          <div class="device-tags"><span class="dtag dtag-hw">Hardwired</span><span class="dtag dtag-obd">OBD-II</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/digitalmatter.com" alt="Digital Matter" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>DM</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">Digital Matter</div>
+          <div class="device-models">Oyster3, Yabby GPS, Falcon, SensorNode</div>
+          <div class="device-tags"><span class="dtag dtag-asset">Asset</span><span class="dtag dtag-sensor">Sensor</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/orbcomm.com" alt="ORBCOMM" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>OB</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">ORBCOMM</div>
+          <div class="device-models">ST6100, ST9100, OB2000, VG-300</div>
+          <div class="device-tags"><span class="dtag dtag-hw">Hardwired</span><span class="dtag dtag-asset">Asset</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/jimilab.com" alt="JimiIoT" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>JI</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">Concox / JimiIoT</div>
+          <div class="device-models">GT06N, JM-VL03, JM-LL301, AT6</div>
+          <div class="device-tags"><span class="dtag dtag-hw">Hardwired</span><span class="dtag dtag-obd">OBD-II</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/lytx.com" alt="Lytx" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>LX</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">Lytx</div>
+          <div class="device-models">DriveCam DC200, SF-500, SF-Series</div>
+          <div class="device-tags"><span class="dtag dtag-cam">Dashcam</span><span class="dtag dtag-hw">Hardwired</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/meitrack.com" alt="Meitrack" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>MT</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">Meitrack</div>
+          <div class="device-models">T333, T366G, MT90G, TC68S</div>
+          <div class="device-tags"><span class="dtag dtag-hw">Hardwired</span><span class="dtag dtag-asset">Asset</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/pointer.com" alt="Cellocator" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>CL</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">Cellocator</div>
+          <div class="device-models">CelloTrack Nano, CR200, CR300</div>
+          <div class="device-tags"><span class="dtag dtag-hw">Hardwired</span><span class="dtag dtag-asset">Asset</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/suntech.com.br" alt="Suntech" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>SU</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">Suntech</div>
+          <div class="device-models">ST300, ST310U, ST340, ST600</div>
+          <div class="device-tags"><span class="dtag dtag-hw">Hardwired</span><span class="dtag dtag-asset">Asset</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/sierrawireless.com" alt="Sierra Wireless" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>SW</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">Sierra Wireless</div>
+          <div class="device-models">RV55, MP70, MP90, LX60</div>
+          <div class="device-tags"><span class="dtag dtag-hw">Hardwired</span><span class="dtag dtag-sensor">Sensor</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/digi.com" alt="Digi International" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>DI</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">Digi International</div>
+          <div class="device-models">TX54, EX15, WR31, IX30</div>
+          <div class="device-tags"><span class="dtag dtag-hw">Hardwired</span><span class="dtag dtag-sensor">Sensor</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/tramigo.com" alt="Tramigo" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>TR</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">Tramigo</div>
+          <div class="device-models">T22, T23, Field Pro, Tramigo Enterprise</div>
+          <div class="device-tags"><span class="dtag dtag-hw">Hardwired</span><span class="dtag dtag-asset">Asset</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/topflytech.com" alt="Topflytech" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>TF</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">Topflytech</div>
+          <div class="device-models">TLW1-4A, TLP1-SF, T8803, TLD1-A</div>
+          <div class="device-tags"><span class="dtag dtag-hw">Hardwired</span><span class="dtag dtag-asset">Asset</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/aplicom.com" alt="Aplicom" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>AP</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">Aplicom</div>
+          <div class="device-models">A9, A11, A13, A14</div>
+          <div class="device-tags"><span class="dtag dtag-hw">Hardwired</span><span class="dtag dtag-sensor">Sensor</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/globalstar.com" alt="Globalstar" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>GS</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">Globalstar</div>
+          <div class="device-models">SmartOne C, SmartOne Solar, SPOT Trace</div>
+          <div class="device-tags"><span class="dtag dtag-asset">Asset</span><span class="dtag dtag-sensor">Sensor</span></div>
+        </div>
+      </div>
+
+      <div class="device-card">
+        <div class="device-logo-wrap">
+          <img src="https://logo.clearbit.com/lantronix.com" alt="Lantronix" class="device-logo-img" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'dli\'>LN</span>'">
+        </div>
+        <div class="device-info">
+          <div class="device-brand">Lantronix</div>
+          <div class="device-models">FOX3-4G, FOX3-2G, XPrintServer</div>
+          <div class="device-tags"><span class="dtag dtag-hw">Hardwired</span><span class="dtag dtag-sensor">Sensor</span></div>
+        </div>
+      </div>
+
+    </div><!-- /device-grid -->
+
+    <!-- Protocol support -->
+    <div class="protocol-bar" data-reveal>
+      <span class="protocol-label">Supported Protocols:</span>
+      <span class="protocol-pill">MQTT</span>
+      <span class="protocol-pill">TCP/UDP</span>
+      <span class="protocol-pill">HTTPS REST</span>
+      <span class="protocol-pill">FTP</span>
+      <span class="protocol-pill">GPRS</span>
+      <span class="protocol-pill">4G LTE</span>
+      <span class="protocol-pill">5G NR</span>
+      <span class="protocol-pill">BLE 5.0</span>
+      <span class="protocol-pill">CAN Bus</span>
+      <span class="protocol-pill">RS232 / RS485</span>
+      <span class="protocol-pill">1-Wire</span>
+    </div>
+
+    <div class="section-cta" data-reveal>
+      <a href="features.html#fleet-intelligence" class="btn btn-navy">
+        <i class="ti ti-cpu"></i> View IoT Device Management
+      </a>
+      <a href="contact.html" class="btn btn-outline">
+        <i class="ti ti-headset"></i> Ask about your device
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ TESTIMONIALS ══════════════════════════ -->
+<section class="section section-cream">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <div class="section-badge">Customer Stories</div>
+      <h2 class="section-title">Trusted by operations teams <span class="grad-text">worldwide</span></h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card" data-reveal>
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"FleetOS Pro cut our fuel bill by 31% in the first quarter. The AI routing alone paid for the annual subscription three times over. The real-time driver coaching has completely transformed our safety record."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">RK</div>
+          <div>
+            <div class="testimonial-name">Rashid Khalil</div>
+            <div class="testimonial-role">Head of Logistics, SwiftHaul LLC</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card" data-reveal>
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"We manage 800 buses across 6 cities. Before FleetOS Pro we had four different systems that didn't talk to each other. Now everything is in one place and our control room team is half the size."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">MP</div>
+          <div>
+            <div class="testimonial-name">Maria Pereira</div>
+            <div class="testimonial-role">CTO, MetroTransit Authority</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card" data-reveal>
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"The maintenance scheduling module alone has reduced our unexpected breakdowns by 78%. Our workshop knows what's coming weeks in advance. This is what fleet management software should be."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">TC</div>
+          <div>
+            <div class="testimonial-name">Tom Chen</div>
+            <div class="testimonial-role">Fleet Manager, AgroLogistics Asia</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ PRICING TEASER ══════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <div class="section-badge">Simple Pricing</div>
+      <h2 class="section-title">Plans that scale with <span class="grad-text">your fleet</span></h2>
+      <p class="section-sub">Start free, grow confidently. No hidden fees, no per-vehicle surprises above your plan limit.</p>
+    </div>
+    <div class="pricing-teaser-grid">
+      <div class="pricing-teaser-card" data-reveal>
+        <div class="pricing-plan-name">Starter</div>
+        <div class="pricing-price">$49<span>/mo</span></div>
+        <div class="pricing-desc">Up to 10 vehicles. Perfect for small fleets getting started with GPS tracking.</div>
+        <a href="pricing.html" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:16px">Learn More</a>
+      </div>
+      <div class="pricing-teaser-card pricing-teaser-popular" data-reveal>
+        <div class="pricing-popular-badge">Most Popular</div>
+        <div class="pricing-plan-name">Professional</div>
+        <div class="pricing-price">$149<span>/mo</span></div>
+        <div class="pricing-desc">Up to 50 vehicles. Full analytics suite, AI routing and priority support.</div>
+        <a href="https://app.fleetospro.com/login" class="btn btn-gold" style="width:100%;justify-content:center;margin-top:16px">Start Free Trial</a>
+      </div>
+      <div class="pricing-teaser-card" data-reveal>
+        <div class="pricing-plan-name">Enterprise</div>
+        <div class="pricing-price">Custom</div>
+        <div class="pricing-desc">Unlimited vehicles. Dedicated CSM, SLA guarantee, SSO and white-label options.</div>
+        <a href="contact.html" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:16px">Contact Sales</a>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:24px" data-reveal>
+      <a href="pricing.html" style="color:var(--teal);font-size:14px;font-weight:500;text-decoration:none">
+        View full pricing comparison <i class="ti ti-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ FINAL CTA ══════════════════════════ -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-inner" data-reveal>
+      <h2 class="cta-title">Ready to transform your fleet operations?</h2>
+      <p class="cta-sub">Join 1,200+ businesses already saving time, fuel and money with FleetOS Pro. Start your free 14-day trial today — no credit card required.</p>
+      <div class="cta-buttons">
+        <a href="https://app.fleetospro.com/login" class="btn btn-gold btn-lg">
+          <i class="ti ti-rocket"></i> Start Free Trial
+        </a>
+        <a href="contact.html" class="btn btn-outline-light btn-lg">
+          <i class="ti ti-headset"></i> Talk to Sales
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ FOOTER ══════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <svg width="62" height="62" viewBox="0 0 36 36" fill="none">
+            <rect x="1" y="15" width="9" height="6" rx="1.5" fill="#c4912a"/>
+            <line x1="4.5" y1="15" x2="4.5" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+            <line x1="7" y1="15" x2="7" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+            <rect x="10" y="12" width="16" height="12" rx="2.5" fill="#0d1b2a"/>
+            <rect x="12.5" y="16.5" width="11" height="3" rx="0.8" fill="none" stroke="rgba(196,145,42,0.4)" stroke-width="0.7"/>
+            <circle cx="15" cy="18" r="1.2" fill="#c4912a" opacity="0.9"/>
+            <circle cx="18" cy="18" r="0.9" fill="white" opacity="0.55"/>
+            <circle cx="21" cy="18" r="1.2" fill="rgba(100,190,255,0.7)"/>
+            <rect x="26" y="15" width="9" height="6" rx="1.5" fill="#c4912a"/>
+            <line x1="29" y1="15" x2="29" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+            <line x1="31.5" y1="15" x2="31.5" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+            <line x1="18" y1="8" x2="18" y2="12" stroke="rgba(255,255,255,0.85)" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M14.5 9 A4.5 3 0 0 1 21.5 9" stroke="rgba(255,255,255,0.85)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+            <line x1="14" y1="24" x2="11" y2="30" stroke="#c4912a" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="1.5 2" opacity="0.7"/>
+            <line x1="18" y1="24" x2="18" y2="31" stroke="#c4912a" stroke-width="1" stroke-linecap="round" stroke-dasharray="1.5 2" opacity="0.85"/>
+            <line x1="22" y1="24" x2="25" y2="30" stroke="#c4912a" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="1.5 2" opacity="0.7"/>
+          </svg>
+          <div class="nav-logo-lockup"><span class="logo-fleet">Fleet</span><span class="logo-os">OS</span><span class="logo-pro-badge">Pro</span></div>
+        </a>
+        <p class="footer-tagline">Enterprise fleet intelligence for the modern operations team. GPS tracking, analytics and AI automation in one platform.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Twitter"><i class="ti ti-brand-twitter"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="ti ti-brand-linkedin"></i></a>
+          <a href="#" aria-label="YouTube"><i class="ti ti-brand-youtube"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="features.html">All Features</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="#">Integrations</a></li>
+          <li><a href="#">API Docs</a></li>
+          <li><a href="#">Changelog</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="#">Trucking & Logistics</a></li>
+          <li><a href="#">Public Transit</a></li>
+          <li><a href="#">Construction</a></li>
+          <li><a href="#">Field Services</a></li>
+          <li><a href="#">Last-Mile Delivery</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="contact.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press Kit</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="#">SLA</a></li>
+          <li><a href="#">GDPR</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 FleetOS Pro. All rights reserved. Fleet intelligence, redefined.</p>
+      <div class="footer-certifications">
+        <span><i class="ti ti-shield-check"></i> SOC 2 Type II</span>
+        <span><i class="ti ti-lock"></i> ISO 27001</span>
+        <span><i class="ti ti-certificate"></i> GDPR Compliant</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "headers": [
+    {
+      "source": "/website/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "fleetospro.com" }],
+      "destination": "/website/index.html",
+      "permanent": false
+    },
+    {
+      "source": "/features",
+      "has": [{ "type": "host", "value": "fleetospro.com" }],
+      "destination": "/website/features.html",
+      "permanent": false
+    },
+    {
+      "source": "/pricing",
+      "has": [{ "type": "host", "value": "fleetospro.com" }],
+      "destination": "/website/pricing.html",
+      "permanent": false
+    },
+    {
+      "source": "/contact",
+      "has": [{ "type": "host", "value": "fleetospro.com" }],
+      "destination": "/website/contact.html",
+      "permanent": false
+    }
+  ]
+}
