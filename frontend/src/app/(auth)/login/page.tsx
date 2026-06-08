@@ -311,7 +311,7 @@ export default function LoginPage() {
   const panelBg = brand.darkTopbar ? '#0d1b2a' : darkenHex(brand.primaryColor, 0.55);
 
   return (
-    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', fontFamily: 'inherit' }}>
+    <div className="login-root" style={{ fontFamily: 'inherit' }}>
       <style>{`
         .auth-input {
           width: 100%; box-sizing: border-box;
@@ -346,11 +346,65 @@ export default function LoginPage() {
         .tenant-card:hover:not(:disabled) { border-color: #c4912a !important; box-shadow: 0 0 0 3px rgba(196,145,42,0.14) !important; }
         .pw-toggle { background: none; border: none; cursor: pointer; padding: 4px; color: #94a3b8; transition: color 0.12s; }
         .pw-toggle:hover { color: var(--ink2); }
+
+        /* ── Login responsive layout ── */
+        .login-root { display: flex; height: 100vh; overflow: hidden; }
+        .login-left  { width: 460px; flex-shrink: 0; }
+        .login-right { flex: 1; display: flex; flex-direction: column; background: #f8fafc; overflow: hidden; }
+        .login-right-grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
+        .login-form-panel {
+          display: flex; flex-direction: column; justify-content: center;
+          padding: 40px 48px; background: #fff;
+          border-right: 1px solid #e2e8f0; overflow-y: auto;
+        }
+        .login-qa-panel {
+          display: flex; flex-direction: column; overflow: hidden;
+          padding: 28px 24px 20px; background: #eef1f6;
+        }
+        .login-mobile-header { display: none; }
+
+        @media (max-width: 900px) {
+          .login-left { width: 360px; }
+          .login-form-panel { padding: 32px 32px; }
+        }
+        @media (max-width: 768px) {
+          .login-root { flex-direction: column; height: auto; min-height: 100vh; overflow-y: auto; }
+          .login-left  { display: none; }
+          .login-right { flex: 1; overflow: visible; }
+          .login-right-grid { grid-template-columns: 1fr; overflow: visible; height: auto; }
+          .login-form-panel {
+            justify-content: flex-start; padding: 28px 24px 24px;
+            border-right: none; border-bottom: 1px solid #e2e8f0;
+            overflow-y: visible;
+          }
+          .login-qa-panel { overflow: visible; padding: 20px 16px 24px; max-height: none; }
+          .login-mobile-header {
+            display: flex; align-items: center; gap: 10px;
+            padding: 16px 20px; background: #0d1b2a;
+            border-bottom: 1px solid rgba(196,145,42,0.18);
+          }
+        }
+        @media (max-width: 480px) {
+          .login-form-panel { padding: 24px 16px 20px; }
+          .login-qa-panel { padding: 16px 14px 20px; }
+          .login-mobile-header { padding: 14px 16px; }
+        }
       `}</style>
 
+      {/* ── Mobile header (logo — visible only on mobile) ─────────── */}
+      <div className="login-mobile-header">
+        <FleetOSMark size={32} accent={brand.accentColor} />
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 0 }}>
+          <span style={{ color: '#fff', fontSize: 16, fontWeight: 700, letterSpacing: '-0.4px' }}>Fleet</span>
+          <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 16, fontWeight: 400, letterSpacing: '-0.3px' }}>OS</span>
+          <span style={{ marginLeft: 5, fontSize: 9, fontWeight: 800, letterSpacing: '0.8px',
+            color: brand.accentColor, border: `1px solid ${brand.accentColor}50`,
+            borderRadius: 3, padding: '2px 5px', lineHeight: 1, textTransform: 'uppercase', alignSelf: 'center' }}>Pro</span>
+        </div>
+      </div>
+
       {/* ── Left branded panel ─────────────────────────────────────── */}
-      <div style={{
-        width: 460, flexShrink: 0,
+      <div className="login-left" style={{
         background: panelBg,
         display: 'flex', flexDirection: 'column',
         padding: '28px 32px 28px',
@@ -470,16 +524,11 @@ export default function LoginPage() {
       </div>
 
       {/* ── Right panel ────────────────────────────────────────────── */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: '#f8fafc', overflow: 'hidden' }}>
-        <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', overflow: 'hidden' }}>
+      <div className="login-right">
+        <div className="login-right-grid">
 
           {/* ── Sign-in form ─────────────────────────────────────── */}
-          <div style={{
-            display: 'flex', flexDirection: 'column', justifyContent: 'center',
-            padding: '40px 48px', background: '#fff',
-            borderRight: '1px solid #e2e8f0',
-            overflowY: 'auto',
-          }}>
+          <div className="login-form-panel">
             <div style={{ maxWidth: 340 }}>
               <div style={{ marginBottom: 32 }}>
                 <div style={{ fontSize: 24, fontWeight: 700, color: '#0d1b2a', marginBottom: 6, letterSpacing: '-0.5px' }}>
@@ -590,7 +639,7 @@ export default function LoginPage() {
           </div>
 
           {/* ── Quick access panel ──────────────────────────────────── */}
-          <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: '28px 24px 20px', background: '#eef1f6' }}>
+          <div className="login-qa-panel">
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
               <div style={{ width: 3, height: 18, borderRadius: 2, background: '#c4912a' }} />
