@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Features — FleetOS Pro</title>
+  <meta name="description" content="All 24 FleetOS Pro features: GPS tracking, trip playback, geofencing, AI routing, driver scoring, maintenance, RBAC security and full analytics suite." />
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+</head>
+<body>
+
+<!-- ══════════════════════════ NAVIGATION ══════════════════════════ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <svg width="62" height="62" viewBox="0 0 36 36" fill="none">
+        <rect x="1" y="15" width="9" height="6" rx="1.5" fill="#c4912a"/>
+        <line x1="4.5" y1="15" x2="4.5" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+        <line x1="7" y1="15" x2="7" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+        <rect x="10" y="12" width="16" height="12" rx="2.5" fill="#0d1b2a"/>
+        <rect x="12.5" y="16.5" width="11" height="3" rx="0.8" fill="none" stroke="rgba(196,145,42,0.4)" stroke-width="0.7"/>
+        <circle cx="15" cy="18" r="1.2" fill="#c4912a" opacity="0.9"/>
+        <circle cx="18" cy="18" r="0.9" fill="white" opacity="0.55"/>
+        <circle cx="21" cy="18" r="1.2" fill="rgba(100,190,255,0.7)"/>
+        <rect x="26" y="15" width="9" height="6" rx="1.5" fill="#c4912a"/>
+        <line x1="29" y1="15" x2="29" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+        <line x1="31.5" y1="15" x2="31.5" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+        <line x1="18" y1="8" x2="18" y2="12" stroke="rgba(255,255,255,0.85)" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M14.5 9 A4.5 3 0 0 1 21.5 9" stroke="rgba(255,255,255,0.85)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <line x1="14" y1="24" x2="11" y2="30" stroke="#c4912a" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="1.5 2" opacity="0.7"/>
+        <line x1="18" y1="24" x2="18" y2="31" stroke="#c4912a" stroke-width="1" stroke-linecap="round" stroke-dasharray="1.5 2" opacity="0.85"/>
+        <line x1="22" y1="24" x2="25" y2="30" stroke="#c4912a" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="1.5 2" opacity="0.7"/>
+      </svg>
+      <div class="nav-logo-lockup"><span class="logo-fleet">Fleet</span><span class="logo-os">OS</span><span class="logo-pro-badge">Pro</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="features.html" class="active">Features</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="https://app.fleetospro.com/login" class="btn btn-outline-sm">Sign In</a>
+      <a href="https://app.fleetospro.com/login" class="btn btn-gold-sm">Start Free Trial</a>
+    </div>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="navMobile">
+    <a href="index.html">Home</a>
+    <a href="features.html">Features</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="contact.html">Contact</a>
+    <a href="https://app.fleetospro.com/login" class="btn btn-gold-sm" style="margin-top:8px;text-align:center">Launch App</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════ PAGE HERO ══════════════════════════ -->
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-inner" data-reveal>
+      <div class="section-badge">24 Enterprise Features</div>
+      <h1 class="page-hero-title">Everything you need to run <span class="grad-text">a smarter fleet</span></h1>
+      <p class="page-hero-sub">FleetOS Pro bundles GPS intelligence, operational tools, advanced analytics and enterprise security into one unified platform. Here's what's included.</p>
+      <a href="https://app.fleetospro.com/login" class="btn btn-gold">
+        <i class="ti ti-rocket"></i> Try All Features Free
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ FEATURE NAV ══════════════════════════ -->
+<div class="feature-nav sticky-feature-nav" id="featureNav">
+  <div class="container">
+    <div class="feature-nav-links">
+      <a href="#fleet-intelligence" class="feature-nav-link active">
+        <i class="ti ti-satellite"></i> Fleet Intelligence
+      </a>
+      <a href="#operations" class="feature-nav-link">
+        <i class="ti ti-settings-2"></i> Operations
+      </a>
+      <a href="#analytics" class="feature-nav-link">
+        <i class="ti ti-chart-bar"></i> Analytics
+      </a>
+      <a href="#security" class="feature-nav-link">
+        <i class="ti ti-shield-check"></i> Security
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ GROUP 1: FLEET INTELLIGENCE ══════════════════════════ -->
+<section class="section feature-section" id="fleet-intelligence">
+  <div class="container">
+    <div class="feature-section-header" data-reveal>
+      <div class="feature-section-icon" style="background:rgba(196,145,42,0.12);color:#c4912a">
+        <i class="ti ti-satellite"></i>
+      </div>
+      <div>
+        <h2 class="feature-section-title">Fleet Intelligence</h2>
+        <p class="feature-section-sub">Real-time awareness, location analytics and deep vehicle diagnostics to keep your fleet safe and efficient.</p>
+      </div>
+    </div>
+
+    <!-- Feature 1: Live GPS Tracking -->
+    <div class="feature-detail" data-reveal>
+      <div class="feature-detail-copy">
+        <div class="feature-number">01</div>
+        <h3>Live GPS Tracking</h3>
+        <p>Get sub-second position updates for every vehicle in your fleet — simultaneously. FleetOS Pro streams telemetry directly from our cellular IoT network to your dashboard without polling delays.</p>
+        <ul class="feature-bullets">
+          <li><i class="ti ti-check"></i> 2-second refresh rate with WebSocket streaming</li>
+          <li><i class="ti ti-check"></i> Live traffic overlay from HERE Maps / Google Maps</li>
+          <li><i class="ti ti-check"></i> Cluster view for large fleets with heatmap density</li>
+          <li><i class="ti ti-check"></i> Street-level satellite and hybrid map layers</li>
+          <li><i class="ti ti-check"></i> Filter map by vehicle status, branch or driver group</li>
+        </ul>
+      </div>
+      <div class="feature-detail-visual gps-visual">
+        <div class="feature-mock-card">
+          <div class="mock-header">
+            <span class="mock-dot red"></span>
+            <span class="mock-dot amber"></span>
+            <span class="mock-dot green"></span>
+            <span class="mock-title">Live Fleet Map</span>
+          </div>
+          <div class="mock-map">
+            <div class="mock-pin pin-gold" style="top:38%;left:42%">
+              <i class="ti ti-map-pin-filled"></i>
+              <div class="mock-pin-pulse"></div>
+            </div>
+            <div class="mock-pin pin-gold" style="top:52%;left:62%">
+              <i class="ti ti-map-pin-filled"></i>
+              <div class="mock-pin-pulse"></div>
+            </div>
+            <div class="mock-pin pin-blue" style="top:30%;left:25%">
+              <i class="ti ti-map-pin-filled"></i>
+              <div class="mock-pin-pulse" style="border-color:#3b82f6"></div>
+            </div>
+            <div class="mock-pin pin-green" style="top:60%;left:30%">
+              <i class="ti ti-map-pin-filled"></i>
+            </div>
+            <div class="mock-route"></div>
+          </div>
+          <div class="mock-stats-row">
+            <div class="mock-stat"><span class="mock-stat-val">247</span><span class="mock-stat-lbl">Online</span></div>
+            <div class="mock-stat"><span class="mock-stat-val" style="color:#f59e0b">12</span><span class="mock-stat-lbl">Idle</span></div>
+            <div class="mock-stat"><span class="mock-stat-val" style="color:#ef4444">3</span><span class="mock-stat-lbl">Alerts</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 2: Trip Playback -->
+    <div class="feature-detail feature-detail-reverse" data-reveal>
+      <div class="feature-detail-copy">
+        <div class="feature-number">02</div>
+        <h3>Trip Playback</h3>
+        <p>Replay any completed journey in full fidelity. Scrub through the timeline to review speed violations, stops, harsh events and route deviations. Invaluable for investigations, coaching and compliance reporting.</p>
+        <ul class="feature-bullets">
+          <li><i class="ti ti-check"></i> Frame-by-frame or variable-speed playback (1x–20x)</li>
+          <li><i class="ti ti-check"></i> Harsh braking / acceleration events flagged on timeline</li>
+          <li><i class="ti ti-check"></i> Stop duration and location shown inline</li>
+          <li><i class="ti ti-check"></i> Export trip as PDF report or KML file</li>
+          <li><i class="ti ti-check"></i> 365-day trip history retention</li>
+        </ul>
+      </div>
+      <div class="feature-detail-visual">
+        <div class="feature-mock-card">
+          <div class="mock-header">
+            <span class="mock-dot red"></span>
+            <span class="mock-dot amber"></span>
+            <span class="mock-dot green"></span>
+            <span class="mock-title">Trip Playback — TRK-004</span>
+          </div>
+          <div class="mock-playback">
+            <div class="mock-playback-map">
+              <svg viewBox="0 0 260 110" width="100%">
+                <rect width="260" height="110" fill="#162540"/>
+                <path d="M20 80 Q60 60 100 65 Q140 55 180 40 Q220 30 240 45" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="none"/>
+                <path d="M20 80 Q60 60 100 65 Q140 55 180 40" stroke="#c4912a" stroke-width="2" stroke-dasharray="3 2" fill="none"/>
+                <circle cx="20" cy="80" r="5" fill="#10b981"/>
+                <text x="24" y="94" fill="#10b981" font-size="7" font-family="Inter,sans-serif">Start</text>
+                <circle cx="240" cy="45" r="5" fill="#ef4444"/>
+                <text x="218" y="40" fill="#ef4444" font-size="7" font-family="Inter,sans-serif">End</text>
+                <circle cx="180" cy="40" r="4" fill="#f59e0b"/>
+                <text x="165" y="34" fill="#f59e0b" font-size="7" font-family="Inter,sans-serif">115 km/h</text>
+                <!-- Playhead car -->
+                <circle cx="100" cy="65" r="6" fill="#c4912a"/>
+                <circle cx="100" cy="65" r="3" fill="white"/>
+              </svg>
+            </div>
+            <div class="mock-timeline">
+              <div class="mock-timeline-bar">
+                <div class="mock-timeline-progress" style="width:42%"></div>
+                <div class="mock-timeline-thumb" style="left:42%"></div>
+              </div>
+              <div class="mock-timeline-labels">
+                <span>08:14</span>
+                <span>09:52</span>
+                <span>11:30</span>
+              </div>
+            </div>
+            <div class="mock-trip-stats">
+              <div class="mock-trip-stat"><i class="ti ti-road"></i> 184 km</div>
+              <div class="mock-trip-stat"><i class="ti ti-clock"></i> 2h 18m</div>
+              <div class="mock-trip-stat"><i class="ti ti-alert-triangle" style="color:#f59e0b"></i> 2 events</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 3: Geofencing -->
+    <div class="feature-detail" data-reveal>
+      <div class="feature-detail-copy">
+        <div class="feature-number">03</div>
+        <h3>Geofencing</h3>
+        <p>Define unlimited virtual zones on the map — depots, customer sites, restricted areas or entire cities. Receive instant alerts when any vehicle crosses a zone boundary, lingers beyond a dwell limit, or enters outside permitted hours.</p>
+        <ul class="feature-bullets">
+          <li><i class="ti ti-check"></i> Draw polygon, circle or corridor zones</li>
+          <li><i class="ti ti-check"></i> Schedule zones (active only during business hours)</li>
+          <li><i class="ti ti-check"></i> Assign zones to vehicle groups or individual vehicles</li>
+          <li><i class="ti ti-check"></i> Dwell time alerts and overstay warnings</li>
+          <li><i class="ti ti-check"></i> Zone-based report filtering and heatmaps</li>
+        </ul>
+      </div>
+      <div class="feature-detail-visual">
+        <div class="feature-mock-card compact-card">
+          <div class="mock-header">
+            <span class="mock-dot red"></span><span class="mock-dot amber"></span><span class="mock-dot green"></span>
+            <span class="mock-title">Geofence Manager</span>
+          </div>
+          <div class="mock-geo-list">
+            <div class="mock-geo-item">
+              <span class="mock-geo-dot" style="background:#10b981"></span>
+              <span class="mock-geo-name">Main Depot — London</span>
+              <span class="mock-geo-badge" style="background:rgba(16,185,129,0.12);color:#10b981">Active</span>
+            </div>
+            <div class="mock-geo-item">
+              <span class="mock-geo-dot" style="background:#3b82f6"></span>
+              <span class="mock-geo-name">Customer Zone — Heathrow</span>
+              <span class="mock-geo-badge" style="background:rgba(59,130,246,0.12);color:#3b82f6">Active</span>
+            </div>
+            <div class="mock-geo-item">
+              <span class="mock-geo-dot" style="background:#f59e0b"></span>
+              <span class="mock-geo-name">Restricted Area — M25 Corridor</span>
+              <span class="mock-geo-badge" style="background:rgba(245,158,11,0.12);color:#f59e0b">Scheduled</span>
+            </div>
+            <div class="mock-geo-item">
+              <span class="mock-geo-dot" style="background:#ef4444"></span>
+              <span class="mock-geo-name">Speed Zone — School District</span>
+              <span class="mock-geo-badge" style="background:rgba(239,68,68,0.12);color:#ef4444">Alert</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 4: Driver Performance -->
+    <div class="feature-detail feature-detail-reverse" data-reveal>
+      <div class="feature-detail-copy">
+        <div class="feature-number">04</div>
+        <h3>Driver Performance Scoring</h3>
+        <p>Transform driving behaviour with data-driven coaching. FleetOS Pro scores every driver on harsh braking, rapid acceleration, speeding, cornering, phone usage and idling — then generates automated coaching reports.</p>
+        <ul class="feature-bullets">
+          <li><i class="ti ti-check"></i> 0–100 composite safety score per driver per day</li>
+          <li><i class="ti ti-check"></i> Driver league table with trend charts</li>
+          <li><i class="ti ti-check"></i> In-cab buzzer alert via Bluetooth dongle</li>
+          <li><i class="ti ti-check"></i> Monthly performance summary emailed to drivers</li>
+          <li><i class="ti ti-check"></i> Integration with HR systems for incentive programmes</li>
+        </ul>
+      </div>
+      <div class="feature-detail-visual">
+        <div class="feature-mock-card compact-card">
+          <div class="mock-header">
+            <span class="mock-dot red"></span><span class="mock-dot amber"></span><span class="mock-dot green"></span>
+            <span class="mock-title">Driver Leaderboard</span>
+          </div>
+          <div class="mock-driver-list">
+            <div class="mock-driver-row">
+              <span class="mock-rank gold">1</span>
+              <span class="mock-driver-name">Ahmed Al-Farsi</span>
+              <div class="mock-score-bar"><div class="mock-score-fill" style="width:96%;background:#10b981"></div></div>
+              <span class="mock-score-val" style="color:#10b981">96</span>
+            </div>
+            <div class="mock-driver-row">
+              <span class="mock-rank silver">2</span>
+              <span class="mock-driver-name">James Okafor</span>
+              <div class="mock-score-bar"><div class="mock-score-fill" style="width:91%;background:#10b981"></div></div>
+              <span class="mock-score-val" style="color:#10b981">91</span>
+            </div>
+            <div class="mock-driver-row">
+              <span class="mock-rank bronze">3</span>
+              <span class="mock-driver-name">Li Wei</span>
+              <div class="mock-score-bar"><div class="mock-score-fill" style="width:87%;background:#f59e0b"></div></div>
+              <span class="mock-score-val" style="color:#f59e0b">87</span>
+            </div>
+            <div class="mock-driver-row">
+              <span class="mock-rank">4</span>
+              <span class="mock-driver-name">Sara Mensah</span>
+              <div class="mock-score-bar"><div class="mock-score-fill" style="width:74%;background:#f59e0b"></div></div>
+              <span class="mock-score-val" style="color:#f59e0b">74</span>
+            </div>
+            <div class="mock-driver-row">
+              <span class="mock-rank" style="color:#ef4444">5</span>
+              <span class="mock-driver-name">Pavel Novak</span>
+              <div class="mock-score-bar"><div class="mock-score-fill" style="width:58%;background:#ef4444"></div></div>
+              <span class="mock-score-val" style="color:#ef4444">58</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features 5 & 6: compact pair -->
+    <div class="features-pair" data-reveal>
+      <div class="feature-pair-card">
+        <div class="feature-pair-icon" style="color:#c4912a"><i class="ti ti-engine"></i></div>
+        <div class="feature-number-sm">05</div>
+        <h3>Vehicle Health Monitoring</h3>
+        <p>OBD-II diagnostics read engine fault codes, battery voltage, coolant temperature, tyre pressure and fuel level in real time. DTC fault codes are decoded with plain-language descriptions so your workshop team knows exactly what's wrong before the vehicle arrives.</p>
+        <ul class="feature-bullets-sm">
+          <li><i class="ti ti-check"></i> 3,000+ DTC fault codes decoded</li>
+          <li><i class="ti ti-check"></i> Battery health trend with predictive alerts</li>
+          <li><i class="ti ti-check"></i> Engine temperature and oil pressure monitoring</li>
+          <li><i class="ti ti-check"></i> Tyre pressure sensor integration</li>
+        </ul>
+        <div class="pair-mockup">
+          <svg viewBox="0 0 320 130" width="100%" style="display:block;border-radius:8px;">
+            <rect width="320" height="130" fill="#0d1b2a" rx="6"/>
+            <text x="12" y="20" fill="rgba(255,255,255,0.5)" font-size="8" font-family="Inter,sans-serif" font-weight="600" letter-spacing="1.5">VEHICLE DIAGNOSTICS — TRK-012</text>
+            <!-- Battery gauge -->
+            <rect x="12" y="30" width="86" height="46" rx="5" fill="#162033"/>
+            <text x="20" y="43" fill="rgba(255,255,255,0.45)" font-size="7" font-family="Inter,sans-serif">Battery</text>
+            <rect x="20" y="49" width="62" height="8" rx="3" fill="#1e2d42"/>
+            <rect x="20" y="49" width="54" height="8" rx="3" fill="#10b981"/>
+            <text x="20" y="67" fill="#10b981" font-size="10" font-family="Inter,sans-serif" font-weight="700">87%</text>
+            <text x="52" y="67" fill="rgba(255,255,255,0.35)" font-size="7" font-family="Inter,sans-serif">12.6V</text>
+            <!-- Engine temp -->
+            <rect x="106" y="30" width="86" height="46" rx="5" fill="#162033"/>
+            <text x="114" y="43" fill="rgba(255,255,255,0.45)" font-size="7" font-family="Inter,sans-serif">Engine Temp</text>
+            <text x="114" y="63" fill="#f59e0b" font-size="16" font-family="Inter,sans-serif" font-weight="800">92°</text>
+            <text x="136" y="63" fill="rgba(255,255,255,0.35)" font-size="8" font-family="Inter,sans-serif">C</text>
+            <text x="114" y="72" fill="#f59e0b" font-size="7" font-family="Inter,sans-serif">Warm — Normal</text>
+            <!-- Tyre pressure -->
+            <rect x="200" y="30" width="108" height="46" rx="5" fill="#162033"/>
+            <text x="208" y="43" fill="rgba(255,255,255,0.45)" font-size="7" font-family="Inter,sans-serif">Tyre Pressure (PSI)</text>
+            <rect x="208" y="49" width="18" height="18" rx="3" fill="#1e2d42" stroke="rgba(16,185,129,0.4)" stroke-width="1"/>
+            <text x="212" y="61" fill="#10b981" font-size="8" font-family="Inter,sans-serif" font-weight="700">32</text>
+            <rect x="230" y="49" width="18" height="18" rx="3" fill="#1e2d42" stroke="rgba(16,185,129,0.4)" stroke-width="1"/>
+            <text x="234" y="61" fill="#10b981" font-size="8" font-family="Inter,sans-serif" font-weight="700">33</text>
+            <rect x="252" y="49" width="18" height="18" rx="3" fill="#1e2d42" stroke="rgba(245,158,11,0.4)" stroke-width="1"/>
+            <text x="256" y="61" fill="#f59e0b" font-size="8" font-family="Inter,sans-serif" font-weight="700">28</text>
+            <rect x="274" y="49" width="18" height="18" rx="3" fill="#1e2d42" stroke="rgba(16,185,129,0.4)" stroke-width="1"/>
+            <text x="278" y="61" fill="#10b981" font-size="8" font-family="Inter,sans-serif" font-weight="700">32</text>
+            <!-- DTC fault rows -->
+            <rect x="12" y="84" width="296" height="16" rx="3" fill="#162033"/>
+            <circle cx="22" cy="92" r="4" fill="rgba(239,68,68,0.2)" stroke="#ef4444" stroke-width="1"/>
+            <text x="28" y="95.5" fill="#ef4444" font-size="7.5" font-family="Inter,sans-serif" font-weight="600">P0301</text>
+            <text x="62" y="95.5" fill="rgba(255,255,255,0.55)" font-size="7.5" font-family="Inter,sans-serif">Cylinder 1 Misfire Detected</text>
+            <rect x="232" y="87" width="70" height="10" rx="3" fill="rgba(239,68,68,0.15)"/>
+            <text x="250" y="94.5" fill="#ef4444" font-size="7" font-family="Inter,sans-serif" font-weight="600">ACTION REQ</text>
+            <rect x="12" y="104" width="296" height="16" rx="3" fill="#1a2840"/>
+            <circle cx="22" cy="112" r="4" fill="rgba(245,158,11,0.2)" stroke="#f59e0b" stroke-width="1"/>
+            <text x="28" y="115.5" fill="#f59e0b" font-size="7.5" font-family="Inter,sans-serif" font-weight="600">P0420</text>
+            <text x="62" y="115.5" fill="rgba(255,255,255,0.55)" font-size="7.5" font-family="Inter,sans-serif">Catalyst System Efficiency Below Threshold</text>
+            <rect x="246" y="107" width="56" height="10" rx="3" fill="rgba(245,158,11,0.12)"/>
+            <text x="258" y="114.5" fill="#f59e0b" font-size="7" font-family="Inter,sans-serif" font-weight="600">MONITOR</text>
+          </svg>
+        </div>
+      </div>
+      <div class="feature-pair-card">
+        <div class="feature-pair-icon" style="color:#c4912a"><i class="ti ti-alert-triangle"></i></div>
+        <div class="feature-number-sm">06</div>
+        <h3>Unauthorised Usage Detection</h3>
+        <p>Protect your assets from misuse and theft. Detect after-hours ignition events, unexpected movements or trips without a paired driver ID. FleetOS Pro can trigger immobiliser commands and send instant alerts to fleet managers and security teams.</p>
+        <ul class="feature-bullets-sm">
+          <li><i class="ti ti-check"></i> After-hours movement alerts with escalation</li>
+          <li><i class="ti ti-check"></i> Driver ID pairing via RFID / NFC / PIN</li>
+          <li><i class="ti ti-check"></i> Remote immobiliser command (where fitted)</li>
+          <li><i class="ti ti-check"></i> Tamper detection and device removal alerts</li>
+        </ul>
+        <div class="pair-mockup">
+          <svg viewBox="0 0 320 130" width="100%" style="display:block;border-radius:8px;">
+            <rect width="320" height="130" fill="#0d1b2a" rx="6"/>
+            <text x="12" y="20" fill="rgba(255,255,255,0.5)" font-size="8" font-family="Inter,sans-serif" font-weight="600" letter-spacing="1.5">SECURITY ALERT LOG</text>
+            <!-- Alert row 1 - critical -->
+            <rect x="12" y="26" width="296" height="26" rx="4" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.25)" stroke-width="1"/>
+            <circle cx="26" cy="39" r="5" fill="#ef4444"/>
+            <text x="21" y="42" fill="white" font-size="7" font-family="Inter,sans-serif" font-weight="800">!</text>
+            <text x="36" y="36" fill="#ef4444" font-size="8" font-family="Inter,sans-serif" font-weight="700">After-Hours Ignition — VAN-07</text>
+            <text x="36" y="46" fill="rgba(255,255,255,0.4)" font-size="7" font-family="Inter,sans-serif">Movement detected 02:14 AM · No driver ID paired · Lat 51.5074, Lng -0.1278</text>
+            <rect x="260" y="30" width="42" height="12" rx="3" fill="rgba(239,68,68,0.2)"/>
+            <text x="268" y="39" fill="#ef4444" font-size="7" font-family="Inter,sans-serif" font-weight="700">CRITICAL</text>
+            <!-- Alert row 2 -->
+            <rect x="12" y="58" width="296" height="26" rx="4" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.2)" stroke-width="1"/>
+            <circle cx="26" cy="71" r="5" fill="#f59e0b"/>
+            <text x="22" y="74" fill="white" font-size="7" font-family="Inter,sans-serif" font-weight="800">⚠</text>
+            <text x="36" y="68" fill="#f59e0b" font-size="8" font-family="Inter,sans-serif" font-weight="700">Device Tamper Detected — TRK-03</text>
+            <text x="36" y="78" fill="rgba(255,255,255,0.4)" font-size="7" font-family="Inter,sans-serif">GPS unit disconnected briefly at 11:47 PM · Signal restored · Alert escalated</text>
+            <rect x="264" y="62" width="38" height="12" rx="3" fill="rgba(245,158,11,0.15)"/>
+            <text x="270" y="71" fill="#f59e0b" font-size="7" font-family="Inter,sans-serif" font-weight="700">WARNING</text>
+            <!-- Immobiliser panel -->
+            <rect x="12" y="92" width="138" height="30" rx="4" fill="#162033" stroke="rgba(196,145,42,0.2)" stroke-width="1"/>
+            <text x="22" y="105" fill="rgba(255,255,255,0.55)" font-size="7.5" font-family="Inter,sans-serif">VAN-07 Remote Control</text>
+            <rect x="20" y="110" width="54" height="8" rx="3" fill="#ef4444"/>
+            <text x="30" y="116.5" fill="white" font-size="7" font-family="Inter,sans-serif" font-weight="700">IMMOBILISE</text>
+            <rect x="80" y="110" width="62" height="8" rx="3" fill="#162033" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <text x="88" y="116.5" fill="rgba(255,255,255,0.5)" font-size="7" font-family="Inter,sans-serif">View on Map</text>
+            <!-- Stats -->
+            <rect x="158" y="92" width="75" height="30" rx="4" fill="#162033"/>
+            <text x="168" y="105" fill="rgba(255,255,255,0.4)" font-size="7" font-family="Inter,sans-serif">This Month</text>
+            <text x="168" y="117" fill="#ef4444" font-size="14" font-family="Inter,sans-serif" font-weight="800">3</text>
+            <text x="183" y="117" fill="rgba(255,255,255,0.35)" font-size="7" font-family="Inter,sans-serif">incidents</text>
+            <rect x="241" y="92" width="67" height="30" rx="4" fill="#162033"/>
+            <text x="251" y="105" fill="rgba(255,255,255,0.4)" font-size="7" font-family="Inter,sans-serif">Escalated</text>
+            <text x="251" y="117" fill="#f59e0b" font-size="14" font-family="Inter,sans-serif" font-weight="800">1</text>
+            <text x="262" y="117" fill="rgba(255,255,255,0.35)" font-size="7" font-family="Inter,sans-serif">alert</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ GROUP 2: OPERATIONS ══════════════════════════ -->
+<section class="section feature-section section-cream" id="operations">
+  <div class="container">
+    <div class="feature-section-header" data-reveal>
+      <div class="feature-section-icon" style="background:rgba(59,130,246,0.12);color:#3b82f6">
+        <i class="ti ti-settings-2"></i>
+      </div>
+      <div>
+        <h2 class="feature-section-title">Operations &amp; Cost Control</h2>
+        <p class="feature-section-sub">Streamline dispatch, reduce fuel spend and keep vehicles maintained with AI-powered operational tools.</p>
+      </div>
+    </div>
+
+    <div class="features-pair" data-reveal>
+      <div class="feature-pair-card">
+        <div class="feature-pair-icon" style="color:#3b82f6"><i class="ti ti-brain"></i></div>
+        <div class="feature-number-sm">07</div>
+        <h3>AI Route Optimisation</h3>
+        <p>The FleetOS routing engine uses machine learning to compute optimal multi-stop routes considering live traffic, driver hours-of-service regulations, vehicle load capacity, customer time windows and priority stops. Typical fleets see 18–24% fewer kilometres driven within the first month.</p>
+        <ul class="feature-bullets-sm">
+          <li><i class="ti ti-check"></i> Dynamic re-routing when traffic conditions change</li>
+          <li><i class="ti ti-check"></i> Compliance with HOS and tachograph rules</li>
+          <li><i class="ti ti-check"></i> Drag-and-drop dispatch with route preview</li>
+          <li><i class="ti ti-check"></i> Integration with your existing TMS / ERP</li>
+        </ul>
+        <div class="pair-mockup">
+          <svg viewBox="0 0 320 130" width="100%" style="display:block;border-radius:8px;">
+            <rect width="320" height="130" fill="#f8fafc" rx="6"/>
+            <rect width="320" height="130" fill="url(#grid07)" rx="6"/>
+            <defs>
+              <pattern id="grid07" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+              </pattern>
+            </defs>
+            <!-- Roads -->
+            <line x1="0" y1="65" x2="320" y2="65" stroke="#cbd5e1" stroke-width="4"/>
+            <line x1="160" y1="0" x2="160" y2="130" stroke="#cbd5e1" stroke-width="4"/>
+            <line x1="80" y1="0" x2="80" y2="130" stroke="#e2e8f0" stroke-width="2"/>
+            <line x1="240" y1="0" x2="240" y2="130" stroke="#e2e8f0" stroke-width="2"/>
+            <line x1="0" y1="32" x2="320" y2="32" stroke="#e2e8f0" stroke-width="2"/>
+            <line x1="0" y1="98" x2="320" y2="98" stroke="#e2e8f0" stroke-width="2"/>
+            <!-- Optimised route -->
+            <polyline points="40,110 40,65 120,65 120,32 200,32 200,65 280,65 280,32" stroke="#3b82f6" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-dasharray="none"/>
+            <!-- Stop pins -->
+            <circle cx="40" cy="110" r="7" fill="#10b981"/><text x="37" y="114" fill="white" font-size="7" font-family="Inter,sans-serif" font-weight="800">S</text>
+            <circle cx="120" cy="65" r="6" fill="#3b82f6"/><text x="117" y="69" fill="white" font-size="7" font-family="Inter,sans-serif" font-weight="800">1</text>
+            <circle cx="200" cy="32" r="6" fill="#3b82f6"/><text x="197" y="36" fill="white" font-size="7" font-family="Inter,sans-serif" font-weight="800">2</text>
+            <circle cx="200" cy="65" r="6" fill="#3b82f6"/><text x="197" y="69" fill="white" font-size="7" font-family="Inter,sans-serif" font-weight="800">3</text>
+            <circle cx="280" cy="32" r="7" fill="#ef4444"/><text x="277" y="36" fill="white" font-size="7" font-family="Inter,sans-serif" font-weight="800">E</text>
+            <!-- AI badge -->
+            <rect x="220" y="85" width="88" height="34" rx="5" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="228" y="98" fill="#3b82f6" font-size="7.5" font-family="Inter,sans-serif" font-weight="700">AI Optimised Route</text>
+            <text x="228" y="109" fill="#64748b" font-size="7" font-family="Inter,sans-serif">142 km  ·  -21% vs manual</text>
+            <!-- Saving tag -->
+            <rect x="10" y="10" width="90" height="16" rx="4" fill="#10b981"/>
+            <text x="18" y="21" fill="white" font-size="7.5" font-family="Inter,sans-serif" font-weight="700">Saves 37 km today</text>
+          </svg>
+        </div>
+      </div>
+      <div class="feature-pair-card">
+        <div class="feature-pair-icon" style="color:#3b82f6"><i class="ti ti-tool"></i></div>
+        <div class="feature-number-sm">08</div>
+        <h3>Maintenance Scheduling</h3>
+        <p>Never miss a service again. FleetOS Pro tracks odometer, engine hours and calendar dates to automatically schedule maintenance. The workshop calendar shows upcoming jobs, and automated reminders go to fleet managers and drivers well in advance.</p>
+        <ul class="feature-bullets-sm">
+          <li><i class="ti ti-check"></i> Triggered by km, hours or fixed date</li>
+          <li><i class="ti ti-check"></i> Full workshop history with part and labour costs</li>
+          <li><i class="ti ti-check"></i> Downtime KPI tracking</li>
+          <li><i class="ti ti-check"></i> Predictive failure alerts based on engine data</li>
+        </ul>
+        <div class="pair-mockup">
+          <svg viewBox="0 0 320 130" width="100%" style="display:block;border-radius:8px;">
+            <rect width="320" height="130" fill="#0d1b2a" rx="6"/>
+            <text x="12" y="18" fill="rgba(255,255,255,0.5)" font-size="8" font-family="Inter,sans-serif" font-weight="600" letter-spacing="1.5">MAINTENANCE SCHEDULE</text>
+            <!-- Header row -->
+            <rect x="12" y="24" width="296" height="12" rx="2" fill="#162033"/>
+            <text x="16" y="33" fill="rgba(255,255,255,0.3)" font-size="7" font-family="Inter,sans-serif" font-weight="600">VEHICLE</text>
+            <text x="100" y="33" fill="rgba(255,255,255,0.3)" font-size="7" font-family="Inter,sans-serif" font-weight="600">SERVICE TYPE</text>
+            <text x="200" y="33" fill="rgba(255,255,255,0.3)" font-size="7" font-family="Inter,sans-serif" font-weight="600">DUE DATE</text>
+            <text x="262" y="33" fill="rgba(255,255,255,0.3)" font-size="7" font-family="Inter,sans-serif" font-weight="600">STATUS</text>
+            <!-- Row 1 - overdue -->
+            <rect x="12" y="38" width="296" height="18" rx="2" fill="rgba(239,68,68,0.07)"/>
+            <text x="16" y="50" fill="rgba(255,255,255,0.75)" font-size="8" font-family="Inter,sans-serif" font-weight="600">TRK-003</text>
+            <text x="100" y="50" fill="rgba(255,255,255,0.55)" font-size="8" font-family="Inter,sans-serif">Oil &amp; Filter Change</text>
+            <text x="200" y="50" fill="#ef4444" font-size="8" font-family="Inter,sans-serif">3 days ago</text>
+            <rect x="262" y="41" width="40" height="11" rx="3" fill="rgba(239,68,68,0.2)"/>
+            <text x="269" y="49.5" fill="#ef4444" font-size="6.5" font-family="Inter,sans-serif" font-weight="700">OVERDUE</text>
+            <!-- Row 2 - due soon -->
+            <rect x="12" y="59" width="296" height="18" rx="2" fill="rgba(245,158,11,0.05)"/>
+            <text x="16" y="71" fill="rgba(255,255,255,0.75)" font-size="8" font-family="Inter,sans-serif" font-weight="600">VAN-07</text>
+            <text x="100" y="71" fill="rgba(255,255,255,0.55)" font-size="8" font-family="Inter,sans-serif">Brake Inspection</text>
+            <text x="200" y="71" fill="#f59e0b" font-size="8" font-family="Inter,sans-serif">In 2 days</text>
+            <rect x="262" y="62" width="40" height="11" rx="3" fill="rgba(245,158,11,0.15)"/>
+            <text x="266" y="70.5" fill="#f59e0b" font-size="6.5" font-family="Inter,sans-serif" font-weight="700">DUE SOON</text>
+            <!-- Row 3 -->
+            <rect x="12" y="80" width="296" height="18" rx="2" fill="#1a2840"/>
+            <text x="16" y="92" fill="rgba(255,255,255,0.75)" font-size="8" font-family="Inter,sans-serif" font-weight="600">BUS-02</text>
+            <text x="100" y="92" fill="rgba(255,255,255,0.55)" font-size="8" font-family="Inter,sans-serif">Full Service</text>
+            <text x="200" y="92" fill="rgba(255,255,255,0.45)" font-size="8" font-family="Inter,sans-serif">Jun 20, 2026</text>
+            <rect x="262" y="83" width="40" height="11" rx="3" fill="rgba(16,185,129,0.15)"/>
+            <text x="268" y="91.5" fill="#10b981" font-size="6.5" font-family="Inter,sans-serif" font-weight="700">SCHEDULED</text>
+            <!-- Row 4 -->
+            <rect x="12" y="101" width="296" height="18" rx="2" fill="#1a2840"/>
+            <text x="16" y="113" fill="rgba(255,255,255,0.75)" font-size="8" font-family="Inter,sans-serif" font-weight="600">TRK-011</text>
+            <text x="100" y="113" fill="rgba(255,255,255,0.55)" font-size="8" font-family="Inter,sans-serif">Tyre Rotation</text>
+            <text x="200" y="113" fill="rgba(255,255,255,0.45)" font-size="8" font-family="Inter,sans-serif">Jul 5, 2026</text>
+            <rect x="262" y="104" width="40" height="11" rx="3" fill="rgba(16,185,129,0.15)"/>
+            <text x="268" y="112.5" fill="#10b981" font-size="6.5" font-family="Inter,sans-serif" font-weight="700">SCHEDULED</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="features-pair" data-reveal>
+      <div class="feature-pair-card">
+        <div class="feature-pair-icon" style="color:#3b82f6"><i class="ti ti-users"></i></div>
+        <div class="feature-number-sm">09</div>
+        <h3>Customer Management</h3>
+        <p>Manage customer accounts, delivery addresses and SLA agreements in one place. Share live ETA links with end customers, capture e-signatures on delivery, collect NPS feedback and escalate exceptions automatically.</p>
+        <ul class="feature-bullets-sm">
+          <li><i class="ti ti-check"></i> Customer portal with live tracking links</li>
+          <li><i class="ti ti-check"></i> E-signature and photo proof of delivery</li>
+          <li><i class="ti ti-check"></i> NPS and rating capture post-delivery</li>
+          <li><i class="ti ti-check"></i> SLA breach alerting and reporting</li>
+        </ul>
+        <div class="pair-mockup">
+          <svg viewBox="0 0 320 120" width="100%" style="display:block;border-radius:8px;">
+            <rect width="320" height="120" fill="#f8fafc" rx="6"/>
+            <rect x="0" y="0" width="320" height="30" fill="#0d1b2a" rx="6"/>
+            <rect x="0" y="22" width="320" height="8" fill="#0d1b2a"/>
+            <text x="14" y="19" fill="rgba(255,255,255,0.7)" font-size="8.5" font-family="Inter,sans-serif" font-weight="700">FleetOS Live Tracking</text>
+            <circle cx="298" cy="15" r="5" fill="rgba(16,185,129,0.3)" stroke="#10b981" stroke-width="1"/>
+            <circle cx="298" cy="15" r="2.5" fill="#10b981"/>
+            <!-- ETA card -->
+            <rect x="10" y="36" width="142" height="72" rx="6" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="20" y="52" fill="#64748b" font-size="7" font-family="Inter,sans-serif" font-weight="600">ORDER #ORD-4821</text>
+            <text x="20" y="64" fill="#1e293b" font-size="10" font-family="Inter,sans-serif" font-weight="700">ETA: 14 min</text>
+            <rect x="20" y="69" width="112" height="5" rx="2" fill="#e2e8f0"/>
+            <rect x="20" y="69" width="72" height="5" rx="2" fill="#3b82f6"/>
+            <text x="20" y="84" fill="#64748b" font-size="7" font-family="Inter,sans-serif">Driver: James O. · TRK-007</text>
+            <text x="20" y="96" fill="#64748b" font-size="7" font-family="Inter,sans-serif">2.4 km away · On time</text>
+            <!-- Delivery confirmation -->
+            <rect x="162" y="36" width="148" height="72" rx="6" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="172" y="52" fill="#64748b" font-size="7" font-family="Inter,sans-serif" font-weight="600">PROOF OF DELIVERY</text>
+            <rect x="172" y="57" width="50" height="36" rx="3" fill="#f1f5f9"/>
+            <text x="178" y="78" fill="#94a3b8" font-size="7" font-family="Inter,sans-serif">📷 Photo</text>
+            <rect x="230" y="57" width="70" height="14" rx="3" fill="#f1f5f9"/>
+            <text x="236" y="66.5" fill="#64748b" font-size="6.5" font-family="Inter,sans-serif">e-Signature ✓</text>
+            <rect x="230" y="75" width="70" height="14" rx="3" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+            <text x="245" y="84.5" fill="#10b981" font-size="6.5" font-family="Inter,sans-serif" font-weight="700">Delivered ✓</text>
+            <!-- NPS -->
+            <text x="172" y="104" fill="#64748b" font-size="7" font-family="Inter,sans-serif">NPS: </text>
+            <text x="193" y="104" fill="#f59e0b" font-size="9" font-family="Inter,sans-serif">★★★★★</text>
+            <text x="243" y="104" fill="#10b981" font-size="7" font-family="Inter,sans-serif" font-weight="600">5.0</text>
+          </svg>
+        </div>
+      </div>
+      <div class="feature-pair-card">
+        <div class="feature-pair-icon" style="color:#3b82f6"><i class="ti ti-gas-station"></i></div>
+        <div class="feature-number-sm">10</div>
+        <h3>Fuel &amp; Cost Tracking</h3>
+        <p>Connect fuel cards from 40+ providers or enter fuel transactions manually. FleetOS Pro cross-references GPS idling data with fill-up records to detect fuel card fraud, calculate cost per kilometre by vehicle and driver, and identify inefficient routes.</p>
+        <ul class="feature-bullets-sm">
+          <li><i class="ti ti-check"></i> Idle fuel cost calculator ($/hr by engine)</li>
+          <li><i class="ti ti-check"></i> Fuel card fraud detection via GPS cross-check</li>
+          <li><i class="ti ti-check"></i> Cost/km breakdown by vehicle, driver, route</li>
+          <li><i class="ti ti-check"></i> Carbon footprint reporting</li>
+        </ul>
+        <div class="pair-mockup">
+          <svg viewBox="0 0 320 120" width="100%" style="display:block;border-radius:8px;">
+            <rect width="320" height="120" fill="#0d1b2a" rx="6"/>
+            <text x="12" y="18" fill="rgba(255,255,255,0.5)" font-size="8" font-family="Inter,sans-serif" font-weight="600" letter-spacing="1.5">FUEL COST ANALYSIS — JUNE 2026</text>
+            <!-- Bar chart -->
+            <line x1="36" y1="22" x2="36" y2="96" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="36" y1="96" x2="300" y2="96" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <!-- Bars for 7 vehicles -->
+            <rect x="44" y="46" width="22" height="50" rx="2" fill="#3b82f6" opacity="0.85"/>
+            <text x="48" y="104" fill="rgba(255,255,255,0.35)" font-size="6" font-family="Inter,sans-serif">TRK-01</text>
+            <rect x="80" y="52" width="22" height="44" rx="2" fill="#3b82f6" opacity="0.85"/>
+            <text x="84" y="104" fill="rgba(255,255,255,0.35)" font-size="6" font-family="Inter,sans-serif">TRK-03</text>
+            <rect x="116" y="38" width="22" height="58" rx="2" fill="#ef4444" opacity="0.9"/>
+            <text x="120" y="104" fill="rgba(255,255,255,0.35)" font-size="6" font-family="Inter,sans-serif">VAN-07</text>
+            <text x="114" y="34" fill="#ef4444" font-size="6" font-family="Inter,sans-serif" font-weight="700">FRAUD?</text>
+            <rect x="152" y="58" width="22" height="38" rx="2" fill="#3b82f6" opacity="0.85"/>
+            <text x="156" y="104" fill="rgba(255,255,255,0.35)" font-size="6" font-family="Inter,sans-serif">VAN-02</text>
+            <rect x="188" y="50" width="22" height="46" rx="2" fill="#3b82f6" opacity="0.85"/>
+            <text x="192" y="104" fill="rgba(255,255,255,0.35)" font-size="6" font-family="Inter,sans-serif">BUS-01</text>
+            <rect x="224" y="64" width="22" height="32" rx="2" fill="#10b981" opacity="0.9"/>
+            <text x="228" y="104" fill="rgba(255,255,255,0.35)" font-size="6" font-family="Inter,sans-serif">TRK-11</text>
+            <rect x="260" y="70" width="22" height="26" rx="2" fill="#10b981" opacity="0.9"/>
+            <text x="264" y="104" fill="rgba(255,255,255,0.35)" font-size="6" font-family="Inter,sans-serif">TRK-12</text>
+            <!-- Cost/km KPIs -->
+            <rect x="36" y="108" width="80" height="10" rx="2" fill="#162033"/>
+            <text x="40" y="116" fill="#10b981" font-size="7" font-family="Inter,sans-serif" font-weight="700">Fleet avg: $0.18/km</text>
+            <rect x="124" y="108" width="80" height="10" rx="2" fill="#162033"/>
+            <text x="128" y="116" fill="#ef4444" font-size="7" font-family="Inter,sans-serif" font-weight="700">VAN-07: $0.31/km ⚠</text>
+            <rect x="212" y="108" width="96" height="10" rx="2" fill="#162033"/>
+            <text x="216" y="116" fill="rgba(255,255,255,0.45)" font-size="7" font-family="Inter,sans-serif">Carbon: 4.2t CO₂ this mo.</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="features-pair" data-reveal>
+      <div class="feature-pair-card">
+        <div class="feature-pair-icon" style="color:#3b82f6"><i class="ti ti-bell-ringing"></i></div>
+        <div class="feature-number-sm">11</div>
+        <h3>Smart Alert System</h3>
+        <p>Configure alerts for over 40 trigger conditions — from simple geofence entry to complex multi-condition logic. Deliver alerts via SMS, email, push notification or webhook to integrate with your existing NOC tools.</p>
+        <ul class="feature-bullets-sm">
+          <li><i class="ti ti-check"></i> 40+ configurable alert triggers</li>
+          <li><i class="ti ti-check"></i> Multi-channel delivery: SMS, email, push, webhook</li>
+          <li><i class="ti ti-check"></i> Alert escalation chains and suppression windows</li>
+          <li><i class="ti ti-check"></i> Impact detection (accident alert with GPS co-ordinates)</li>
+        </ul>
+        <div class="pair-mockup">
+          <svg viewBox="0 0 320 120" width="100%" style="display:block;border-radius:8px;">
+            <rect width="320" height="120" fill="#0d1b2a" rx="6"/>
+            <text x="12" y="18" fill="rgba(255,255,255,0.5)" font-size="8" font-family="Inter,sans-serif" font-weight="600" letter-spacing="1.5">ALERT RULE BUILDER</text>
+            <!-- Rule card -->
+            <rect x="12" y="24" width="296" height="26" rx="4" fill="#162033" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+            <circle cx="24" cy="37" r="5" fill="rgba(239,68,68,0.2)" stroke="#ef4444" stroke-width="1"/>
+            <text x="21" y="40" fill="#ef4444" font-size="7" font-family="Inter,sans-serif" font-weight="800">!</text>
+            <text x="34" y="33" fill="rgba(255,255,255,0.75)" font-size="7.5" font-family="Inter,sans-serif" font-weight="600">Speed Violation</text>
+            <text x="34" y="44" fill="rgba(255,255,255,0.4)" font-size="7" font-family="Inter,sans-serif">IF speed > 120 km/h  →  SMS + Push + Webhook  ·  Escalate after 5 min</text>
+            <rect x="270" y="29" width="32" height="10" rx="3" fill="rgba(16,185,129,0.2)"/>
+            <text x="274" y="36.5" fill="#10b981" font-size="6.5" font-family="Inter,sans-serif" font-weight="700">ACTIVE</text>
+            <!-- Rule 2 -->
+            <rect x="12" y="54" width="296" height="26" rx="4" fill="#162033" stroke="rgba(245,158,11,0.2)" stroke-width="1"/>
+            <circle cx="24" cy="67" r="5" fill="rgba(245,158,11,0.2)" stroke="#f59e0b" stroke-width="1"/>
+            <text x="21" y="70" fill="#f59e0b" font-size="7" font-family="Inter,sans-serif">⚠</text>
+            <text x="34" y="63" fill="rgba(255,255,255,0.75)" font-size="7.5" font-family="Inter,sans-serif" font-weight="600">Geofence Exit — After Hours</text>
+            <text x="34" y="74" fill="rgba(255,255,255,0.4)" font-size="7" font-family="Inter,sans-serif">IF exit depot AND time > 20:00  →  Email + SMS to Fleet Mgr</text>
+            <rect x="270" y="59" width="32" height="10" rx="3" fill="rgba(16,185,129,0.2)"/>
+            <text x="274" y="66.5" fill="#10b981" font-size="6.5" font-family="Inter,sans-serif" font-weight="700">ACTIVE</text>
+            <!-- Stats row -->
+            <rect x="12" y="86" width="88" height="24" rx="4" fill="#162033"/>
+            <text x="20" y="97" fill="rgba(255,255,255,0.35)" font-size="6.5" font-family="Inter,sans-serif">Alerts Today</text>
+            <text x="20" y="107" fill="#ef4444" font-size="13" font-family="Inter,sans-serif" font-weight="800">14</text>
+            <rect x="108" y="86" width="98" height="24" rx="4" fill="#162033"/>
+            <text x="116" y="97" fill="rgba(255,255,255,0.35)" font-size="6.5" font-family="Inter,sans-serif">Channels Active</text>
+            <text x="116" y="107" fill="rgba(255,255,255,0.7)" font-size="8.5" font-family="Inter,sans-serif" font-weight="600">SMS · Email · Push</text>
+            <rect x="214" y="86" width="94" height="24" rx="4" fill="#162033"/>
+            <text x="222" y="97" fill="rgba(255,255,255,0.35)" font-size="6.5" font-family="Inter,sans-serif">Rules Configured</text>
+            <text x="222" y="107" fill="#3b82f6" font-size="13" font-family="Inter,sans-serif" font-weight="800">24</text>
+          </svg>
+        </div>
+      </div>
+      <div class="feature-pair-card">
+        <div class="feature-pair-icon" style="color:#3b82f6"><i class="ti ti-cpu"></i></div>
+        <div class="feature-number-sm">12</div>
+        <h3>IoT Device Management</h3>
+        <p>Provision GPS trackers, temperature sensors, dashcams, fuel probes and BLE asset tags from a single console. Monitor device health, signal strength, battery level and firmware version across your entire hardware estate.</p>
+        <ul class="feature-bullets-sm">
+          <li><i class="ti ti-check"></i> OBD-II, hardwired and asset trackers</li>
+          <li><i class="ti ti-check"></i> Temperature and cold-chain monitoring</li>
+          <li><i class="ti ti-check"></i> Remote firmware OTA updates</li>
+          <li><i class="ti ti-check"></i> SIM management with data usage dashboard</li>
+        </ul>
+        <div class="pair-mockup">
+          <svg viewBox="0 0 320 120" width="100%" style="display:block;border-radius:8px;">
+            <rect width="320" height="120" fill="#0d1b2a" rx="6"/>
+            <text x="12" y="18" fill="rgba(255,255,255,0.5)" font-size="8" font-family="Inter,sans-serif" font-weight="600" letter-spacing="1.5">IOT DEVICE CONSOLE — 312 DEVICES</text>
+            <!-- Device grid header -->
+            <rect x="12" y="24" width="296" height="11" rx="2" fill="#162033"/>
+            <text x="16" y="32" fill="rgba(255,255,255,0.3)" font-size="6.5" font-family="Inter,sans-serif" font-weight="600">DEVICE ID</text>
+            <text x="85" y="32" fill="rgba(255,255,255,0.3)" font-size="6.5" font-family="Inter,sans-serif" font-weight="600">TYPE</text>
+            <text x="140" y="32" fill="rgba(255,255,255,0.3)" font-size="6.5" font-family="Inter,sans-serif" font-weight="600">SIGNAL</text>
+            <text x="190" y="32" fill="rgba(255,255,255,0.3)" font-size="6.5" font-family="Inter,sans-serif" font-weight="600">BATTERY</text>
+            <text x="245" y="32" fill="rgba(255,255,255,0.3)" font-size="6.5" font-family="Inter,sans-serif" font-weight="600">FIRMWARE</text>
+            <!-- Device rows -->
+            <rect x="12" y="37" width="296" height="14" rx="2" fill="#1a2840"/>
+            <text x="16" y="47" fill="rgba(255,255,255,0.7)" font-size="7" font-family="Inter,sans-serif" font-weight="600">GPS-00142</text>
+            <text x="85" y="47" fill="rgba(255,255,255,0.45)" font-size="7" font-family="Inter,sans-serif">OBD-II</text>
+            <text x="140" y="47" fill="#10b981" font-size="7" font-family="Inter,sans-serif">████ 4G</text>
+            <text x="190" y="47" fill="#10b981" font-size="7" font-family="Inter,sans-serif">98%</text>
+            <rect x="244" y="40" width="44" height="9" rx="2" fill="rgba(16,185,129,0.15)"/>
+            <text x="248" y="47" fill="#10b981" font-size="6.5" font-family="Inter,sans-serif">v3.4.1 ✓</text>
+            <rect x="12" y="53" width="296" height="14" rx="2" fill="#162033"/>
+            <text x="16" y="63" fill="rgba(255,255,255,0.7)" font-size="7" font-family="Inter,sans-serif" font-weight="600">TMP-0038</text>
+            <text x="85" y="63" fill="rgba(255,255,255,0.45)" font-size="7" font-family="Inter,sans-serif">Temp Sensor</text>
+            <text x="140" y="63" fill="#10b981" font-size="7" font-family="Inter,sans-serif">███ 4G</text>
+            <text x="190" y="63" fill="#f59e0b" font-size="7" font-family="Inter,sans-serif">34%</text>
+            <rect x="244" y="56" width="44" height="9" rx="2" fill="rgba(16,185,129,0.15)"/>
+            <text x="248" y="63" fill="#10b981" font-size="6.5" font-family="Inter,sans-serif">v3.4.1 ✓</text>
+            <rect x="12" y="69" width="296" height="14" rx="2" fill="#1a2840"/>
+            <text x="16" y="79" fill="rgba(255,255,255,0.7)" font-size="7" font-family="Inter,sans-serif" font-weight="600">CAM-0021</text>
+            <text x="85" y="79" fill="rgba(255,255,255,0.45)" font-size="7" font-family="Inter,sans-serif">Dashcam</text>
+            <text x="140" y="79" fill="#f59e0b" font-size="7" font-family="Inter,sans-serif">██ 3G</text>
+            <text x="190" y="79" fill="#10b981" font-size="7" font-family="Inter,sans-serif">77%</text>
+            <rect x="244" y="72" width="55" height="9" rx="2" fill="rgba(245,158,11,0.12)"/>
+            <text x="246" y="79" fill="#f59e0b" font-size="6.5" font-family="Inter,sans-serif">v3.3.2 → OTA</text>
+            <!-- SIM usage bar -->
+            <rect x="12" y="90" width="296" height="22" rx="4" fill="#162033"/>
+            <text x="20" y="100" fill="rgba(255,255,255,0.4)" font-size="6.5" font-family="Inter,sans-serif">SIM Data Usage (June)</text>
+            <rect x="20" y="104" width="200" height="5" rx="2" fill="#1e2d42"/>
+            <rect x="20" y="104" width="128" height="5" rx="2" fill="#3b82f6"/>
+            <text x="228" y="109" fill="rgba(255,255,255,0.5)" font-size="6.5" font-family="Inter,sans-serif">6.4 / 10 GB</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ GROUP 3: ANALYTICS ══════════════════════════ -->
+<section class="section feature-section" id="analytics">
+  <div class="container">
+    <div class="feature-section-header" data-reveal>
+      <div class="feature-section-icon" style="background:rgba(139,92,246,0.12);color:#8b5cf6">
+        <i class="ti ti-chart-bar"></i>
+      </div>
+      <div>
+        <h2 class="feature-section-title">Analytics &amp; Reporting</h2>
+        <p class="feature-section-sub">Turn raw telematics data into actionable intelligence with a nine-report suite and executive dashboards.</p>
+      </div>
+    </div>
+
+    <div class="analytics-grid" data-reveal>
+      <div class="analytics-card">
+        <div class="feature-number-sm">13</div>
+        <h4>Advanced Analytics</h4>
+        <p>Custom date range queries, multi-dimensional pivots and segment comparisons. Build and save views tailored to your KPIs with drag-and-drop widget builder.</p>
+        <svg viewBox="0 0 240 80" width="100%" style="display:block;margin-top:12px;border-radius:6px;">
+          <rect width="240" height="80" fill="#f8faff" rx="5"/>
+          <polyline points="10,60 40,48 70,52 100,35 130,40 160,22 190,28 230,15" stroke="#8b5cf6" stroke-width="2" fill="none" stroke-linejoin="round"/>
+          <polyline points="10,60 40,48 70,52 100,35 130,40 160,22 190,28 230,15 230,80 10,80" fill="rgba(139,92,246,0.08)" stroke="none"/>
+          <circle cx="160" cy="22" r="4" fill="#8b5cf6"/>
+          <text x="142" y="18" fill="#8b5cf6" font-size="6.5" font-family="Inter,sans-serif" font-weight="700">Peak</text>
+          <text x="10" y="76" fill="#94a3b8" font-size="6" font-family="Inter,sans-serif">Jan</text>
+          <text x="110" y="76" fill="#94a3b8" font-size="6" font-family="Inter,sans-serif">Apr</text>
+          <text x="210" y="76" fill="#94a3b8" font-size="6" font-family="Inter,sans-serif">Jun</text>
+        </svg>
+      </div>
+      <div class="analytics-card">
+        <div class="feature-number-sm">14</div>
+        <h4>9-Report Suite</h4>
+        <p>Pre-built reports covering: fleet utilisation, driver behaviour, trip summaries, maintenance history, fuel consumption, geofence activity, idle time, cost tracking and exception events.</p>
+        <svg viewBox="0 0 240 80" width="100%" style="display:block;margin-top:12px;border-radius:6px;">
+          <rect width="240" height="80" fill="#f8faff" rx="5"/>
+          <rect x="8" y="8" width="224" height="11" rx="2" fill="#ede9fe"/>
+          <text x="14" y="17" fill="#7c3aed" font-size="7" font-family="Inter,sans-serif" font-weight="600">Fleet Utilisation Report</text>
+          <text x="186" y="17" fill="#94a3b8" font-size="6.5" font-family="Inter,sans-serif">PDF ↓</text>
+          <rect x="8" y="22" width="224" height="11" rx="2" fill="#f1f5f9"/>
+          <text x="14" y="31" fill="#475569" font-size="7" font-family="Inter,sans-serif">Driver Behaviour Summary</text>
+          <rect x="8" y="36" width="224" height="11" rx="2" fill="#f1f5f9"/>
+          <text x="14" y="45" fill="#475569" font-size="7" font-family="Inter,sans-serif">Fuel Consumption by Vehicle</text>
+          <rect x="8" y="50" width="224" height="11" rx="2" fill="#f1f5f9"/>
+          <text x="14" y="59" fill="#475569" font-size="7" font-family="Inter,sans-serif">Maintenance Cost History</text>
+          <text x="14" y="73" fill="#94a3b8" font-size="6.5" font-family="Inter,sans-serif">+ 5 more reports included</text>
+        </svg>
+      </div>
+      <div class="analytics-card">
+        <div class="feature-number-sm">15</div>
+        <h4>Scheduled Delivery</h4>
+        <p>Schedule any report to be automatically generated and emailed as PDF or CSV on a daily, weekly or monthly cadence. Deliver to multiple stakeholders with different report profiles.</p>
+        <svg viewBox="0 0 240 80" width="100%" style="display:block;margin-top:12px;border-radius:6px;">
+          <rect width="240" height="80" fill="#f8faff" rx="5"/>
+          <rect x="8" y="8" width="105" height="62" rx="4" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+          <text x="16" y="20" fill="#7c3aed" font-size="7" font-family="Inter,sans-serif" font-weight="700">JUNE 2026</text>
+          <text x="16" y="32" fill="#94a3b8" font-size="6" font-family="Inter,sans-serif">M  T  W  T  F</text>
+          <text x="16" y="44" fill="#475569" font-size="6.5" font-family="Inter,sans-serif"> 1   2   3   4   5</text>
+          <circle cx="20" cy="42" r="4" fill="#8b5cf6" opacity="0.2"/>
+          <text x="16" y="56" fill="#475569" font-size="6.5" font-family="Inter,sans-serif"> 8   9  10  11  12</text>
+          <circle cx="34" cy="54" r="4" fill="#8b5cf6"/>
+          <text x="32" y="57" fill="white" font-size="5" font-family="Inter,sans-serif">9</text>
+          <text x="16" y="64" fill="#475569" font-size="6.5" font-family="Inter,sans-serif">15  16  17  18  19</text>
+          <rect x="118" y="8" width="114" height="28" rx="4" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+          <text x="126" y="20" fill="#475569" font-size="6.5" font-family="Inter,sans-serif">Fleet Util. Report</text>
+          <text x="126" y="30" fill="#94a3b8" font-size="6" font-family="Inter,sans-serif">Every Mon · 3 recipients</text>
+          <rect x="118" y="42" width="114" height="28" rx="4" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+          <text x="126" y="54" fill="#475569" font-size="6.5" font-family="Inter,sans-serif">Driver Scorecard</text>
+          <text x="126" y="64" fill="#94a3b8" font-size="6" font-family="Inter,sans-serif">Monthly · 5 recipients</text>
+        </svg>
+      </div>
+      <div class="analytics-card">
+        <div class="feature-number-sm">16</div>
+        <h4>Executive Dashboard</h4>
+        <p>C-suite-ready KPI summary: total fleet cost, utilisation rate, safety score trend, maintenance compliance and top 5 cost-saving opportunities — visible at a glance.</p>
+        <svg viewBox="0 0 240 80" width="100%" style="display:block;margin-top:12px;border-radius:6px;">
+          <rect width="240" height="80" fill="#f8faff" rx="5"/>
+          <rect x="8" y="8" width="50" height="30" rx="4" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+          <text x="14" y="20" fill="#94a3b8" font-size="5.5" font-family="Inter,sans-serif">Fleet Cost</text>
+          <text x="14" y="32" fill="#1e293b" font-size="10" font-family="Inter,sans-serif" font-weight="800">$84k</text>
+          <rect x="65" y="8" width="50" height="30" rx="4" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+          <text x="71" y="20" fill="#94a3b8" font-size="5.5" font-family="Inter,sans-serif">Utilisation</text>
+          <text x="71" y="32" fill="#10b981" font-size="10" font-family="Inter,sans-serif" font-weight="800">87%</text>
+          <rect x="122" y="8" width="50" height="30" rx="4" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+          <text x="128" y="20" fill="#94a3b8" font-size="5.5" font-family="Inter,sans-serif">Safety Score</text>
+          <text x="128" y="32" fill="#8b5cf6" font-size="10" font-family="Inter,sans-serif" font-weight="800">91</text>
+          <rect x="179" y="8" width="53" height="30" rx="4" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+          <text x="185" y="20" fill="#94a3b8" font-size="5.5" font-family="Inter,sans-serif">Maint. Due</text>
+          <text x="185" y="32" fill="#f59e0b" font-size="10" font-family="Inter,sans-serif" font-weight="800">4</text>
+          <!-- Trend sparkline -->
+          <rect x="8" y="44" width="224" height="28" rx="4" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+          <text x="16" y="55" fill="#94a3b8" font-size="6" font-family="Inter,sans-serif">Cost trend (6 months)</text>
+          <polyline points="16,66 50,64 84,68 118,62 152,58 186,55 222,52" stroke="#8b5cf6" stroke-width="1.5" fill="none"/>
+          <text x="210" y="64" fill="#10b981" font-size="6" font-family="Inter,sans-serif">↓ 8%</text>
+        </svg>
+      </div>
+      <div class="analytics-card">
+        <div class="feature-number-sm">17</div>
+        <h4>Global Monitoring</h4>
+        <p>For multi-country or multi-branch operations: aggregate fleet metrics across regions. Switch context with one click and drill into any branch for detail.</p>
+        <svg viewBox="0 0 240 80" width="100%" style="display:block;margin-top:12px;border-radius:6px;">
+          <rect width="240" height="80" fill="#0d1b2a" rx="5"/>
+          <!-- Simplified world outline -->
+          <path d="M10,35 Q30,20 60,25 Q90,15 120,22 Q150,18 180,25 Q210,20 230,30 Q235,45 220,55 Q195,65 170,60 Q140,68 110,62 Q80,70 50,62 Q25,58 10,48 Z" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+          <!-- Region dots -->
+          <circle cx="55" cy="35" r="5" fill="#8b5cf6" opacity="0.9"/><text x="48" y="50" fill="rgba(255,255,255,0.5)" font-size="5.5" font-family="Inter,sans-serif">Europe</text>
+          <circle cx="130" cy="30" r="4" fill="#3b82f6" opacity="0.9"/><text x="122" y="45" fill="rgba(255,255,255,0.5)" font-size="5.5" font-family="Inter,sans-serif">MENA</text>
+          <circle cx="195" cy="38" r="3.5" fill="#10b981" opacity="0.9"/><text x="188" y="53" fill="rgba(255,255,255,0.5)" font-size="5.5" font-family="Inter,sans-serif">APAC</text>
+          <circle cx="35" cy="42" r="3" fill="#f59e0b" opacity="0.9"/><text x="28" y="57" fill="rgba(255,255,255,0.5)" font-size="5.5" font-family="Inter,sans-serif">AMER</text>
+          <!-- Legend -->
+          <rect x="8" y="64" width="224" height="12" rx="3" fill="rgba(255,255,255,0.05)"/>
+          <circle cx="18" cy="70" r="3" fill="#8b5cf6"/><text x="24" y="73" fill="rgba(255,255,255,0.45)" font-size="6" font-family="Inter,sans-serif">EU: 142</text>
+          <circle cx="72" cy="70" r="3" fill="#3b82f6"/><text x="78" y="73" fill="rgba(255,255,255,0.45)" font-size="6" font-family="Inter,sans-serif">MENA: 87</text>
+          <circle cx="138" cy="70" r="3" fill="#10b981"/><text x="144" y="73" fill="rgba(255,255,255,0.45)" font-size="6" font-family="Inter,sans-serif">APAC: 63</text>
+          <circle cx="200" cy="70" r="3" fill="#f59e0b"/><text x="206" y="73" fill="rgba(255,255,255,0.45)" font-size="6" font-family="Inter,sans-serif">AMER: 20</text>
+        </svg>
+      </div>
+      <div class="analytics-card">
+        <div class="feature-number-sm">18</div>
+        <h4>Cost Tracker</h4>
+        <p>Total cost of ownership per vehicle: purchase price, insurance, fuel, maintenance, and driver cost allocation. Inform replacement cycle and CAPEX planning.</p>
+        <svg viewBox="0 0 240 80" width="100%" style="display:block;margin-top:12px;border-radius:6px;">
+          <rect width="240" height="80" fill="#f8faff" rx="5"/>
+          <!-- Donut chart -->
+          <circle cx="52" cy="42" r="24" fill="none" stroke="#e2e8f0" stroke-width="12"/>
+          <circle cx="52" cy="42" r="24" fill="none" stroke="#8b5cf6" stroke-width="12" stroke-dasharray="60 91" stroke-dashoffset="0" transform="rotate(-90 52 42)"/>
+          <circle cx="52" cy="42" r="24" fill="none" stroke="#3b82f6" stroke-width="12" stroke-dasharray="35 91" stroke-dashoffset="-60" transform="rotate(-90 52 42)"/>
+          <circle cx="52" cy="42" r="24" fill="none" stroke="#f59e0b" stroke-width="12" stroke-dasharray="20 91" stroke-dashoffset="-95" transform="rotate(-90 52 42)"/>
+          <text x="46" y="40" fill="#1e293b" font-size="7" font-family="Inter,sans-serif" font-weight="800">TCO</text>
+          <text x="43" y="50" fill="#94a3b8" font-size="6" font-family="Inter,sans-serif">per km</text>
+          <!-- Legend -->
+          <rect x="90" y="14" width="10" height="10" rx="2" fill="#8b5cf6"/>
+          <text x="104" y="22" fill="#475569" font-size="7" font-family="Inter,sans-serif">Fuel 40%</text>
+          <rect x="90" y="30" width="10" height="10" rx="2" fill="#3b82f6"/>
+          <text x="104" y="38" fill="#475569" font-size="7" font-family="Inter,sans-serif">Driver 24%</text>
+          <rect x="90" y="46" width="10" height="10" rx="2" fill="#f59e0b"/>
+          <text x="104" y="54" fill="#475569" font-size="7" font-family="Inter,sans-serif">Maintenance 13%</text>
+          <rect x="90" y="62" width="10" height="10" rx="2" fill="#e2e8f0"/>
+          <text x="104" y="70" fill="#475569" font-size="7" font-family="Inter,sans-serif">Other 23%</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ GROUP 4: SECURITY ══════════════════════════ -->
+<section class="section feature-section section-cream" id="security">
+  <div class="container">
+    <div class="feature-section-header" data-reveal>
+      <div class="feature-section-icon" style="background:rgba(16,185,129,0.12);color:#10b981">
+        <i class="ti ti-shield-check"></i>
+      </div>
+      <div>
+        <h2 class="feature-section-title">Security &amp; Compliance</h2>
+        <p class="feature-section-sub">Enterprise-grade access control, authentication and audit capabilities. SOC 2 Type II certified.</p>
+      </div>
+    </div>
+
+    <div class="security-grid" data-reveal>
+      <div class="security-card">
+        <div class="security-card-icon"><i class="ti ti-lock-access"></i></div>
+        <div class="feature-number-sm">19</div>
+        <h4>Role-Based Access Control</h4>
+        <p>Define granular permission sets for every module — vehicles, drivers, reports, billing, settings. Create custom roles beyond the built-in Fleet Manager, Driver, Dispatcher and Viewer roles. Assign per-branch scoping.</p>
+        <svg viewBox="0 0 240 68" width="100%" style="display:block;margin:12px 0 8px;border-radius:6px;">
+          <rect width="240" height="68" fill="#f8faff" rx="5"/>
+          <!-- Permission matrix -->
+          <text x="8" y="14" fill="#94a3b8" font-size="6" font-family="Inter,sans-serif" font-weight="600">MODULE</text>
+          <text x="78" y="14" fill="#94a3b8" font-size="6" font-family="Inter,sans-serif">Fleet Mgr</text>
+          <text x="118" y="14" fill="#94a3b8" font-size="6" font-family="Inter,sans-serif">Dispatcher</text>
+          <text x="162" y="14" fill="#94a3b8" font-size="6" font-family="Inter,sans-serif">Driver</text>
+          <text x="196" y="14" fill="#94a3b8" font-size="6" font-family="Inter,sans-serif">Viewer</text>
+          <line x1="8" y1="17" x2="232" y2="17" stroke="#e2e8f0" stroke-width="0.8"/>
+          <!-- Row: Vehicles -->
+          <text x="8" y="28" fill="#475569" font-size="7" font-family="Inter,sans-serif">Vehicles</text>
+          <text x="86" y="28" fill="#10b981" font-size="9" font-family="Inter,sans-serif">✓</text>
+          <text x="128" y="28" fill="#10b981" font-size="9" font-family="Inter,sans-serif">✓</text>
+          <text x="168" y="28" fill="#94a3b8" font-size="9" font-family="Inter,sans-serif">—</text>
+          <text x="202" y="28" fill="#10b981" font-size="9" font-family="Inter,sans-serif">✓</text>
+          <!-- Row: Reports -->
+          <text x="8" y="42" fill="#475569" font-size="7" font-family="Inter,sans-serif">Reports</text>
+          <text x="86" y="42" fill="#10b981" font-size="9" font-family="Inter,sans-serif">✓</text>
+          <text x="128" y="42" fill="#94a3b8" font-size="9" font-family="Inter,sans-serif">—</text>
+          <text x="168" y="42" fill="#94a3b8" font-size="9" font-family="Inter,sans-serif">—</text>
+          <text x="202" y="42" fill="#10b981" font-size="9" font-family="Inter,sans-serif">✓</text>
+          <!-- Row: Billing -->
+          <text x="8" y="56" fill="#475569" font-size="7" font-family="Inter,sans-serif">Billing</text>
+          <text x="86" y="56" fill="#10b981" font-size="9" font-family="Inter,sans-serif">✓</text>
+          <text x="128" y="56" fill="#ef4444" font-size="9" font-family="Inter,sans-serif">✗</text>
+          <text x="168" y="56" fill="#ef4444" font-size="9" font-family="Inter,sans-serif">✗</text>
+          <text x="202" y="56" fill="#ef4444" font-size="9" font-family="Inter,sans-serif">✗</text>
+        </svg>
+        <div class="security-badge"><i class="ti ti-shield-check"></i> SOC 2 Control</div>
+      </div>
+      <div class="security-card">
+        <div class="security-card-icon"><i class="ti ti-device-mobile-message"></i></div>
+        <div class="feature-number-sm">20</div>
+        <h4>Multi-Factor Authentication</h4>
+        <p>Enforce MFA for all users or specific roles. Supports TOTP authenticator apps (Google Authenticator, Authy), SMS OTP and hardware security keys. Trusted device management reduces friction for regular users.</p>
+        <svg viewBox="0 0 240 60" width="100%" style="display:block;margin:12px 0 8px;border-radius:6px;">
+          <rect width="240" height="60" fill="#0d1b2a" rx="5"/>
+          <text x="80" y="18" fill="rgba(255,255,255,0.5)" font-size="7.5" font-family="Inter,sans-serif" font-weight="600">Enter verification code</text>
+          <!-- OTP boxes -->
+          <rect x="38" y="24" width="22" height="22" rx="4" fill="#162033" stroke="rgba(16,185,129,0.4)" stroke-width="1.5"/>
+          <text x="46" y="39" fill="white" font-size="13" font-family="Inter,sans-serif" font-weight="700">4</text>
+          <rect x="66" y="24" width="22" height="22" rx="4" fill="#162033" stroke="rgba(16,185,129,0.4)" stroke-width="1.5"/>
+          <text x="74" y="39" fill="white" font-size="13" font-family="Inter,sans-serif" font-weight="700">8</text>
+          <rect x="94" y="24" width="22" height="22" rx="4" fill="#162033" stroke="rgba(16,185,129,0.4)" stroke-width="1.5"/>
+          <text x="102" y="39" fill="white" font-size="13" font-family="Inter,sans-serif" font-weight="700">2</text>
+          <rect x="122" y="24" width="22" height="22" rx="4" fill="#162033" stroke="rgba(16,185,129,0.4)" stroke-width="1.5"/>
+          <text x="130" y="39" fill="white" font-size="13" font-family="Inter,sans-serif" font-weight="700">9</text>
+          <rect x="150" y="24" width="22" height="22" rx="4" fill="#162033" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+          <text x="158" y="39" fill="rgba(255,255,255,0.2)" font-size="13" font-family="Inter,sans-serif" font-weight="700">_</text>
+          <rect x="178" y="24" width="22" height="22" rx="4" fill="#162033" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+          <text x="84" y="54" fill="rgba(255,255,255,0.3)" font-size="6.5" font-family="Inter,sans-serif">Expires in 28s · Sent via Authenticator</text>
+        </svg>
+        <div class="security-badge"><i class="ti ti-shield-check"></i> NIST 800-63B</div>
+      </div>
+      <div class="security-card">
+        <div class="security-card-icon"><i class="ti ti-key"></i></div>
+        <div class="feature-number-sm">21</div>
+        <h4>Password &amp; Session Policy</h4>
+        <p>Configurable minimum complexity, rotation periods, breach-database blacklisting via HaveIBeenPwned, session timeout and concurrent session limits. All password events are logged to the audit trail.</p>
+        <svg viewBox="0 0 240 60" width="100%" style="display:block;margin:12px 0 8px;border-radius:6px;">
+          <rect width="240" height="60" fill="#f8faff" rx="5"/>
+          <text x="10" y="14" fill="#475569" font-size="7" font-family="Inter,sans-serif" font-weight="600">Password Strength</text>
+          <rect x="10" y="18" width="170" height="7" rx="3" fill="#e2e8f0"/>
+          <rect x="10" y="18" width="148" height="7" rx="3" fill="#10b981"/>
+          <text x="186" y="25" fill="#10b981" font-size="7.5" font-family="Inter,sans-serif" font-weight="700">Strong</text>
+          <text x="10" y="38" fill="#475569" font-size="6.5" font-family="Inter,sans-serif">✓ 12+ chars</text>
+          <text x="56" y="38" fill="#475569" font-size="6.5" font-family="Inter,sans-serif">✓ Uppercase</text>
+          <text x="108" y="38" fill="#475569" font-size="6.5" font-family="Inter,sans-serif">✓ Symbol</text>
+          <text x="150" y="38" fill="#475569" font-size="6.5" font-family="Inter,sans-serif">✓ Not breached</text>
+          <rect x="10" y="44" width="220" height="10" rx="3" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+          <text x="16" y="51.5" fill="#10b981" font-size="6.5" font-family="Inter,sans-serif" font-weight="600">Not found in HaveIBeenPwned database ✓</text>
+        </svg>
+        <div class="security-badge"><i class="ti ti-shield-check"></i> OWASP Compliant</div>
+      </div>
+      <div class="security-card">
+        <div class="security-card-icon"><i class="ti ti-fingerprint"></i></div>
+        <div class="feature-number-sm">22</div>
+        <h4>SSO / SAML / FIDO2</h4>
+        <p>Enterprise SSO via SAML 2.0 (Okta, Azure AD, Google Workspace). Passwordless login using FIDO2 / WebAuthn passkeys for phishing-resistant authentication across the entire organisation.</p>
+        <svg viewBox="0 0 240 60" width="100%" style="display:block;margin:12px 0 8px;border-radius:6px;">
+          <rect width="240" height="60" fill="#f8faff" rx="5"/>
+          <text x="84" y="14" fill="#475569" font-size="7" font-family="Inter,sans-serif" font-weight="600">Sign in with SSO</text>
+          <rect x="10" y="20" width="66" height="30" rx="5" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+          <circle cx="43" cy="29" r="7" fill="#0052CC"/>
+          <text x="30" y="46" fill="#475569" font-size="6.5" font-family="Inter,sans-serif">Okta</text>
+          <rect x="87" y="20" width="66" height="30" rx="5" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+          <rect x="104" y="25" width="10" height="10" rx="2" fill="#0078D4"/>
+          <rect x="118" y="25" width="10" height="10" rx="2" fill="#50B8E7"/>
+          <rect x="104" y="38" width="10" height="10" rx="2" fill="#50B8E7" opacity="0.5"/>
+          <rect x="118" y="38" width="10" height="10" rx="2" fill="#0078D4" opacity="0.6"/>
+          <text x="96" y="57" fill="#475569" font-size="6.5" font-family="Inter,sans-serif">Azure AD</text>
+          <rect x="164" y="20" width="66" height="30" rx="5" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+          <circle cx="184" cy="35" r="8" fill="#4285F4"/>
+          <circle cx="184" cy="35" r="5" fill="white"/>
+          <circle cx="184" cy="35" r="2.5" fill="#4285F4"/>
+          <text x="162" y="57" fill="#475569" font-size="6.5" font-family="Inter,sans-serif">Google Workspace</text>
+        </svg>
+        <div class="security-badge"><i class="ti ti-shield-check"></i> Zero Trust</div>
+      </div>
+      <div class="security-card">
+        <div class="security-card-icon"><i class="ti ti-list-check"></i></div>
+        <div class="feature-number-sm">23</div>
+        <h4>Session Management</h4>
+        <p>View all active sessions for every user in real time. Administrators can force-terminate individual sessions or all sessions globally. Suspicious login detection with geo-anomaly alerts.</p>
+        <svg viewBox="0 0 240 68" width="100%" style="display:block;margin:12px 0 8px;border-radius:6px;">
+          <rect width="240" height="68" fill="#0d1b2a" rx="5"/>
+          <text x="8" y="14" fill="rgba(255,255,255,0.4)" font-size="6.5" font-family="Inter,sans-serif" font-weight="600">ACTIVE SESSIONS — ahmed@company.com</text>
+          <rect x="8" y="18" width="224" height="14" rx="3" fill="#162033"/>
+          <circle cx="18" cy="25" r="3" fill="#10b981"/>
+          <text x="26" y="28" fill="rgba(255,255,255,0.7)" font-size="7" font-family="Inter,sans-serif">Chrome · Mac OS · London, UK</text>
+          <text x="178" y="28" fill="rgba(255,255,255,0.3)" font-size="6.5" font-family="Inter,sans-serif">Current</text>
+          <rect x="8" y="35" width="224" height="14" rx="3" fill="#1a2840"/>
+          <circle cx="18" cy="42" r="3" fill="#10b981"/>
+          <text x="26" y="45" fill="rgba(255,255,255,0.7)" font-size="7" font-family="Inter,sans-serif">FleetOS Mobile · iOS · London, UK</text>
+          <text x="196" y="45" fill="rgba(255,255,255,0.3)" font-size="6.5" font-family="Inter,sans-serif">2h ago</text>
+          <rect x="8" y="52" width="224" height="14" rx="3" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.2)" stroke-width="1"/>
+          <circle cx="18" cy="59" r="3" fill="#ef4444"/>
+          <text x="26" y="62" fill="rgba(255,255,255,0.7)" font-size="7" font-family="Inter,sans-serif">Firefox · Windows · Lagos, NG ⚠ Anomaly</text>
+          <rect x="198" y="55" width="28" height="9" rx="2" fill="rgba(239,68,68,0.2)"/>
+          <text x="201" y="61.5" fill="#ef4444" font-size="6" font-family="Inter,sans-serif" font-weight="700">REVOKE</text>
+        </svg>
+        <div class="security-badge"><i class="ti ti-shield-check"></i> ISO 27001</div>
+      </div>
+      <div class="security-card">
+        <div class="security-card-icon"><i class="ti ti-clipboard-list"></i></div>
+        <div class="feature-number-sm">24</div>
+        <h4>Immutable Audit Trail</h4>
+        <p>Every user action, configuration change, login event and data export is logged with timestamp, IP address and user identity. Logs are tamper-proof, exportable as CSV and retained for 7 years to meet regulatory requirements.</p>
+        <svg viewBox="0 0 240 68" width="100%" style="display:block;margin:12px 0 8px;border-radius:6px;">
+          <rect width="240" height="68" fill="#0d1b2a" rx="5"/>
+          <text x="8" y="13" fill="rgba(255,255,255,0.4)" font-size="6.5" font-family="Inter,sans-serif" font-weight="600">AUDIT LOG — TAMPER-PROOF</text>
+          <rect x="8" y="17" width="224" height="12" rx="2" fill="#162033"/>
+          <text x="12" y="26" fill="rgba(255,255,255,0.55)" font-size="6.5" font-family="Inter,sans-serif">09:14:03</text>
+          <text x="52" y="26" fill="#10b981" font-size="6.5" font-family="Inter,sans-serif">LOGIN</text>
+          <text x="80" y="26" fill="rgba(255,255,255,0.5)" font-size="6.5" font-family="Inter,sans-serif">ahmed@co.com · 82.31.44.12 · Chrome</text>
+          <rect x="8" y="31" width="224" height="12" rx="2" fill="#1a2840"/>
+          <text x="12" y="40" fill="rgba(255,255,255,0.55)" font-size="6.5" font-family="Inter,sans-serif">09:18:47</text>
+          <text x="52" y="40" fill="#3b82f6" font-size="6.5" font-family="Inter,sans-serif">CONFIG</text>
+          <text x="80" y="40" fill="rgba(255,255,255,0.5)" font-size="6.5" font-family="Inter,sans-serif">Geofence "Depot A" created · ahmed@co.com</text>
+          <rect x="8" y="45" width="224" height="12" rx="2" fill="#162033"/>
+          <text x="12" y="54" fill="rgba(255,255,255,0.55)" font-size="6.5" font-family="Inter,sans-serif">09:31:22</text>
+          <text x="52" y="54" fill="#f59e0b" font-size="6.5" font-family="Inter,sans-serif">EXPORT</text>
+          <text x="80" y="54" fill="rgba(255,255,255,0.5)" font-size="6.5" font-family="Inter,sans-serif">Fleet report exported as CSV · 3,241 rows</text>
+          <rect x="8" y="59" width="224" height="8" rx="2" fill="rgba(16,185,129,0.08)"/>
+          <text x="12" y="65.5" fill="#10b981" font-size="6" font-family="Inter,sans-serif">🔒 Tamper-proof · SHA-256 hash verified · Retained 7 years</text>
+        </svg>
+        <div class="security-badge"><i class="ti ti-shield-check"></i> GDPR / FCA Compliant</div>
+      </div>
+    </div>
+
+    <!-- Security certifications bar -->
+    <div class="certifications-bar" data-reveal>
+      <div class="cert-item">
+        <i class="ti ti-shield-check"></i>
+        <span>SOC 2 Type II</span>
+      </div>
+      <div class="cert-item">
+        <i class="ti ti-certificate"></i>
+        <span>ISO 27001</span>
+      </div>
+      <div class="cert-item">
+        <i class="ti ti-world"></i>
+        <span>GDPR Compliant</span>
+      </div>
+      <div class="cert-item">
+        <i class="ti ti-lock"></i>
+        <span>Data encrypted at rest &amp; in transit</span>
+      </div>
+      <div class="cert-item">
+        <i class="ti ti-cloud"></i>
+        <span>99.97% SLA Uptime</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ CTA ══════════════════════════ -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-inner" data-reveal>
+      <h2 class="cta-title">All 24 features. One platform. One price.</h2>
+      <p class="cta-sub">No feature tiers. Every FleetOS Pro plan includes the full feature set — you only pay for scale. Start your free 14-day trial today.</p>
+      <div class="cta-buttons">
+        <a href="https://app.fleetospro.com/login" class="btn btn-gold btn-lg">
+          <i class="ti ti-rocket"></i> Start Free Trial
+        </a>
+        <a href="pricing.html" class="btn btn-outline-light btn-lg">
+          <i class="ti ti-tag"></i> View Pricing
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ FOOTER ══════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <svg width="62" height="62" viewBox="0 0 36 36" fill="none">
+            <rect x="1" y="15" width="9" height="6" rx="1.5" fill="#c4912a"/>
+            <line x1="4.5" y1="15" x2="4.5" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+            <line x1="7" y1="15" x2="7" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+            <rect x="10" y="12" width="16" height="12" rx="2.5" fill="#0d1b2a"/>
+            <rect x="12.5" y="16.5" width="11" height="3" rx="0.8" fill="none" stroke="rgba(196,145,42,0.4)" stroke-width="0.7"/>
+            <circle cx="15" cy="18" r="1.2" fill="#c4912a" opacity="0.9"/>
+            <circle cx="18" cy="18" r="0.9" fill="white" opacity="0.55"/>
+            <circle cx="21" cy="18" r="1.2" fill="rgba(100,190,255,0.7)"/>
+            <rect x="26" y="15" width="9" height="6" rx="1.5" fill="#c4912a"/>
+            <line x1="29" y1="15" x2="29" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+            <line x1="31.5" y1="15" x2="31.5" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+            <line x1="18" y1="8" x2="18" y2="12" stroke="rgba(255,255,255,0.85)" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M14.5 9 A4.5 3 0 0 1 21.5 9" stroke="rgba(255,255,255,0.85)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+            <line x1="14" y1="24" x2="11" y2="30" stroke="#c4912a" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="1.5 2" opacity="0.7"/>
+            <line x1="18" y1="24" x2="18" y2="31" stroke="#c4912a" stroke-width="1" stroke-linecap="round" stroke-dasharray="1.5 2" opacity="0.85"/>
+            <line x1="22" y1="24" x2="25" y2="30" stroke="#c4912a" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="1.5 2" opacity="0.7"/>
+          </svg>
+          <div class="nav-logo-lockup"><span class="logo-fleet">Fleet</span><span class="logo-os">OS</span><span class="logo-pro-badge">Pro</span></div>
+        </a>
+        <p class="footer-tagline">Enterprise fleet intelligence for the modern operations team.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Twitter"><i class="ti ti-brand-twitter"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="ti ti-brand-linkedin"></i></a>
+          <a href="#" aria-label="YouTube"><i class="ti ti-brand-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="features.html">All Features</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="#">Integrations</a></li>
+          <li><a href="#">API Docs</a></li>
+          <li><a href="#">Changelog</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="#">Trucking & Logistics</a></li>
+          <li><a href="#">Public Transit</a></li>
+          <li><a href="#">Construction</a></li>
+          <li><a href="#">Field Services</a></li>
+          <li><a href="#">Last-Mile Delivery</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="contact.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press Kit</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="#">SLA</a></li>
+          <li><a href="#">GDPR</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 FleetOS Pro. All rights reserved.</p>
+      <div class="footer-certifications">
+        <span><i class="ti ti-shield-check"></i> SOC 2 Type II</span>
+        <span><i class="ti ti-lock"></i> ISO 27001</span>
+        <span><i class="ti ti-certificate"></i> GDPR Compliant</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/script.js"></script>
+</body>
+</html>

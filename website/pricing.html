@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing — FleetOS Pro</title>
+  <meta name="description" content="FleetOS Pro pricing. Starter $49/mo, Professional $149/mo, Enterprise custom. All plans include full feature access." />
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+</head>
+<body>
+
+<!-- ══════════════════════════ NAVIGATION ══════════════════════════ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <svg width="62" height="62" viewBox="0 0 36 36" fill="none">
+        <rect x="1" y="15" width="9" height="6" rx="1.5" fill="#c4912a"/>
+        <line x1="4.5" y1="15" x2="4.5" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+        <line x1="7" y1="15" x2="7" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+        <rect x="10" y="12" width="16" height="12" rx="2.5" fill="#0d1b2a"/>
+        <rect x="12.5" y="16.5" width="11" height="3" rx="0.8" fill="none" stroke="rgba(196,145,42,0.4)" stroke-width="0.7"/>
+        <circle cx="15" cy="18" r="1.2" fill="#c4912a" opacity="0.9"/>
+        <circle cx="18" cy="18" r="0.9" fill="white" opacity="0.55"/>
+        <circle cx="21" cy="18" r="1.2" fill="rgba(100,190,255,0.7)"/>
+        <rect x="26" y="15" width="9" height="6" rx="1.5" fill="#c4912a"/>
+        <line x1="29" y1="15" x2="29" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+        <line x1="31.5" y1="15" x2="31.5" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+        <line x1="18" y1="8" x2="18" y2="12" stroke="rgba(255,255,255,0.85)" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M14.5 9 A4.5 3 0 0 1 21.5 9" stroke="rgba(255,255,255,0.85)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <line x1="14" y1="24" x2="11" y2="30" stroke="#c4912a" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="1.5 2" opacity="0.7"/>
+        <line x1="18" y1="24" x2="18" y2="31" stroke="#c4912a" stroke-width="1" stroke-linecap="round" stroke-dasharray="1.5 2" opacity="0.85"/>
+        <line x1="22" y1="24" x2="25" y2="30" stroke="#c4912a" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="1.5 2" opacity="0.7"/>
+      </svg>
+      <div class="nav-logo-lockup"><span class="logo-fleet">Fleet</span><span class="logo-os">OS</span><span class="logo-pro-badge">Pro</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="pricing.html" class="active">Pricing</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="https://app.fleetospro.com/login" class="btn btn-outline-sm">Sign In</a>
+      <a href="https://app.fleetospro.com/login" class="btn btn-gold-sm">Start Free Trial</a>
+    </div>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="navMobile">
+    <a href="index.html">Home</a>
+    <a href="features.html">Features</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="contact.html">Contact</a>
+    <a href="https://app.fleetospro.com/login" class="btn btn-gold-sm" style="margin-top:8px;text-align:center">Launch App</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════ PAGE HERO ══════════════════════════ -->
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-inner" data-reveal>
+      <div class="section-badge">Transparent Pricing</div>
+      <h1 class="page-hero-title">Simple plans that <span class="grad-text">scale with you</span></h1>
+      <p class="page-hero-sub">No hidden fees. No per-feature upsells. All FleetOS Pro plans include every feature — you only pay for the number of vehicles you operate.</p>
+
+      <!-- Billing toggle -->
+      <div class="billing-toggle" id="billingToggle">
+        <span id="monthlyLabel" class="billing-label active">Monthly</span>
+        <button class="toggle-switch" id="billingSwitch" role="switch" aria-checked="false" aria-label="Switch to annual billing">
+          <span class="toggle-knob"></span>
+        </button>
+        <span id="annualLabel" class="billing-label">Annual</span>
+        <span class="billing-save-badge" id="saveBadge">Save 20%</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ PRICING CARDS ══════════════════════════ -->
+<section class="section" style="padding-top:40px">
+  <div class="container">
+    <div class="pricing-grid">
+
+      <!-- Starter -->
+      <div class="pricing-card" data-reveal>
+        <div class="pricing-card-header">
+          <div class="pricing-plan-icon" style="background:rgba(100,116,139,0.12);color:#64748b">
+            <i class="ti ti-leaf"></i>
+          </div>
+          <h3 class="pricing-card-name">Starter</h3>
+          <p class="pricing-card-desc">Perfect for small businesses taking their first step into fleet management.</p>
+        </div>
+        <div class="pricing-card-price">
+          <div class="pricing-amount">
+            <span class="pricing-currency">$</span>
+            <span class="pricing-num" data-monthly="49" data-annual="39">49</span>
+            <span class="pricing-per">/mo</span>
+          </div>
+          <div class="pricing-billed" id="starterBilled">Billed monthly</div>
+        </div>
+        <div class="pricing-vehicles">Up to <strong>10 vehicles</strong></div>
+        <a href="https://app.fleetospro.com/login" class="btn btn-outline" style="width:100%;justify-content:center">
+          Start Free Trial
+        </a>
+        <div class="pricing-features">
+          <div class="pricing-feature-group-label">Includes</div>
+          <ul>
+            <li><i class="ti ti-check"></i> Live GPS tracking</li>
+            <li><i class="ti ti-check"></i> Trip history (90 days)</li>
+            <li><i class="ti ti-check"></i> Basic geofencing (5 zones)</li>
+            <li><i class="ti ti-check"></i> Driver performance scoring</li>
+            <li><i class="ti ti-check"></i> Email alerts</li>
+            <li><i class="ti ti-check"></i> 3 reports</li>
+            <li><i class="ti ti-check"></i> Mobile app (iOS &amp; Android)</li>
+            <li><i class="ti ti-check"></i> Email support</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Professional (popular) -->
+      <div class="pricing-card pricing-card-popular" data-reveal>
+        <div class="pricing-popular-tag">
+          <i class="ti ti-star-filled"></i> Most Popular
+        </div>
+        <div class="pricing-card-header">
+          <div class="pricing-plan-icon" style="background:rgba(196,145,42,0.15);color:#c4912a">
+            <i class="ti ti-rocket"></i>
+          </div>
+          <h3 class="pricing-card-name">Professional</h3>
+          <p class="pricing-card-desc">The complete platform for growing fleets with complex operational needs.</p>
+        </div>
+        <div class="pricing-card-price">
+          <div class="pricing-amount">
+            <span class="pricing-currency">$</span>
+            <span class="pricing-num" data-monthly="149" data-annual="119">149</span>
+            <span class="pricing-per">/mo</span>
+          </div>
+          <div class="pricing-billed" id="proBilled">Billed monthly</div>
+        </div>
+        <div class="pricing-vehicles">Up to <strong>50 vehicles</strong></div>
+        <a href="https://app.fleetospro.com/login" class="btn btn-gold" style="width:100%;justify-content:center">
+          Start Free Trial
+        </a>
+        <div class="pricing-features">
+          <div class="pricing-feature-group-label">Everything in Starter, plus</div>
+          <ul>
+            <li><i class="ti ti-check"></i> Trip history (365 days)</li>
+            <li><i class="ti ti-check"></i> Unlimited geofencing</li>
+            <li><i class="ti ti-check"></i> AI route optimisation</li>
+            <li><i class="ti ti-check"></i> Maintenance scheduling</li>
+            <li><i class="ti ti-check"></i> Customer management portal</li>
+            <li><i class="ti ti-check"></i> Fuel card integration</li>
+            <li><i class="ti ti-check"></i> Full 9-report suite</li>
+            <li><i class="ti ti-check"></i> Scheduled report delivery</li>
+            <li><i class="ti ti-check"></i> Multi-channel alerts (SMS, push, webhook)</li>
+            <li><i class="ti ti-check"></i> IoT device management</li>
+            <li><i class="ti ti-check"></i> RBAC (up to 5 custom roles)</li>
+            <li><i class="ti ti-check"></i> MFA enforcement</li>
+            <li><i class="ti ti-check"></i> Priority email &amp; chat support</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Business -->
+      <div class="pricing-card" data-reveal>
+        <div class="pricing-card-header">
+          <div class="pricing-plan-icon" style="background:rgba(59,130,246,0.12);color:#3b82f6">
+            <i class="ti ti-building"></i>
+          </div>
+          <h3 class="pricing-card-name">Business</h3>
+          <p class="pricing-card-desc">For large operations managing 50–200 vehicles across multiple branches.</p>
+        </div>
+        <div class="pricing-card-price">
+          <div class="pricing-amount">
+            <span class="pricing-currency">$</span>
+            <span class="pricing-num" data-monthly="349" data-annual="279">349</span>
+            <span class="pricing-per">/mo</span>
+          </div>
+          <div class="pricing-billed" id="bizBilled">Billed monthly</div>
+        </div>
+        <div class="pricing-vehicles">Up to <strong>200 vehicles</strong></div>
+        <a href="https://app.fleetospro.com/login" class="btn btn-outline" style="width:100%;justify-content:center">
+          Start Free Trial
+        </a>
+        <div class="pricing-features">
+          <div class="pricing-feature-group-label">Everything in Professional, plus</div>
+          <ul>
+            <li><i class="ti ti-check"></i> Multi-branch management</li>
+            <li><i class="ti ti-check"></i> Executive dashboard</li>
+            <li><i class="ti ti-check"></i> Unlimited custom roles</li>
+            <li><i class="ti ti-check"></i> SSO / SAML integration</li>
+            <li><i class="ti ti-check"></i> FIDO2 / passkey login</li>
+            <li><i class="ti ti-check"></i> Advanced API access</li>
+            <li><i class="ti ti-check"></i> Audit trail (3 years)</li>
+            <li><i class="ti ti-check"></i> Dedicated account manager</li>
+            <li><i class="ti ti-check"></i> Phone support</li>
+            <li><i class="ti ti-check"></i> 99.9% SLA</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="pricing-card pricing-card-dark" data-reveal>
+        <div class="pricing-card-header">
+          <div class="pricing-plan-icon" style="background:rgba(255,255,255,0.1);color:white">
+            <i class="ti ti-crown"></i>
+          </div>
+          <h3 class="pricing-card-name" style="color:white">Enterprise</h3>
+          <p class="pricing-card-desc" style="color:rgba(255,255,255,0.6)">Unlimited scale with dedicated infrastructure, white-label and custom SLAs.</p>
+        </div>
+        <div class="pricing-card-price">
+          <div class="pricing-amount">
+            <span class="pricing-num" style="font-size:36px;color:white">Custom</span>
+          </div>
+          <div class="pricing-billed" style="color:rgba(255,255,255,0.4)">Annual contract · volume discount</div>
+        </div>
+        <div class="pricing-vehicles" style="color:rgba(255,255,255,0.7)"><strong style="color:white">Unlimited vehicles</strong></div>
+        <a href="contact.html" class="btn btn-gold" style="width:100%;justify-content:center">
+          Contact Sales
+        </a>
+        <div class="pricing-features">
+          <div class="pricing-feature-group-label" style="color:rgba(255,255,255,0.4)">Everything in Business, plus</div>
+          <ul style="color:rgba(255,255,255,0.7)">
+            <li><i class="ti ti-check" style="color:#c4912a"></i> Unlimited vehicles &amp; branches</li>
+            <li><i class="ti ti-check" style="color:#c4912a"></i> White-label platform (your brand)</li>
+            <li><i class="ti ti-check" style="color:#c4912a"></i> Dedicated cloud infrastructure</li>
+            <li><i class="ti ti-check" style="color:#c4912a"></i> Custom integrations &amp; development</li>
+            <li><i class="ti ti-check" style="color:#c4912a"></i> On-premises deployment option</li>
+            <li><i class="ti ti-check" style="color:#c4912a"></i> Audit trail (7 years)</li>
+            <li><i class="ti ti-check" style="color:#c4912a"></i> 24/7 dedicated support team</li>
+            <li><i class="ti ti-check" style="color:#c4912a"></i> 99.99% uptime SLA</li>
+            <li><i class="ti ti-check" style="color:#c4912a"></i> Security review &amp; pentest access</li>
+            <li><i class="ti ti-check" style="color:#c4912a"></i> Custom data retention policy</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ FEATURE COMPARISON ══════════════════════════ -->
+<section class="section section-cream">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <h2 class="section-title">Full feature <span class="grad-text">comparison</span></h2>
+    </div>
+    <div class="comparison-table-wrap" data-reveal>
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Starter</th>
+            <th class="col-popular">Professional</th>
+            <th>Business</th>
+            <th>Enterprise</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="comparison-group-row"><td colspan="5">Fleet Intelligence</td></tr>
+          <tr>
+            <td>Live GPS tracking</td>
+            <td><i class="ti ti-check check"></i></td>
+            <td class="col-popular"><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+          </tr>
+          <tr>
+            <td>Trip history</td>
+            <td>90 days</td>
+            <td class="col-popular">365 days</td>
+            <td>3 years</td>
+            <td>Custom</td>
+          </tr>
+          <tr>
+            <td>Geofencing</td>
+            <td>5 zones</td>
+            <td class="col-popular">Unlimited</td>
+            <td>Unlimited</td>
+            <td>Unlimited</td>
+          </tr>
+          <tr>
+            <td>Driver performance scoring</td>
+            <td><i class="ti ti-check check"></i></td>
+            <td class="col-popular"><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+          </tr>
+          <tr>
+            <td>Vehicle health / OBD-II</td>
+            <td><i class="ti ti-minus minus"></i></td>
+            <td class="col-popular"><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+          </tr>
+          <tr>
+            <td>Unauthorised usage detection</td>
+            <td><i class="ti ti-minus minus"></i></td>
+            <td class="col-popular"><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+          </tr>
+
+          <tr class="comparison-group-row"><td colspan="5">Operations &amp; Cost Control</td></tr>
+          <tr>
+            <td>AI route optimisation</td>
+            <td><i class="ti ti-minus minus"></i></td>
+            <td class="col-popular"><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+          </tr>
+          <tr>
+            <td>Maintenance scheduling</td>
+            <td>Basic</td>
+            <td class="col-popular">Full</td>
+            <td>Full + predictive</td>
+            <td>Full + predictive</td>
+          </tr>
+          <tr>
+            <td>Customer management portal</td>
+            <td><i class="ti ti-minus minus"></i></td>
+            <td class="col-popular"><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+          </tr>
+          <tr>
+            <td>Fuel card integration</td>
+            <td><i class="ti ti-minus minus"></i></td>
+            <td class="col-popular"><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+          </tr>
+          <tr>
+            <td>Alert channels</td>
+            <td>Email only</td>
+            <td class="col-popular">SMS, push, webhook</td>
+            <td>All + escalation</td>
+            <td>All + custom</td>
+          </tr>
+          <tr>
+            <td>IoT device management</td>
+            <td>Basic</td>
+            <td class="col-popular">Full</td>
+            <td>Full + API</td>
+            <td>Full + custom</td>
+          </tr>
+
+          <tr class="comparison-group-row"><td colspan="5">Analytics &amp; Reporting</td></tr>
+          <tr>
+            <td>Built-in reports</td>
+            <td>3 reports</td>
+            <td class="col-popular">9 reports</td>
+            <td>9 + custom</td>
+            <td>9 + unlimited custom</td>
+          </tr>
+          <tr>
+            <td>Scheduled report delivery</td>
+            <td><i class="ti ti-minus minus"></i></td>
+            <td class="col-popular"><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+          </tr>
+          <tr>
+            <td>Executive dashboard</td>
+            <td><i class="ti ti-minus minus"></i></td>
+            <td class="col-popular"><i class="ti ti-minus minus"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+          </tr>
+          <tr>
+            <td>Advanced analytics builder</td>
+            <td><i class="ti ti-minus minus"></i></td>
+            <td class="col-popular"><i class="ti ti-minus minus"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+          </tr>
+
+          <tr class="comparison-group-row"><td colspan="5">Security &amp; Compliance</td></tr>
+          <tr>
+            <td>Role-based access control</td>
+            <td>3 built-in roles</td>
+            <td class="col-popular">5 custom roles</td>
+            <td>Unlimited roles</td>
+            <td>Unlimited roles</td>
+          </tr>
+          <tr>
+            <td>Multi-factor authentication</td>
+            <td>Optional</td>
+            <td class="col-popular">Enforceable</td>
+            <td>Enforceable</td>
+            <td>Enforceable</td>
+          </tr>
+          <tr>
+            <td>SSO / SAML</td>
+            <td><i class="ti ti-minus minus"></i></td>
+            <td class="col-popular"><i class="ti ti-minus minus"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+          </tr>
+          <tr>
+            <td>FIDO2 / passkeys</td>
+            <td><i class="ti ti-minus minus"></i></td>
+            <td class="col-popular"><i class="ti ti-minus minus"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+            <td><i class="ti ti-check check"></i></td>
+          </tr>
+          <tr>
+            <td>Audit trail</td>
+            <td>30 days</td>
+            <td class="col-popular">1 year</td>
+            <td>3 years</td>
+            <td>7 years</td>
+          </tr>
+
+          <tr class="comparison-group-row"><td colspan="5">Support</td></tr>
+          <tr>
+            <td>Support channels</td>
+            <td>Email</td>
+            <td class="col-popular">Email + chat</td>
+            <td>Email + chat + phone</td>
+            <td>24/7 dedicated team</td>
+          </tr>
+          <tr>
+            <td>Uptime SLA</td>
+            <td>99.5%</td>
+            <td class="col-popular">99.7%</td>
+            <td>99.9%</td>
+            <td>99.99%</td>
+          </tr>
+          <tr>
+            <td>Onboarding assistance</td>
+            <td>Self-serve docs</td>
+            <td class="col-popular">Guided setup call</td>
+            <td>Dedicated onboarding</td>
+            <td>White-glove migration</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ FAQ ══════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <div class="section-badge">FAQ</div>
+      <h2 class="section-title">Common <span class="grad-text">questions answered</span></h2>
+    </div>
+    <div class="faq-list" data-reveal>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          Is there really a 14-day free trial with no credit card required?
+          <i class="ti ti-chevron-down faq-chevron"></i>
+        </button>
+        <div class="faq-answer">
+          <p>Yes — completely free for 14 days with full access to all Professional plan features. No credit card is captured at sign-up. At the end of the trial period you can choose a plan or your account will be paused (all data retained for 30 days).</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          What happens if I go over my vehicle limit?
+          <i class="ti ti-chevron-down faq-chevron"></i>
+        </button>
+        <div class="faq-answer">
+          <p>You'll receive an in-app notification when you're approaching your plan limit (at 80% and 100%). You won't be automatically billed extra — instead, you'll be prompted to upgrade to the next tier. We never cut off access mid-month.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          Can I change plans at any time?
+          <i class="ti ti-chevron-down faq-chevron"></i>
+        </button>
+        <div class="faq-answer">
+          <p>Absolutely. You can upgrade instantly and the new features are available immediately. Downgrades take effect at the end of the current billing cycle. All data, settings and history are preserved when changing plans.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          Do I need to buy the GPS hardware separately?
+          <i class="ti ti-chevron-down faq-chevron"></i>
+        </button>
+        <div class="faq-answer">
+          <p>You can bring your own compatible GPS hardware or purchase FleetOS Pro certified devices from our hardware catalogue. OBD-II plug-and-play trackers start from $39 per device. Hardwired units for trucks and heavy equipment are also available. SIM cards with global data are included in all plans.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          Is my data secure? Where is it stored?
+          <i class="ti ti-chevron-down faq-chevron"></i>
+        </button>
+        <div class="faq-answer">
+          <p>All data is encrypted in transit (TLS 1.3) and at rest (AES-256). We are SOC 2 Type II certified and ISO 27001 certified. Data is stored in AWS data centres in your chosen region (EU, US East, US West, APAC). Enterprise customers can request on-premises or private cloud deployment.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          Do you offer discounts for non-profits or educational institutions?
+          <i class="ti ti-chevron-down faq-chevron"></i>
+        </button>
+        <div class="faq-answer">
+          <p>Yes — we offer a 40% discount for registered non-profit organisations and educational institutions. Contact our team at <strong>nonprofit@fleetos.pro</strong> with proof of status to apply the discount to your account.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          What does the annual billing discount apply to?
+          <i class="ti ti-chevron-down faq-chevron"></i>
+        </button>
+        <div class="faq-answer">
+          <p>The 20% annual discount applies to the base plan cost. Hardware, SIM top-ups and any professional services are billed separately and not subject to the annual discount. Annual plans are billed once at the start of each year and are non-refundable after the first 14 days.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          Can I get a personalised demo before buying?
+          <i class="ti ti-chevron-down faq-chevron"></i>
+        </button>
+        <div class="faq-answer">
+          <p>Absolutely. Our solutions team runs 30-minute personalised demos tailored to your industry and fleet size. Book a slot through our <a href="contact.html">contact page</a> or email <strong>demo@fleetos.pro</strong>. We'll walk through the platform live using sample data similar to your operation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ CTA ══════════════════════════ -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-inner" data-reveal>
+      <h2 class="cta-title">Start your free trial today</h2>
+      <p class="cta-sub">No credit card. No commitment. Full Professional plan access for 14 days. Join 1,200+ fleets already saving time and money.</p>
+      <div class="cta-buttons">
+        <a href="https://app.fleetospro.com/login" class="btn btn-gold btn-lg">
+          <i class="ti ti-rocket"></i> Start Free Trial
+        </a>
+        <a href="contact.html" class="btn btn-outline-light btn-lg">
+          <i class="ti ti-headset"></i> Talk to Sales
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ FOOTER ══════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <svg width="62" height="62" viewBox="0 0 36 36" fill="none">
+            <rect x="1" y="15" width="9" height="6" rx="1.5" fill="#c4912a"/>
+            <line x1="4.5" y1="15" x2="4.5" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+            <line x1="7" y1="15" x2="7" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+            <rect x="10" y="12" width="16" height="12" rx="2.5" fill="#0d1b2a"/>
+            <rect x="12.5" y="16.5" width="11" height="3" rx="0.8" fill="none" stroke="rgba(196,145,42,0.4)" stroke-width="0.7"/>
+            <circle cx="15" cy="18" r="1.2" fill="#c4912a" opacity="0.9"/>
+            <circle cx="18" cy="18" r="0.9" fill="white" opacity="0.55"/>
+            <circle cx="21" cy="18" r="1.2" fill="rgba(100,190,255,0.7)"/>
+            <rect x="26" y="15" width="9" height="6" rx="1.5" fill="#c4912a"/>
+            <line x1="29" y1="15" x2="29" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+            <line x1="31.5" y1="15" x2="31.5" y2="21" stroke="rgba(13,27,42,0.35)" stroke-width="0.8"/>
+            <line x1="18" y1="8" x2="18" y2="12" stroke="rgba(255,255,255,0.85)" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M14.5 9 A4.5 3 0 0 1 21.5 9" stroke="rgba(255,255,255,0.85)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+            <line x1="14" y1="24" x2="11" y2="30" stroke="#c4912a" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="1.5 2" opacity="0.7"/>
+            <line x1="18" y1="24" x2="18" y2="31" stroke="#c4912a" stroke-width="1" stroke-linecap="round" stroke-dasharray="1.5 2" opacity="0.85"/>
+            <line x1="22" y1="24" x2="25" y2="30" stroke="#c4912a" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="1.5 2" opacity="0.7"/>
+          </svg>
+          <div class="nav-logo-lockup"><span class="logo-fleet">Fleet</span><span class="logo-os">OS</span><span class="logo-pro-badge">Pro</span></div>
+        </a>
+        <p class="footer-tagline">Enterprise fleet intelligence for the modern operations team.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Twitter"><i class="ti ti-brand-twitter"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="ti ti-brand-linkedin"></i></a>
+          <a href="#" aria-label="YouTube"><i class="ti ti-brand-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="features.html">All Features</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="#">Integrations</a></li>
+          <li><a href="#">API Docs</a></li>
+          <li><a href="#">Changelog</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="#">Trucking & Logistics</a></li>
+          <li><a href="#">Public Transit</a></li>
+          <li><a href="#">Construction</a></li>
+          <li><a href="#">Field Services</a></li>
+          <li><a href="#">Last-Mile Delivery</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="contact.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press Kit</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="#">SLA</a></li>
+          <li><a href="#">GDPR</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 FleetOS Pro. All rights reserved.</p>
+      <div class="footer-certifications">
+        <span><i class="ti ti-shield-check"></i> SOC 2 Type II</span>
+        <span><i class="ti ti-lock"></i> ISO 27001</span>
+        <span><i class="ti ti-certificate"></i> GDPR Compliant</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/script.js"></script>
+</body>
+</html>

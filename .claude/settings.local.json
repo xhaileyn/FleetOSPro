@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "Bash(xargs cat)",
+      "Bash(grep -n '\"\\\\\\\\$\"' /Users/mac/Documents/ClaudeApp/FleetOS/frontend/src/app/\\\\\\(app\\\\\\)/subscription/page.tsx)",
+      "Bash(npm run *)",
+      "Bash(echo \"Frontend PID: $!\")",
+      "Bash(echo \"PID=$!\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(break)",
+      "Bash(pkill -f \"PID=10173\")",
+      "Bash(xargs ls -la)",
+      "Bash(echo \"PID: $!\")",
+      "Bash(sed -i '' 's/scopeColor: '\\\\''#0D6E5E'\\\\''/scopeColor: '\\\\''#c4912a'\\\\''/g;            s/bg: '\\\\''#E6F4F1'\\\\''/bg: '\\\\''#fdf6e8'\\\\''/g;            s/planColor: '\\\\''#0D6E5E'\\\\''/planColor: '\\\\''#c4912a'\\\\''/g;            s/planBg: '\\\\''#E6F4F1'\\\\''/planBg: '\\\\''#fdf6e8'\\\\''/g' '/Users/mac/Documents/ClaudeApp/FleetOS/frontend/src/app/\\(auth\\)/login/page.tsx')",
+      "Bash(sed -i '' 's/rgba\\(13,110,94,0.3\\)/rgba\\(196,145,42,0.30\\)/g' '/Users/mac/Documents/ClaudeApp/FleetOS/frontend/src/app/\\(auth\\)/login/page.tsx')",
+      "Bash(dotnet ef *)",
+      "Bash(dotnet build *)",
+      "Bash(psql fleetos *)",
+      "Bash(PGPASSWORD=postgres /opt/homebrew/bin/psql *)",
+      "Read(//dev/**)",
+      "Bash(sed -n '90,105p' /Users/mac/Documents/ClaudeApp/FleetOS/frontend/src/app/\\\\\\(app\\\\\\)/auth-sessions/page.tsx)",
+      "Bash(xargs sed -i '' 's/linear-gradient\\(135deg, #0d1b2a 0%, #162033 55%, #1c2b44 100%\\)/linear-gradient\\(135deg, var\\(--hero-s\\) 0%, var\\(--hero-m\\) 55%, var\\(--hero-e\\) 100%\\)/g')",
+      "Bash(python3 -c ' *)"
+    ]
+  }
+}
