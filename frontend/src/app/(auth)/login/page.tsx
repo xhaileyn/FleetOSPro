@@ -357,37 +357,48 @@ export default function LoginPage() {
           padding: 40px 48px; background: #fff;
           border-right: 1px solid #e2e8f0; overflow-y: auto;
         }
+        .login-form-inner { max-width: 340px; width: 100%; }
         .login-qa-panel {
           display: flex; flex-direction: column; overflow: hidden;
           padding: 28px 24px 20px; background: #eef1f6;
         }
+        .qa-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; overflow-y: auto; }
         .login-mobile-header { display: none; }
 
         @media (max-width: 900px) {
-          .login-left { width: 360px; }
-          .login-form-panel { padding: 32px 32px; }
+          .login-left { width: 340px; }
+          .login-form-panel { padding: 28px 28px; }
         }
         @media (max-width: 768px) {
           .login-root { flex-direction: column; height: auto; min-height: 100vh; overflow-y: auto; }
           .login-left  { display: none; }
-          .login-right { flex: 1; overflow: visible; }
+          .login-right { flex: 1; overflow: visible; min-height: 0; }
           .login-right-grid { grid-template-columns: 1fr; overflow: visible; height: auto; }
           .login-form-panel {
-            justify-content: flex-start; padding: 28px 24px 24px;
+            justify-content: flex-start; padding: 28px 20px 24px;
             border-right: none; border-bottom: 1px solid #e2e8f0;
-            overflow-y: visible;
+            overflow-y: visible; align-items: center;
           }
-          .login-qa-panel { overflow: visible; padding: 20px 16px 24px; max-height: none; }
+          .login-form-inner { max-width: 480px; }
+          .login-qa-panel { overflow: visible; padding: 20px 20px 28px; max-height: none; }
+          .qa-cards-grid { overflow-y: visible; }
           .login-mobile-header {
             display: flex; align-items: center; gap: 10px;
-            padding: 16px 20px; background: #0d1b2a;
+            padding: 14px 20px; background: #0d1b2a;
             border-bottom: 1px solid rgba(196,145,42,0.18);
+            flex-shrink: 0;
           }
         }
-        @media (max-width: 480px) {
+        @media (max-width: 540px) {
+          .qa-cards-grid { grid-template-columns: 1fr; }
           .login-form-panel { padding: 24px 16px 20px; }
-          .login-qa-panel { padding: 16px 14px 20px; }
-          .login-mobile-header { padding: 14px 16px; }
+          .login-qa-panel { padding: 16px 16px 24px; }
+          .login-form-inner { max-width: 100%; }
+        }
+        @media (max-width: 400px) {
+          .login-form-panel { padding: 20px 14px 16px; }
+          .login-qa-panel { padding: 14px 12px 20px; }
+          .login-mobile-header { padding: 12px 14px; }
         }
       `}</style>
 
@@ -529,7 +540,7 @@ export default function LoginPage() {
 
           {/* ── Sign-in form ─────────────────────────────────────── */}
           <div className="login-form-panel">
-            <div style={{ maxWidth: 340 }}>
+            <div className="login-form-inner">
               <div style={{ marginBottom: 32 }}>
                 <div style={{ fontSize: 24, fontWeight: 700, color: '#0d1b2a', marginBottom: 6, letterSpacing: '-0.5px' }}>
                   Welcome back
@@ -670,7 +681,7 @@ export default function LoginPage() {
             </div>
 
             {tab === 'demo' && (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 7, overflowY: 'auto' }}>
+              <div className="qa-cards-grid">
                 {DEMO_ACCOUNTS.map(acc => (
                   <button key={acc.email} onClick={() => doLogin(acc.email, 'Demo1234!')}
                     disabled={loading} className="demo-card"
@@ -708,7 +719,7 @@ export default function LoginPage() {
             )}
 
             {tab === 'tenants' && (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 7, overflowY: 'auto' }}>
+              <div className="qa-cards-grid">
                 {TENANT_ADMINS.map(a => (
                   <button key={a.email} onClick={() => doLogin(a.email, 'Demo1234!')}
                     disabled={loading || a.plan === 'Suspended'} className="tenant-card"
