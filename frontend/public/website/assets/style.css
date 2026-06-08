@@ -535,13 +535,13 @@ section { padding: 100px 0; }
 /* ── Nav logo — exact replica of FleetOSLockup size=28 ── */
 .nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
 .nav-logo-lockup { display: flex; align-items: baseline; gap: 0; }
-.logo-fleet { color: #fff; font-size: 31px; font-weight: 700; letter-spacing: -0.4px; line-height: 1; font-family: inherit; }
-.logo-os    { color: rgba(255,255,255,0.55); font-size: 31px; font-weight: 400; letter-spacing: -0.3px; line-height: 1; font-family: inherit; }
+.logo-fleet { color: #fff; font-size: 22px; font-weight: 700; letter-spacing: -0.4px; line-height: 1; font-family: inherit; }
+.logo-os    { color: rgba(255,255,255,0.55); font-size: 22px; font-weight: 400; letter-spacing: -0.3px; line-height: 1; font-family: inherit; }
 .logo-pro-badge {
   display: inline-flex; align-items: center; justify-content: center;
-  margin-left: 9px; font-size: 16px; font-weight: 800; letter-spacing: 0.8px;
+  margin-left: 5px; font-size: 11px; font-weight: 800; letter-spacing: 0.8px;
   color: #c4912a; border: 1px solid rgba(196,145,42,0.31);
-  border-radius: 5px; padding: 3px 8px; line-height: 1;
+  border-radius: 3px; padding: 1.5px 4px; line-height: 1;
   text-transform: uppercase; align-self: center; font-family: inherit;
 }
 .btn-outline-sm {
@@ -1104,8 +1104,6 @@ section { padding: 100px 0; }
 }
 @media (max-width: 1024px) { .device-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 640px)  { .device-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 1024px) { .device-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 640px)  { .device-grid { grid-template-columns: repeat(2, 1fr); } }
 
 .device-card {
   display: flex; align-items: flex-start; gap: 14px;
@@ -1144,4 +1142,183 @@ section { padding: 100px 0; }
   font-size: 12px; font-weight: 600; color: var(--navy);
   background: #fff; border: 1px solid var(--border);
   padding: 4px 11px; border-radius: 20px;
+}
+
+/* ══ COMPREHENSIVE MOBILE / RESPONSIVE IMPROVEMENTS ════════════════════════
+   Layered on top of existing breakpoints for full mobile browser compatibility
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 768px — tablet / large phone ── */
+@media (max-width: 768px) {
+  .nav-inner { padding: 0 16px; }
+  section { padding: 56px 0; }
+  .section { padding: 56px 0; }
+  .hero-inner { padding: 70px 16px 44px; }
+  .cta-section { padding: 64px 0; }
+  .stats-ribbon { padding: 28px 0; }
+  .page-hero { padding: 100px 0 56px; }
+  .preview-layout { gap: 36px; }
+  .features-groups { gap: 40px; }
+  .feature-group { padding: 26px 20px; }
+  .footer-grid { gap: 28px; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .section-header { margin-bottom: 40px; }
+  /* Ensure comparison table scrolls on tablet */
+  .comparison-table-wrap { -webkit-overflow-scrolling: touch; }
+}
+
+/* ── 480px — small phones ── */
+@media (max-width: 480px) {
+  /* Base */
+  .container, .container-sm { padding: 0 16px; }
+  section { padding: 44px 0; }
+  .section { padding: 44px 0; }
+
+  /* Nav */
+  .nav-inner { padding: 0 14px; }
+  .nav-mobile a { padding: 12px 14px; font-size: 14px; }
+
+  /* Hero */
+  .hero-inner { padding: 56px 16px 36px; }
+  .hero-badge { font-size: 10px; letter-spacing: 0.8px; padding: 5px 12px; }
+  .hero-sub { font-size: 15px; }
+  .hero-ctas { flex-direction: column; align-items: stretch; gap: 10px; }
+  .hero-ctas .btn, .hero-ctas a { justify-content: center; text-align: center; }
+  .hero-trust { gap: 10px; }
+  .hero-trust span { font-size: 11px; }
+
+  /* Stats ribbon */
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 16px; }
+  .stat-number { font-size: 26px; }
+  .stat-label { font-size: 10px; }
+
+  /* Trusted logos */
+  .trusted { padding: 32px 0; }
+  .trusted-label { font-size: 10px; margin-bottom: 18px; }
+  .trusted-logos { gap: 8px; }
+  .trusted-logo-img-wrap { width: 86px; height: 38px; padding: 7px 10px; }
+
+  /* Feature groups */
+  .features-groups { gap: 28px; }
+  .feature-group { padding: 20px 14px; border-radius: 12px; }
+  .feature-group-header { gap: 10px; margin-bottom: 20px; padding-bottom: 16px; }
+  .feature-group-icon { width: 40px; height: 40px; font-size: 18px; }
+  .feature-group-title { font-size: 17px; }
+  .feature-cards { grid-template-columns: 1fr; }
+  .feature-card { padding: 18px 16px; }
+
+  /* Preview / platform section */
+  .preview-layout { grid-template-columns: 1fr; gap: 28px; }
+  .preview-copy { order: 1; }
+  .preview-visual { order: 2; }
+
+  /* How it works steps */
+  .steps-grid { grid-template-columns: 1fr; max-width: 280px; margin-left: auto; margin-right: auto; gap: 28px; }
+  .steps-grid::before { display: none; }
+  .step-item { padding: 0; }
+  .step-icon { width: 72px; height: 72px; font-size: 24px; }
+
+  /* Testimonials */
+  .testimonials-grid { grid-template-columns: 1fr; max-width: 100%; }
+  .testimonial-card { padding: 22px 18px; }
+
+  /* Pricing teaser */
+  .pricing-teaser-grid { grid-template-columns: 1fr; max-width: 100%; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 100%; }
+  .pricing-card { padding: 24px 20px; }
+
+  /* CTA section */
+  .cta-section { padding: 56px 0; }
+  .cta-inner { padding: 0 16px; }
+  .cta-title { font-size: 28px; }
+  .cta-sub { font-size: 15px; }
+  .cta-buttons { flex-direction: column; align-items: center; gap: 10px; }
+  .cta-buttons a, .cta-buttons button { width: 100%; max-width: 340px; justify-content: center; text-align: center; }
+
+  /* Footer */
+  .footer { padding: 48px 0 24px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 24px; margin-bottom: 32px; }
+  .footer-brand { max-width: 100%; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 10px; padding-top: 18px; }
+  .footer-certifications { gap: 8px; }
+
+  /* Device section */
+  .device-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .device-card { padding: 12px 10px; gap: 10px; border-radius: 10px; }
+  .device-logo-wrap { width: 44px; height: 44px; padding: 6px; }
+  .device-brand { font-size: 12px; }
+  .device-models { font-size: 10px; }
+
+  /* Page hero */
+  .page-hero { padding: 96px 0 48px; }
+  .page-hero-inner { padding: 0 16px; }
+  .page-hero-title { font-size: clamp(26px, 8vw, 38px); }
+  .page-hero-sub { font-size: 15px; }
+
+  /* Feature nav (sticky bar on features page) */
+  .feature-nav-links { padding: 0 12px; gap: 0; }
+  .feature-nav-link { padding: 12px 10px; font-size: 12px; gap: 5px; }
+  .sticky-feature-nav { top: 56px; }
+
+  /* Feature showcase */
+  .feature-showcase, .feature-showcase.reverse { grid-template-columns: 1fr; direction: ltr; gap: 28px; padding-bottom: 48px; margin-bottom: 48px; }
+  .showcase-screen { order: -1; }
+  .feature-section-header { flex-direction: column; gap: 14px; }
+  .feature-section-icon { width: 44px; height: 44px; font-size: 20px; }
+  .feature-section-title { font-size: 22px; }
+  .features-pair { grid-template-columns: 1fr; gap: 16px; margin-bottom: 28px; }
+  .feature-pair-card { padding: 20px 16px; }
+
+  /* Analytics & security grids */
+  .analytics-grid { grid-template-columns: 1fr; }
+  .security-grid { grid-template-columns: 1fr; }
+  .analytics-card, .security-card { padding: 20px 16px; }
+
+  /* Contact options */
+  .contact-options-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .contact-option-card { padding: 18px 14px; }
+  .contact-option-icon { width: 38px; height: 38px; font-size: 18px; margin-bottom: 10px; }
+  .contact-option-card h3 { font-size: 13px; }
+  .contact-layout { gap: 28px; }
+  .contact-form-wrap { padding: 24px 16px; }
+
+  /* About */
+  .about-stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .about-stat { padding: 18px 14px; }
+  .about-stat-num { font-size: 32px; }
+  .team-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .team-card { padding: 20px 14px; }
+  .team-avatar { width: 60px; height: 60px; font-size: 18px; }
+
+  /* Section header */
+  .section-header { margin-bottom: 32px; }
+  .section-sub { font-size: 15px; }
+  .section-badge { font-size: 10px; }
+
+  /* Protocol bar */
+  .protocol-bar { padding: 14px 16px; gap: 6px; }
+  .protocol-label { font-size: 11px; }
+
+  /* Comparison table */
+  .comparison-table-wrap { -webkit-overflow-scrolling: touch; font-size: 11px; }
+  .comparison-table th, .comparison-table td { padding: 10px 12px; }
+
+  /* Form */
+  .form-row { grid-template-columns: 1fr; }
+  .contact-form-wrap { border-radius: 12px; }
+}
+
+/* ── 360px — very small phones ── */
+@media (max-width: 360px) {
+  .nav-logo svg { width: 34px; height: 34px; }
+  .logo-fleet, .logo-os { font-size: 18px; }
+  .logo-pro-badge { font-size: 9px; padding: 1px 3px; }
+  .hero-headline { letter-spacing: -0.5px; }
+  .stat-number { font-size: 22px; }
+  .trusted-logo-img-wrap { width: 74px; height: 34px; }
+  .device-grid { grid-template-columns: 1fr; }
+  .contact-options-grid { grid-template-columns: 1fr; }
+  .steps-grid { max-width: 100%; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .cta-title { font-size: 24px; }
 }
