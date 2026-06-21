@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { upsertServerUser } from '@/lib/usersServerStore';
-import { getPool, TENANT_UUID, UUID_TENANT } from '@/lib/pgDb';
+import { getPool, TENANT_UUID, UUID_TENANT, toTenantUuid, fromTenantUuid } from '@/lib/pgDb';
 import { logAuditEvent } from '@/lib/auditLogger';
 import type { TenantUser } from '@/lib/tenantUsers';
 
@@ -17,7 +17,7 @@ function actorFromReq(req: NextRequest) {
 function rowToTenantUser(u: Record<string, unknown>): TenantUser {
   const tenantUuid = u.TenantId as string | null;
   const tenantId   = tenantUuid
-    ? (UUID_TENANT[tenantUuid.toLowerCase()] ?? tenantUuid)
+    ? (fromTenantUuid(tenantUuid.toLowerCase()) ?? tenantUuid)
     : '';
 
   return {
@@ -62,7 +62,7 @@ export async function GET(req: NextRequest) {
     const db = getPool();
     let rows;
     if (tenantId) {
-      const uuid = TENANT_UUID[tenantId];
+      const uuid = toTenantUuid(tenantId);
       if (!uuid) return NextResponse.json([]);
       ({ rows } = await db.query(
         `SELECT * FROM "Users" WHERE "TenantId" = $1 ORDER BY "Email"`,
@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'Invalid request body' }, { status: 400 });
   }
 
-  const tenantUuid   = user.tenantId ? (TENANT_UUID[user.tenantId] ?? null) : null;
+  const tenantUuid   = user.tenantId ? (toTenantUuid(user.tenantId) ?? null) : null;
   const passwordHash = user.password || 'Demo1234!';
 
   try {

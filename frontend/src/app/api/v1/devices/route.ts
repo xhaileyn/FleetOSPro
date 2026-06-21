@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, TENANT_UUID, UUID_TENANT } from '@/lib/pgDb';
+import { getPool, TENANT_UUID, UUID_TENANT, toTenantUuid, fromTenantUuid } from '@/lib/pgDb';
 
 function rowToDevice(r: Record<string, unknown>) {
   return {
     id:           r.ShortId,
-    tenantId:     UUID_TENANT[(r.TenantId as string)?.toLowerCase()] ?? r.TenantId,
+    tenantId:     fromTenantUuid((r.TenantId as string)?.toLowerCase()) ?? r.TenantId,
     vehicleId:    r.VehicleShortId ?? '',
     vehiclePlate: r.VehiclePlate   ?? '',
     type:         r.Type,
@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
     const params: unknown[] = [];
 
     if (tenantId) {
-      const uuid = TENANT_UUID[tenantId];
+      const uuid = toTenantUuid(tenantId);
       if (uuid) { wheres.push(`"TenantId" = $${params.length + 1}`); params.push(uuid); }
     }
     if (vehicleId) {
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
   if (!tenantId) {
     return NextResponse.json({ message: 'tenantId is required' }, { status: 400 });
   }
-  const tenantUuid = TENANT_UUID[tenantId];
+  const tenantUuid = toTenantUuid(tenantId);
   if (!tenantUuid) return NextResponse.json({ message: 'Unknown tenantId' }, { status: 400 });
 
   const db      = getPool();

@@ -121,7 +121,7 @@ export default function GeofencesPage() {
   const userId     = user?.email ?? null;
   const isSuperAdmin  = role === 'super_admin' || role === 'platform_admin';
   const isVehicleOwner = role === 'vehicle_owner';
-  const canEdit = isSuperAdmin || role === 'fleet_admin' || role === 'tenant_admin' || role === 'fleet_manager';
+  const canEdit = isSuperAdmin || role === 'fleet_admin' || role === 'tenant_admin' || role === 'fleet_manager' || role === 'vehicle_owner';
 
   /* ── Fetch from DB ─────────────────────────────────────────────────── */
   const fetchZones = useCallback(async () => {

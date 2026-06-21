@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, UUID_TENANT } from '@/lib/pgDb';
+import { getPool, UUID_TENANT, fromTenantUuid } from '@/lib/pgDb';
 
 function rowToSchedule(r: Record<string, unknown>) {
   return {
     id:             r.ShortId,
-    tenantId:       UUID_TENANT[(r.TenantId as string)?.toLowerCase()] ?? r.TenantId,
+    tenantId:       fromTenantUuid((r.TenantId as string)?.toLowerCase()) ?? r.TenantId,
     vehicleShortId: r.VehicleShortId ?? '',
     vehiclePlate:   r.VehiclePlate   ?? '',
     vehicleMake:    r.VehicleMake    ?? '',

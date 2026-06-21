@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, TENANT_UUID, UUID_TENANT } from '@/lib/pgDb';
+import { getPool, TENANT_UUID, UUID_TENANT, toTenantUuid, fromTenantUuid } from '@/lib/pgDb';
 
 export async function GET(req: NextRequest) {
   const tenantId  = req.nextUrl.searchParams.get('tenantId');
@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
       params.push(vehicleId);
     }
     if (tenantId) {
-      const uuid = TENANT_UUID[tenantId];
+      const uuid = toTenantUuid(tenantId);
       if (uuid) {
         conditions.push(`"TenantId" = $${params.length + 1}`);
         params.push(uuid);
@@ -49,7 +49,7 @@ export async function GET(req: NextRequest) {
     const { rows } = await db.query(query, params);
     return NextResponse.json(rows.map(r => ({
       id:                  r.ShortId,
-      tenantId:            r.TenantId ? (UUID_TENANT[(r.TenantId as string).toLowerCase()] ?? r.TenantId) : null,
+      tenantId:            r.TenantId ? (fromTenantUuid((r.TenantId as string).toLowerCase()) ?? r.TenantId) : null,
       timestamp:           r.Timestamp instanceof Date ? r.Timestamp.toISOString() : String(r.Timestamp),
       actor:               r.Actor,
       actorRole:           r.ActorRole,
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'tenantId, vehicleId, eventType required' }, { status: 400 });
   }
   /* Accept tenantId as either short key ('1') or full UUID */
-  const tenantUuid = TENANT_UUID[tenantId] ?? (UUID_TENANT[tenantId.toLowerCase()] ? tenantId : null);
+  const tenantUuid = toTenantUuid(tenantId) ?? (fromTenantUuid(tenantId.toLowerCase()) ? tenantId : null);
   if (!tenantUuid) {
     return NextResponse.json({ message: 'Unknown tenantId', received: tenantId }, { status: 400 });
   }

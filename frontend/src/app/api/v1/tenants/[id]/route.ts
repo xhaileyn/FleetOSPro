@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, TENANT_UUID } from '@/lib/pgDb';
+import { getPool, TENANT_UUID, toTenantUuid } from '@/lib/pgDb';
 
 /**
  * PATCH /api/v1/tenants/:id
@@ -11,7 +11,7 @@ export async function PATCH(
 ) {
   const db          = getPool();
   const { id }      = await params;
-  const uuid        = TENANT_UUID[id];
+  const uuid        = toTenantUuid(id);
   if (!uuid) {
     return NextResponse.json({ message: 'Tenant not found' }, { status: 404 });
   }

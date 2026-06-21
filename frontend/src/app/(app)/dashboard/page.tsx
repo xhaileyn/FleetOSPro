@@ -1,15 +1,15 @@
 'use client';
 
 import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 import { DashboardSummary } from '@/lib/types';
 import { AlertSeverityBadge } from '@/components/ui/Badge';
 import { FleetMap } from '@/components/maps/FleetMap';
 import type { VehiclePin } from '@/components/maps/FleetMap';
-import { PlaybackMap } from '@/components/maps/PlaybackMap';
-import type { RoutePoint } from '@/components/maps/PlaybackMap';
 import { useAuthStore } from '@/store/authStore';
+import { PlaybackPanel } from '@/components/playback/PlaybackPanel';
 import { TENANTS_META, VehicleMaster } from '@/lib/vehiclesMaster';
 import { useVehiclesStore } from '@/store/vehiclesStore';
 import { useUIStore } from '@/store/uiStore';
@@ -58,24 +58,7 @@ function exportAlertsCSV(alerts: DashboardSummary['recentAlerts']) {
   el.click();
 }
 
-/* ── Mock route generator (until real history API is wired up) ──── */
-const MOCK_EVENTS = ['', '', '', '', 'Speeding', 'Hard brake', '', 'Geofence exit', '', ''];
-function generateMockRoute(vehicle: VehicleMaster, count = 50): RoutePoint[] {
-  const baseLat = vehicle.latitude  ?? -1.2921;
-  const baseLng = vehicle.longitude ?? 36.8219;
-  const startMs = Date.now() - 2 * 60 * 60 * 1000; // 2 h ago
-  let lat = baseLat, lng = baseLng, heading = Math.random() * Math.PI * 2;
-  return Array.from({ length: count }, (_, i) => {
-    heading += (Math.random() - 0.5) * 0.45;
-    const step = 0.0025 + Math.random() * 0.0015;
-    lat += Math.cos(heading) * step;
-    lng += Math.sin(heading) * step;
-    const t   = new Date(startMs + (i / count) * 2 * 60 * 60 * 1000);
-    const spd = (i === 0 || i === count - 1) ? 0 : Math.round(15 + Math.random() * 90);
-    const ev  = Math.random() < 0.12 ? MOCK_EVENTS[Math.floor(Math.random() * MOCK_EVENTS.length)] || null : null;
-    return { lat, lng, time: t.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }), speed: spd, event: ev };
-  });
-}
+
 
 /* ── CSS-in-JS constants ─────────────────────────────────────────── */
 const STATUS_PILL: Record<string, React.CSSProperties> = {
@@ -387,6 +370,7 @@ function Btn({ children, onClick, variant = 'default', size = 'sm' }: {
 
 /* ── Page ──────────────────────────────────────────────────────────── */
 export default function DashboardPage() {
+  const isMobile = useIsMobile();
   const router          = useRouter();
   const { user }        = useAuthStore();
   const role            = user?.role ?? 'viewer';
@@ -417,39 +401,8 @@ export default function DashboardPage() {
   const [lmStatusFilter, setLmStatusFilter] = useState('all');
   const [lmSelectedId,   setLmSelectedId]   = useState<string | null>(null);
 
-  /* ── Playback tab state ─────────────────────────────────────────── */
-  const [pbVehicleId,   setPbVehicleId]   = useState('');
-  const [pbRoute,       setPbRoute]       = useState<RoutePoint[]>([]);
-  const [pbStep,        setPbStep]        = useState(0);
-  const [pbPlaying,     setPbPlaying]     = useState(false);
-  const [pbSpeed,       setPbSpeed]       = useState(2);   // ticks per second
-  const [pbRouteCount,  setPbRouteCount]  = useState(50);
-  const pbIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
   const vehicles = useVehiclesStore(s => s.vehicles);
   const uiSelectedVehicleId = useUIStore(s => s.selectedVehicleId);
-
-  /* Playback interval — advances step while playing */
-  useEffect(() => {
-    if (pbIntervalRef.current) clearInterval(pbIntervalRef.current);
-    if (!pbPlaying || pbRoute.length === 0) return;
-    const delay = Math.round(1000 / pbSpeed);
-    pbIntervalRef.current = setInterval(() => {
-      setPbStep(s => {
-        if (s >= pbRoute.length - 1) { setPbPlaying(false); return pbRoute.length - 1; }
-        return s + 1;
-      });
-    }, delay);
-    return () => { if (pbIntervalRef.current) clearInterval(pbIntervalRef.current); };
-  }, [pbPlaying, pbSpeed, pbRoute.length]);
-
-  function loadRoute(vehicleId: string) {
-    const vm = sourceVehicles.find(v => v.id === vehicleId || v.plate === vehicleId);
-    if (!vm) return;
-    setPbRoute(generateMockRoute(vm, pbRouteCount));
-    setPbStep(0);
-    setPbPlaying(false);
-  }
 
   /* Scope vehicles */
   const sourceVehicles = useMemo(() => {
@@ -496,13 +449,49 @@ export default function DashboardPage() {
     return { active, idle, offline, maintenance, total, withGps, avgFuel, lowFuel, avgSpeed };
   }, [filteredVehicles, fleetPins]);
 
+  const COUNTRY_CENTER: Record<string, [number, number]> = {
+    Kenya: [-1.2921, 36.8219], Uganda: [0.3476, 32.5825], Tanzania: [-6.369, 34.889],
+    Nigeria: [9.082, 8.6753], Ghana: [7.946, -1.023], 'South Africa': [-30.559, 22.938],
+    Ethiopia: [9.145, 40.489], Rwanda: [-1.940, 29.874],
+    'United Kingdom': [51.5074, -0.1278], UK: [51.5074, -0.1278],
+    'United States': [37.09, -95.712], USA: [37.09, -95.712],
+    India: [20.594, 78.963], Pakistan: [30.375, 69.345],
+    UAE: [23.424, 53.848], 'Saudi Arabia': [23.886, 45.079],
+    Germany: [51.165, 10.452], France: [46.227, 2.213],
+    Australia: [-25.274, 133.775], Canada: [56.130, -106.347],
+  };
+
   const mapCenter = useMemo((): [number, number] => {
-    if (!fleetPins.length) return [-1.2921, 36.8219];
-    return [
-      fleetPins.reduce((s, v) => s + v.lat, 0) / fleetPins.length,
-      fleetPins.reduce((s, v) => s + v.lng, 0) / fleetPins.length,
-    ];
-  }, [fleetPins]);
+    if (fleetPins.length) {
+      return [
+        fleetPins.reduce((s, v) => s + v.lat, 0) / fleetPins.length,
+        fleetPins.reduce((s, v) => s + v.lng, 0) / fleetPins.length,
+      ];
+    }
+    const tenantMeta = isSuperAdmin ? null : TENANTS_META[tenantId];
+    if (tenantMeta?.country) {
+      const hit = COUNTRY_CENTER[tenantMeta.country];
+      if (hit) return hit;
+    }
+    const country = sourceVehicles[0]?.registrationCountry;
+    return COUNTRY_CENTER[country ?? ''] ?? [-1.2921, 36.8219];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fleetPins, isSuperAdmin, tenantId, sourceVehicles]);
+
+  /* Alerts + Analytics state — declared here so analytics useMemo can reference them */
+  const [alertData, setAlertData] = useState<DashboardSummary | null>(null);
+  const [loading, setLoading]     = useState(true);
+  const [error,   setError]       = useState('');
+
+  type OpsData = {
+    trend: number[];
+    kpis: { label: string; value: string; spark: number[] }[];
+    xLabels: string[];
+    totals: { trips: number; dist: string; util: number };
+    empty?: boolean;
+  };
+  const [analyticsOps, setAnalyticsOps] = useState<OpsData | null>(null);
+  const [analyticsLoading, setAnalyticsLoading] = useState(false);
 
   const analytics = useMemo(() => {
     const now        = new Date();
@@ -512,86 +501,55 @@ export default function DashboardPage() {
     const lowFuel    = filteredVehicles.filter(v => (v.fuelLevel ?? 100) < 30).length;
     const topSpeeder = filteredVehicles.filter(v => v.status === 'active').sort((a, b) => (b.speedKmh ?? 0) - (a.speedKmh ?? 0)).slice(0, 5);
     const fuelSorted = filteredVehicles.slice().sort((a, b) => (a.fuelLevel ?? 0) - (b.fuelLevel ?? 0));
+    const liveUtil   = liveStats.total ? Math.round((liveStats.active / liveStats.total) * 100) : 0;
 
-    const baseTrips = active.length * 2 + Math.floor(liveStats.idle * 0.7);
-    const baseKm    = Math.round(active.reduce((s, v) => s + (v.speedKmh ?? 0) * 8, 0));
-    const liveUtil  = liveStats.total ? Math.round((liveStats.active / liveStats.total) * 100) : 0;
-    const n         = filteredVehicles.length || 1;
+    // ── Use real DB data when available (week/month) ─────────────────
+    const hasRealData = analyticsOps && !analyticsOps.empty;
 
-    const weekFactor  = 5 + ((n * 3) % 3) / 10;
-    const monthFactor = 22 + ((n * 7) % 5);
-    const multiplier  = analyticsPeriod === 'today' ? 1 : analyticsPeriod === 'week' ? weekFactor : monthFactor;
-
-    const trips         = Math.round(baseTrips * multiplier);
-    const km            = Math.round(baseKm    * multiplier);
-    const utilRate      = analyticsPeriod === 'today' ? liveUtil
-                        : analyticsPeriod === 'week'  ? Math.min(100, Math.round(liveUtil * 1.18 + (n % 5)))
-                        :                               Math.min(100, Math.round(liveUtil * 1.30 + (n % 8)));
-    const driversOnDuty = analyticsPeriod === 'today' ? liveStats.active
-                        : analyticsPeriod === 'week'  ? Math.min(n, liveStats.active * 4 + (n % 3))
-                        :                               Math.min(n, liveStats.active * 9 + (n % 5));
-    const fuelEfficiency = avgSpeed > 0
+    const trips         = hasRealData ? analyticsOps.totals.trips
+                        : analyticsPeriod === 'today' ? active.length * 2 + Math.floor(liveStats.idle * 0.7) : 0;
+    const km            = hasRealData ? Number(analyticsOps.totals.dist.replace(/,/g, ''))
+                        : analyticsPeriod === 'today' ? Math.round(active.reduce((s, v) => s + (v.speedKmh ?? 0) * 8, 0)) : 0;
+    const utilRate      = hasRealData ? analyticsOps.totals.util : liveUtil;
+    const driversOnDuty = analyticsPeriod === 'today' ? (alertData?.driversOnDuty ?? liveStats.active) : (alertData?.totalDrivers ?? 0);
+    const fuelEfficiency = avgSpeed > 0 && km > 0
       ? Math.round((km / (((100 - avgFuel) / 100) * liveStats.total + 0.1)) * 10) / 10
       : 0;
-
-    // ── Chart data — deterministic (no Math.random) ─────────────────
-    // det(i, salt) → stable 0..1 value per index + salt
-    const det = (i: number, salt: number) => ((n * salt + i * (salt + 3)) % 97) / 97;
-
-    const curHour        = now.getHours();
-    const curDow         = now.getDay();                      // 0=Sun
-    const curDowMon0     = curDow === 0 ? 6 : curDow - 1;    // Mon=0…Sun=6
-    const curWeekOfMonth = Math.min(3, Math.floor((now.getDate() - 1) / 7));
 
     type ChartPt = { label: string; value: number };
     let tripsChart: ChartPt[], speedChart: ChartPt[], utilChart: ChartPt[];
 
-    if (analyticsPeriod === 'today') {
-      const hours = [6,7,8,9,10,11,12,13,14,15,16,17,18];
-      tripsChart = hours.map((h, i) => ({
-        label: `${h}`,
-        value: h > curHour ? 0 : Math.max(1, Math.round(baseTrips * (0.05 + det(i, 11) * 0.12))),
-      }));
-      speedChart = hours.map((h, i) => ({
-        label: `${h}`,
-        value: h > curHour ? 0 : Math.max(15, Math.round(avgSpeed * (0.78 + det(i, 7) * 0.44))),
-      }));
-      utilChart = hours.map((h, i) => ({
-        label: `${h}`,
-        value: h > curHour ? 0 : Math.min(100, Math.max(5, Math.round(liveUtil * (0.65 + det(i, 13) * 0.70)))),
-      }));
-    } else if (analyticsPeriod === 'week') {
-      const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-      tripsChart = days.map((d, i) => ({
-        label: d,
-        value: i > curDowMon0 ? 0 : Math.max(1, Math.round((trips / 5) * (0.72 + det(i, 11) * 0.56))),
-      }));
-      speedChart = days.map((d, i) => ({
-        label: d,
-        value: i > curDowMon0 ? 0 : Math.max(15, Math.round(avgSpeed * (0.82 + det(i, 7) * 0.36))),
-      }));
-      utilChart = days.map((d, i) => ({
-        label: d,
-        value: i > curDowMon0 ? 0 : Math.min(100, Math.max(5, Math.round(utilRate * (0.75 + det(i, 13) * 0.50)))),
+    if (hasRealData && analyticsPeriod !== 'today') {
+      // Real data from DB
+      tripsChart = analyticsOps.trend.map((v, i) => ({ label: analyticsOps.xLabels[i] ?? `${i}`, value: v }));
+      utilChart  = (analyticsOps.kpis[2]?.spark ?? []).map((v, i) => ({ label: analyticsOps.xLabels[i] ?? `${i}`, value: v }));
+      // Speed sparkline not in ops API — derive from avg speed with x-axis from ops
+      speedChart = analyticsOps.xLabels.map((label, i) => ({
+        label,
+        value: Math.max(0, Math.round(avgSpeed * (0.8 + ((i * 7) % 20) / 100))),
       }));
     } else {
-      const weeks = ['Wk 1','Wk 2','Wk 3','Wk 4'];
-      tripsChart = weeks.map((w, i) => ({
-        label: w,
-        value: i > curWeekOfMonth ? 0 : Math.max(1, Math.round((trips / 4) * (0.78 + det(i, 11) * 0.44))),
+      // Today view or no DB data — use live snapshot
+      const hours = [6,7,8,9,10,11,12,13,14,15,16,17,18];
+      const curHour = now.getHours();
+      const n = filteredVehicles.length || 1;
+      const det = (i: number, salt: number) => ((n * salt + i * (salt + 3)) % 97) / 97;
+      tripsChart = hours.map((h, i) => ({
+        label: `${h}:00`,
+        value: h > curHour ? 0 : Math.max(0, Math.round((trips / 13) * (0.5 + det(i, 11) * 1.0))),
       }));
-      speedChart = weeks.map((w, i) => ({
-        label: w,
-        value: i > curWeekOfMonth ? 0 : Math.max(15, Math.round(avgSpeed * (0.88 + det(i, 7) * 0.24))),
+      speedChart = hours.map((h, i) => ({
+        label: `${h}:00`,
+        value: h > curHour ? 0 : (avgSpeed > 0 ? Math.max(10, Math.round(avgSpeed * (0.78 + det(i, 7) * 0.44))) : 0),
       }));
-      utilChart = weeks.map((w, i) => ({
-        label: w,
-        value: i > curWeekOfMonth ? 0 : Math.min(100, Math.max(5, Math.round(utilRate * (0.82 + det(i, 13) * 0.36)))),
+      utilChart = hours.map((h, i) => ({
+        label: `${h}:00`,
+        value: h > curHour ? 0 : Math.min(100, Math.max(0, Math.round(liveUtil * (0.65 + det(i, 13) * 0.70)))),
       }));
     }
 
-    return { avgSpeed, avgFuel, lowFuel, trips, km, utilRate, driversOnDuty, topSpeeder, fuelSorted, fuelEfficiency, tripsChart, speedChart, utilChart };
-  }, [filteredVehicles, liveStats, analyticsPeriod]);
+    return { avgSpeed, avgFuel, lowFuel, trips, km, utilRate, driversOnDuty, topSpeeder, fuelSorted, fuelEfficiency, tripsChart, speedChart, utilChart, hasRealData: !!hasRealData };
+  }, [filteredVehicles, liveStats, analyticsPeriod, analyticsOps, alertData]);
 
   /* Vehicles tab rows with sort */
   const vehicleRows = useMemo(() => {
@@ -690,45 +648,72 @@ export default function DashboardPage() {
   }
 
   /* Alerts */
-  const [alertData, setAlertData] = useState<DashboardSummary | null>(null);
-  const [loading, setLoading]     = useState(true);
-  const [error,   setError]       = useState('');
-
   const load = useCallback(async () => {
     try {
-      const result = await api.dashboard.summary() as DashboardSummary;
+      const result = await api.dashboard.summary(isSuperAdmin ? null : tenantId) as DashboardSummary;
       setAlertData(result);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to load alerts.');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [isSuperAdmin, tenantId]);
 
   useEffect(() => { load(); }, [load]);
+
+  /* Analytics — real data from FactOpsDaily */
+  const loadAnalytics = useCallback(async (period: 'week' | 'month') => {
+    if (isSuperAdmin) return; // super admin has no single tenantId
+    setAnalyticsLoading(true);
+    try {
+      const data = await api.analytics.operations(tenantId, period) as OpsData;
+      setAnalyticsOps(data);
+    } catch {
+      setAnalyticsOps(null);
+    } finally {
+      setAnalyticsLoading(false);
+    }
+  }, [isSuperAdmin, tenantId]);
+
+  useEffect(() => {
+    if (activeTab === 'Analytics' && analyticsPeriod !== 'today') {
+      loadAnalytics(analyticsPeriod as 'week' | 'month');
+    } else if (analyticsPeriod === 'today') {
+      setAnalyticsOps(null);
+    }
+  }, [activeTab, analyticsPeriod, loadAnalytics]);
 
   async function acknowledge(id: string) {
     await api.dashboard.acknowledgeAlert(id);
     load();
   }
 
-  const filteredAlerts = useMemo(() => {
+  // Scoped to vehicle owner + search, but NO severity filter — used for stable counts
+  const scopedAlerts = useMemo(() => {
     if (!alertData) return [];
     let alerts = alertData.recentAlerts;
-    if (alertFilter !== 'all') alerts = alerts.filter(a => a.severity === alertFilter);
+    if (isVehicleOwner) {
+      const ownerPlates = new Set(sourceVehicles.map(v => v.plate));
+      alerts = alerts.filter(a => a.vehiclePlate && ownerPlates.has(a.vehiclePlate));
+    }
     if (alertSearch) alerts = alerts.filter(a =>
       a.title.toLowerCase().includes(alertSearch.toLowerCase()) ||
       (a.vehiclePlate ?? '').toLowerCase().includes(alertSearch.toLowerCase()),
     );
     return alerts;
-  }, [alertData, alertFilter, alertSearch]);
+  }, [alertData, alertSearch, isVehicleOwner, sourceVehicles]);
+
+  const filteredAlerts = useMemo(() => {
+    if (alertFilter === 'all') return scopedAlerts;
+    return scopedAlerts.filter(a => a.severity === alertFilter);
+  }, [scopedAlerts, alertFilter]);
 
   const alertCounts = useMemo(() => ({
-    critical:     alertData?.recentAlerts.filter(a => a.severity === 'critical').length ?? 0,
-    warning:      alertData?.recentAlerts.filter(a => a.severity === 'warning').length ?? 0,
-    info:         alertData?.recentAlerts.filter(a => a.severity === 'info').length ?? 0,
-    acknowledged: alertData?.recentAlerts.filter(a => a.acknowledged).length ?? 0,
-  }), [alertData]);
+    critical:     scopedAlerts.filter(a => a.severity === 'critical').length,
+    warning:      scopedAlerts.filter(a => a.severity === 'warning').length,
+    info:         scopedAlerts.filter(a => a.severity === 'info').length,
+    acknowledged: scopedAlerts.filter(a => a.acknowledged).length,
+  }), [scopedAlerts]);
 
   const alertBadge = alertData?.openAlerts ?? 0;
 
@@ -853,13 +838,6 @@ export default function DashboardPage() {
       <TabBar
         active={activeTab}
         onChange={t => {
-          if (t === 'Playback') {
-            // resolve vehicle: current selection → persisted uiStore → first in scope
-            const nextId = pbVehicleId || uiSelectedVehicleId || sourceVehicles[0]?.id || '';
-            if (nextId && nextId !== pbVehicleId) setPbVehicleId(nextId);
-            // auto-load route if nothing is loaded yet
-            if (nextId && pbRoute.length === 0) loadRoute(nextId);
-          }
           setActiveTab(t as DashTab);
         }}
         tabs={DASH_TABS}
@@ -870,7 +848,7 @@ export default function DashboardPage() {
       {activeTab === 'Overview' && (
         <>
           {/* 8-up KPI row */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 7, marginBottom: 7 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 7, marginBottom: 7 }}>
             <KpiCard icon="ti-player-play" iconColor="#c4912a" label="Active Vehicles" value={liveStats.active}
               sub={`${liveStats.active > 0 ? Math.round((liveStats.active / liveStats.total) * 100) : 0}% of fleet`}
               stripe="#c4912a" trend="up"
@@ -891,7 +869,7 @@ export default function DashboardPage() {
               stripe="var(--blue)"
               onClick={() => { setActiveTab('Vehicles'); setVStatusFilter('maintenance'); }} />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 7, marginBottom: 14 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 7, marginBottom: 14 }}>
             <KpiCard icon="ti-satellite" iconColor="var(--green)" label="GPS Online" value={liveStats.withGps}
               sub={`${liveStats.total - liveStats.withGps} without signal`}
               subColor={liveStats.total - liveStats.withGps > 0 ? 'var(--amber)' : 'var(--green)'}
@@ -912,7 +890,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Map + Fleet sidebar */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 260px', gap: 10, marginBottom: 12, minHeight: 460, alignItems: 'stretch' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 260px', gap: 10, marginBottom: 12, minHeight: isMobile ? 320 : 460, alignItems: 'stretch' }}>
             {/* Map card */}
             <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
               <div style={{ padding: '8px 12px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--cream)' }}>
@@ -999,9 +977,9 @@ export default function DashboardPage() {
                 } />
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                   {[
-                    { label: 'Critical', count: alertCounts.critical, color: 'var(--red)', bg: 'var(--red-lt)' },
-                    { label: 'Warning',  count: alertCounts.warning,  color: 'var(--amber)', bg: 'var(--amber-lt)' },
-                    { label: 'Info',     count: alertCounts.info,     color: 'var(--blue)', bg: 'var(--blue-lt)' },
+                    { label: 'Critical', count: alertData?.criticalAlerts ?? 0, color: 'var(--red)', bg: 'var(--red-lt)' },
+                    { label: 'Warning',  count: alertData?.warningAlerts ?? 0,  color: 'var(--amber)', bg: 'var(--amber-lt)' },
+                    { label: 'Info',     count: alertData?.infoAlerts ?? 0,     color: 'var(--blue)', bg: 'var(--blue-lt)' },
                   ].map(r => (
                     <div key={r.label} onClick={() => { setActiveTab('Alerts'); setAlertFilter(r.label.toLowerCase() as 'critical'|'warning'|'info'); }}
                       style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '5px 8px', background: r.count > 0 ? r.bg : 'var(--cream)', borderRadius: 5, cursor: 'pointer', border: `1px solid ${r.count > 0 ? r.color + '40' : 'transparent'}`, transition: 'opacity 0.15s' }}
@@ -1014,7 +992,7 @@ export default function DashboardPage() {
                   ))}
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '5px 8px', background: 'var(--cream)', borderRadius: 5 }}>
                     <span style={{ fontSize: 10, color: 'var(--ink3)' }}>Acknowledged</span>
-                    <span style={{ fontSize: 14, fontWeight: 300, color: 'var(--green)', letterSpacing: '-0.5px' }}>{alertCounts.acknowledged}</span>
+                    <span style={{ fontSize: 14, fontWeight: 300, color: 'var(--green)', letterSpacing: '-0.5px' }}>{alertData?.acknowledgedAlerts ?? 0}</span>
                   </div>
                 </div>
               </div>
@@ -1079,7 +1057,7 @@ export default function DashboardPage() {
         });
         const lmSelected = lmPins.find(p => p.id === lmSelectedId) ?? null;
         return (
-          <div style={{ display: 'grid', gridTemplateColumns: '270px 1fr', gap: 14, height: 'calc(100vh - 210px)', minHeight: 520 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '270px 1fr', gap: 14, height: isMobile ? 'auto' : 'calc(100vh - 210px)', minHeight: isMobile ? 'auto' : 520 }}>
             {/* ── Left sidebar ── */}
             <div style={{ display: 'flex', flexDirection: 'column', background: '#fff', border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', height: '100%' }}>
               {/* Sidebar header */}
@@ -1160,7 +1138,7 @@ export default function DashboardPage() {
                       style={{ flex: 1, padding: '6px 0', fontSize: 11, fontWeight: 700, borderRadius: 7, border: 'none', background: '#c4912a', color: '#fff', cursor: 'pointer', fontFamily: 'inherit' }}>
                       Open Tracker
                     </button>
-                    <button onClick={() => { setPbVehicleId(lmSelected.id); loadRoute(lmSelected.id); setActiveTab('Playback'); }}
+                    <button onClick={() => setActiveTab('Playback')}
                       style={{ flex: 1, padding: '6px 0', fontSize: 11, fontWeight: 700, borderRadius: 7, border: '1px solid #c4912a', background: '#fff', color: '#c4912a', cursor: 'pointer', fontFamily: 'inherit' }}>
                       Playback →
                     </button>
@@ -1198,272 +1176,40 @@ export default function DashboardPage() {
               </div>
 
               {/* Map fills the remaining height of the card */}
-              <div style={{ flex: 1, minHeight: 0 }}>
+              <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
                 <FleetMap
                   vehicles={lmPins}
                   height="100%"
-                  zoom={lmSelectedId ? 14 : (isSuperAdmin && tenantFilter === 'all' ? 4 : 11)}
+                  zoom={lmSelectedId ? 14 : lmPins.length === 0 ? 6 : (isSuperAdmin && tenantFilter === 'all' ? 4 : 11)}
                   center={lmSelected ? [lmSelected.lat, lmSelected.lng] : mapCenter}
                   selectedId={lmSelectedId}
                   onSelectId={id => { setLmSelectedId(id); if (id) openTracking(id); }}
                   fitAll={!lmSelectedId && lmPins.length > 1}
                   trails={showTrails ? trails : {}}
                 />
+                {lmPins.length === 0 && (
+                  <div style={{
+                    position: 'absolute', bottom: 18, left: '50%', transform: 'translateX(-50%)',
+                    background: 'rgba(255,255,255,0.93)', borderRadius: 8, padding: '7px 16px',
+                    fontSize: 12, color: 'var(--ink3)', fontWeight: 600, zIndex: 999,
+                    display: 'flex', alignItems: 'center', gap: 7,
+                    boxShadow: '0 2px 10px rgba(0,0,0,0.14)', whiteSpace: 'nowrap',
+                  }}>
+                    <i className="ti ti-map-pin-off" style={{ fontSize: 13 }} />
+                    No GPS vehicles — showing region map
+                  </div>
+                )}
               </div>
             </div>
           </div>
         );
       })()}
+
 
       {/* ════════════════════ PLAYBACK TAB ══════════════════════════════ */}
-      {activeTab === 'Playback' && (() => {
-        const pbVehicle = sourceVehicles.find(v => v.id === pbVehicleId || v.plate === pbVehicleId);
-        const pbCurrent = pbRoute[pbStep];
-        const pbProgress = pbRoute.length > 1 ? Math.round((pbStep / (pbRoute.length - 1)) * 100) : 0;
-        const pbDistEst  = pbStep > 0 ? Math.round(pbRoute.slice(0, pbStep + 1).reduce((d, pt, i, arr) => {
-          if (i === 0) return 0;
-          const prev = arr[i - 1];
-          const dlat = pt.lat - prev.lat, dlng = pt.lng - prev.lng;
-          return d + Math.sqrt(dlat * dlat + dlng * dlng) * 111;
-        }, 0) * 10) / 10 : 0;
-        const pbEvents = pbRoute.map((p, i) => ({ ...p, index: i })).filter(p => p.event);
-
-        return (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-            {/* ── Config bar ── */}
-            <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, padding: '14px 18px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  <label style={{ fontSize: 10, fontWeight: 700, color: 'var(--ink3)', textTransform: 'uppercase', letterSpacing: '0.8px' }}>Vehicle</label>
-                  <select value={pbVehicleId} onChange={e => { setPbVehicleId(e.target.value); setPbRoute([]); setPbStep(0); setPbPlaying(false); }}
-                    style={{ padding: '7px 12px', border: '1px solid var(--border)', borderRadius: 8, fontSize: 12, fontFamily: 'inherit', minWidth: 220, background: '#fff', color: 'var(--ink)' }}>
-                    <option value="">— Select a vehicle —</option>
-                    {sourceVehicles.map(v => (
-                      <option key={v.id} value={v.id}>{v.plate}{v.driverName ? ` · ${v.driverName}` : ''} ({v.status})</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  <label style={{ fontSize: 10, fontWeight: 700, color: 'var(--ink3)', textTransform: 'uppercase', letterSpacing: '0.8px' }}>Route points</label>
-                  <select value={pbRouteCount} onChange={e => setPbRouteCount(Number(e.target.value))}
-                    style={{ padding: '7px 12px', border: '1px solid var(--border)', borderRadius: 8, fontSize: 12, fontFamily: 'inherit', background: '#fff', color: 'var(--ink)' }}>
-                    {[20, 35, 50, 75, 100].map(n => <option key={n} value={n}>{n} points (~{Math.round(n * 2.4)} min)</option>)}
-                  </select>
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  <label style={{ fontSize: 10, fontWeight: 700, color: 'var(--ink3)', textTransform: 'uppercase', letterSpacing: '0.8px' }}>Playback speed</label>
-                  <div style={{ display: 'flex', gap: 4 }}>
-                    {[1, 2, 5, 10].map(s => (
-                      <button key={s} onClick={() => setPbSpeed(s)}
-                        style={{ padding: '6px 12px', fontSize: 11, fontWeight: 700, borderRadius: 7, border: '1px solid var(--border)', cursor: 'pointer', fontFamily: 'inherit', background: pbSpeed === s ? '#c4912a' : '#fff', color: pbSpeed === s ? '#fff' : 'var(--ink2)', transition: 'all 0.12s' }}>
-                        {s}×
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div style={{ marginLeft: 'auto' }}>
-                  <button
-                    onClick={() => { if (pbVehicleId) loadRoute(pbVehicleId); }}
-                    disabled={!pbVehicleId}
-                    style={{ padding: '8px 20px', fontSize: 12, fontWeight: 700, borderRadius: 8, border: 'none', background: pbVehicleId ? '#c4912a' : 'var(--cream2)', color: pbVehicleId ? '#fff' : 'var(--ink3)', cursor: pbVehicleId ? 'pointer' : 'not-allowed', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 7 }}>
-                    ↺ Load Route
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {pbRoute.length === 0 ? (
-              /* Empty state */
-              <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, padding: 60, textAlign: 'center' }}>
-                <i className="ti ti-player-play" style={{ fontSize: 48, color: 'var(--ink3)', opacity: 0.3, marginBottom: 16, display: 'block' }} />
-                <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--ink)', marginBottom: 6 }}>Route Playback</div>
-                <div style={{ fontSize: 13, color: 'var(--ink3)', marginBottom: 20 }}>Select a vehicle above and click <strong>Load Route</strong> to replay its trip history.</div>
-                <div style={{ display: 'flex', gap: 12, justifyContent: 'center', fontSize: 12, color: 'var(--ink3)' }}>
-                  {['Pick any vehicle from the fleet','Adjust route density & playback speed','Use transport controls to scrub through the trip'].map((s, i) => (
-                    <div key={i} style={{ background: 'var(--cream)', borderRadius: 8, padding: '10px 16px', maxWidth: 180 }}>
-                      <div style={{ fontSize: 16, marginBottom: 6 }}>{['①','②','③'][i]}</div>
-                      {s}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <>
-                {/* ── Route summary strip ── */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 10 }}>
-                  {[
-                    { icon: 'ti-truck',        label: 'Vehicle',      value: pbVehicle?.plate ?? pbVehicleId },
-                    { icon: 'ti-clock-play',   label: 'Start time',   value: pbRoute[0]?.time ?? '—' },
-                    { icon: 'ti-clock-stop',   label: 'End time',     value: pbRoute[pbRoute.length - 1]?.time ?? '—' },
-                    { icon: 'ti-map-pin',      label: 'Est. distance',value: `${pbDistEst} km` },
-                    { icon: 'ti-alert-triangle', label: 'Events',     value: `${pbEvents.length} flagged` },
-                  ].map(k => (
-                    <div key={k.label} style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 10, padding: '12px 14px' }}>
-                      <div style={{ fontSize: 15, marginBottom: 4, color: 'var(--ink3)' }}><i className={`ti ${k.icon}`} /></div>
-                      <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--ink3)', marginBottom: 3 }}>{k.label}</div>
-                      <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.3px' }}>{k.value}</div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* ── Map + event log ── */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 260px', gap: 14 }}>
-                  {/* Map */}
-                  <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden' }}>
-                    <div style={{ padding: '10px 14px', borderBottom: '1px solid var(--border)', background: 'var(--cream)', display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink)' }}>
-                        {pbVehicle?.plate ?? 'Vehicle'} — Route Replay
-                      </span>
-                      {pbCurrent && (
-                        <span style={{ fontSize: 11, color: 'var(--ink3)' }}>
-                          Step {pbStep + 1}/{pbRoute.length} · {pbCurrent.time}
-                          {pbCurrent.speed > 0 && <> · <span style={{ color: pbCurrent.speed > 100 ? 'var(--red)' : '#c4912a', fontWeight: 700 }}>{pbCurrent.speed} km/h</span></>}
-                        </span>
-                      )}
-                      {pbCurrent?.event && (
-                        <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 10, background: 'var(--red-lt)', color: 'var(--red)', marginLeft: 'auto' }}>
-                          <i className="ti ti-alert-triangle" /> {pbCurrent.event}
-                        </span>
-                      )}
-                    </div>
-                    <PlaybackMap points={pbRoute} stepIndex={pbStep} height={440} />
-                  </div>
-
-                  {/* Event log */}
-                  <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ padding: '10px 14px', borderBottom: '1px solid var(--border)', background: 'var(--cream)', fontSize: 12, fontWeight: 700, color: 'var(--ink)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}><i className="ti ti-alert-triangle" style={{ color: 'var(--amber)' }} /> Event Log</span>
-                      <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 10, background: pbEvents.length > 0 ? 'var(--red-lt)' : 'var(--green-lt)', color: pbEvents.length > 0 ? 'var(--red)' : 'var(--green)' }}>
-                        {pbEvents.length} event{pbEvents.length !== 1 ? 's' : ''}
-                      </span>
-                    </div>
-                    <div style={{ flex: 1, overflowY: 'auto' }}>
-                      {pbEvents.length === 0 ? (
-                        <div style={{ padding: 32, textAlign: 'center', color: 'var(--green)', fontSize: 12, fontWeight: 700 }}>✓ No events on this route</div>
-                      ) : pbEvents.map((ev, i) => (
-                        <div key={i}
-                          onClick={() => { setPbPlaying(false); setPbStep(ev.index); }}
-                          style={{ padding: '10px 14px', borderBottom: '1px solid var(--border)', cursor: 'pointer', background: pbStep === ev.index ? 'var(--amber-lt)' : '#fff', transition: 'background 0.12s' }}
-                          onMouseEnter={e => { if (pbStep !== ev.index) (e.currentTarget as HTMLElement).style.background = 'var(--cream)'; }}
-                          onMouseLeave={e => { if (pbStep !== ev.index) (e.currentTarget as HTMLElement).style.background = '#fff'; }}
-                        >
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 3 }}>
-                            <i className={`ti ${ev.event === 'Speeding' ? 'ti-gauge' : ev.event === 'Hard brake' ? 'ti-brake' : ev.event === 'Geofence exit' ? 'ti-map-pin-off' : 'ti-alert-triangle'}`} style={{ fontSize: 12, color: 'var(--red)' }} />
-                            <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--red)' }}>{ev.event}</span>
-                          </div>
-                          <div style={{ fontSize: 10, color: 'var(--ink3)' }}>
-                            {ev.time} · Step {ev.index + 1}
-                            {ev.speed > 0 && <> · {ev.speed} km/h</>}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    {/* Step through events */}
-                    {pbEvents.length > 0 && (
-                      <div style={{ padding: '8px 14px', borderTop: '1px solid var(--border)', background: 'var(--cream)', display: 'flex', gap: 6 }}>
-                        <button onClick={() => { const prev = pbEvents.filter(e => e.index < pbStep).pop(); if (prev) { setPbStep(prev.index); setPbPlaying(false); } }}
-                          style={{ flex: 1, padding: '5px 0', fontSize: 11, fontWeight: 700, borderRadius: 6, border: '1px solid var(--border)', background: '#fff', cursor: 'pointer', fontFamily: 'inherit' }}>‹ Prev event</button>
-                        <button onClick={() => { const next = pbEvents.find(e => e.index > pbStep); if (next) { setPbStep(next.index); setPbPlaying(false); } }}
-                          style={{ flex: 1, padding: '5px 0', fontSize: 11, fontWeight: 700, borderRadius: 6, border: '1px solid var(--border)', background: '#fff', cursor: 'pointer', fontFamily: 'inherit' }}>Next event ›</button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* ── Transport controls ── */}
-                <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, padding: '16px 20px' }}>
-                  {/* Progress bar / scrubber */}
-                  <div style={{ marginBottom: 14 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: 'var(--ink3)', marginBottom: 6 }}>
-                      <span>{pbRoute[0]?.time}</span>
-                      <span style={{ fontWeight: 700, color: '#c4912a' }}>
-                        {pbCurrent?.time} · Step {pbStep + 1}/{pbRoute.length} ({pbProgress}%)
-                      </span>
-                      <span>{pbRoute[pbRoute.length - 1]?.time}</span>
-                    </div>
-                    <div style={{ position: 'relative', height: 20, display: 'flex', alignItems: 'center' }}>
-                      {/* Event markers on scrubber */}
-                      <div style={{ position: 'absolute', left: 0, right: 0, top: '50%', transform: 'translateY(-50%)', height: 8, background: 'var(--cream2)', borderRadius: 4 }}>
-                        <div style={{ width: `${pbProgress}%`, height: '100%', background: '#c4912a', borderRadius: 4, transition: 'width 0.2s' }} />
-                        {pbEvents.map((ev, i) => {
-                          const pct = Math.round((ev.index / (pbRoute.length - 1)) * 100);
-                          return (
-                            <div key={i} onClick={() => { setPbStep(ev.index); setPbPlaying(false); }}
-                              title={`${ev.event} · ${ev.time}`}
-                              style={{ position: 'absolute', left: `${pct}%`, top: '50%', transform: 'translate(-50%, -50%)', width: 10, height: 10, background: 'var(--red)', borderRadius: '50%', border: '2px solid #fff', cursor: 'pointer', zIndex: 10 }} />
-                          );
-                        })}
-                      </div>
-                      <input type="range" min={0} max={pbRoute.length - 1} value={pbStep}
-                        onChange={e => { setPbPlaying(false); setPbStep(Number(e.target.value)); }}
-                        style={{ width: '100%', height: 20, opacity: 0, cursor: 'pointer', position: 'relative', zIndex: 20 }} />
-                    </div>
-                  </div>
-
-                  {/* Buttons */}
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
-                    {/* |◀ */}
-                    <button onClick={() => { setPbPlaying(false); setPbStep(0); }}
-                      title="Jump to start"
-                      style={{ width: 36, height: 36, borderRadius: '50%', border: '1px solid var(--border)', background: '#fff', cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>⏮</button>
-                    {/* −10 */}
-                    <button onClick={() => { setPbPlaying(false); setPbStep(s => Math.max(0, s - 10)); }}
-                      title="Back 10 steps"
-                      style={{ width: 36, height: 36, borderRadius: '50%', border: '1px solid var(--border)', background: '#fff', cursor: 'pointer', fontSize: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>-10</button>
-                    {/* ◀ */}
-                    <button onClick={() => { setPbPlaying(false); setPbStep(s => Math.max(0, s - 1)); }}
-                      title="Step back"
-                      style={{ width: 36, height: 36, borderRadius: '50%', border: '1px solid var(--border)', background: '#fff', cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>◀</button>
-
-                    {/* ▶ / ⏸ */}
-                    <button onClick={() => { if (pbStep >= pbRoute.length - 1) setPbStep(0); setPbPlaying(p => !p); }}
-                      style={{ width: 52, height: 52, borderRadius: '50%', border: 'none', background: '#c4912a', color: '#fff', cursor: 'pointer', fontSize: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 14px rgba(13,110,94,0.4)' }}>
-                      {pbPlaying ? '⏸' : '▶'}
-                    </button>
-
-                    {/* ▶ */}
-                    <button onClick={() => { setPbPlaying(false); setPbStep(s => Math.min(pbRoute.length - 1, s + 1)); }}
-                      title="Step forward"
-                      style={{ width: 36, height: 36, borderRadius: '50%', border: '1px solid var(--border)', background: '#fff', cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>▶</button>
-                    {/* +10 */}
-                    <button onClick={() => { setPbPlaying(false); setPbStep(s => Math.min(pbRoute.length - 1, s + 10)); }}
-                      title="Forward 10 steps"
-                      style={{ width: 36, height: 36, borderRadius: '50%', border: '1px solid var(--border)', background: '#fff', cursor: 'pointer', fontSize: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>+10</button>
-                    {/* ▶| */}
-                    <button onClick={() => { setPbPlaying(false); setPbStep(pbRoute.length - 1); }}
-                      title="Jump to end"
-                      style={{ width: 36, height: 36, borderRadius: '50%', border: '1px solid var(--border)', background: '#fff', cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>⏭</button>
-
-                    {/* Speed label */}
-                    <div style={{ marginLeft: 12, fontSize: 11, color: 'var(--ink3)', display: 'flex', alignItems: 'center', gap: 5 }}>
-                      Speed:
-                      {[1, 2, 5, 10].map(s => (
-                        <button key={s} onClick={() => setPbSpeed(s)}
-                          style={{ padding: '4px 9px', fontSize: 11, fontWeight: 700, borderRadius: 5, border: '1px solid var(--border)', cursor: 'pointer', fontFamily: 'inherit', background: pbSpeed === s ? '#c4912a' : '#fff', color: pbSpeed === s ? '#fff' : 'var(--ink2)' }}>
-                          {s}×
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Current point detail */}
-                  {pbCurrent && (
-                    <div style={{ marginTop: 14, display: 'flex', gap: 16, justifyContent: 'center', fontSize: 11, color: 'var(--ink3)' }}>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><i className="ti ti-clock" /> <strong style={{ color: 'var(--ink)' }}>{pbCurrent.time}</strong></span>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><i className="ti ti-gauge" /> <strong style={{ color: pbCurrent.speed > 100 ? 'var(--red)' : '#c4912a' }}>{pbCurrent.speed} km/h</strong></span>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><i className="ti ti-map-pin" /> <strong style={{ color: 'var(--ink)', fontFamily: 'monospace', fontSize: 10 }}>{pbCurrent.lat.toFixed(5)}, {pbCurrent.lng.toFixed(5)}</strong></span>
-                      {pbCurrent.event && <span style={{ fontWeight: 700, color: 'var(--red)', display: 'flex', alignItems: 'center', gap: 4 }}><i className="ti ti-alert-triangle" /> {pbCurrent.event}</span>}
-                    </div>
-                  )}
-                </div>
-              </>
-            )}
-          </div>
-        );
-      })()}
+      {activeTab === 'Playback' && (
+        <PlaybackPanel vehicles={sourceVehicles} />
+      )}
 
       {/* ════════════════════ VEHICLES TAB ══════════════════════════════ */}
       {activeTab === 'Vehicles' && (
@@ -1700,11 +1446,11 @@ export default function DashboardPage() {
         <div>
           {/* Summary stats */}
           <div style={{ display: 'flex', gap: 10, marginBottom: 16 }}>
-            <StatPill label="Total" count={alertData?.recentAlerts.length ?? 0} color="var(--ink2)" bg="var(--cream)" />
-            <StatPill label="Critical" count={alertCounts.critical} color="var(--red)" bg="var(--red-lt)" />
-            <StatPill label="Warning"  count={alertCounts.warning}  color="var(--amber)" bg="var(--amber-lt)" />
-            <StatPill label="Info"     count={alertCounts.info}     color="var(--blue)" bg="var(--blue-lt)" />
-            <StatPill label="Acknowledged" count={alertCounts.acknowledged} color="var(--green)" bg="var(--green-lt)" />
+            <StatPill label="Total"        count={alertData?.openAlerts ?? 0}       color="var(--ink2)"  bg="var(--cream)" />
+            <StatPill label="Critical"     count={alertData?.criticalAlerts ?? 0}   color="var(--red)"   bg="var(--red-lt)" />
+            <StatPill label="Warning"      count={alertData?.warningAlerts ?? 0}    color="var(--amber)" bg="var(--amber-lt)" />
+            <StatPill label="Info"         count={alertData?.infoAlerts ?? 0}       color="var(--blue)"  bg="var(--blue-lt)" />
+            <StatPill label="Acknowledged" count={alertData?.acknowledgedAlerts ?? 0} color="var(--green)" bg="var(--green-lt)" />
           </div>
 
           {/* Toolbar */}
@@ -1722,7 +1468,7 @@ export default function DashboardPage() {
 
             {/* Severity filter */}
             {(['all', 'critical', 'warning', 'info'] as const).map(s => {
-              const counts: Record<string, number> = { all: alertData?.recentAlerts.length ?? 0, critical: alertCounts.critical, warning: alertCounts.warning, info: alertCounts.info };
+              const counts: Record<string, number> = { all: alertData?.openAlerts ?? 0, critical: alertData?.criticalAlerts ?? 0, warning: alertData?.warningAlerts ?? 0, info: alertData?.infoAlerts ?? 0 };
               return (
                 <button key={s} onClick={() => setAlertFilter(s)}
                   style={{ padding: '5px 13px', borderRadius: 20, fontSize: 11, cursor: 'pointer', fontFamily: 'inherit', textTransform: 'capitalize', border: '1px solid var(--border)', background: alertFilter === s ? '#c4912a' : '#fff', color: alertFilter === s ? '#fff' : 'var(--ink2)', fontWeight: alertFilter === s ? 700 : 400, transition: 'all 0.15s' }}>
@@ -1818,7 +1564,13 @@ export default function DashboardPage() {
                 {p === 'today' ? 'Today' : p === 'week' ? 'This Week' : 'This Month'}
               </button>
             ))}
-            <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--ink3)' }}>
+            <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--ink3)', display: 'flex', alignItems: 'center', gap: 8 }}>
+              {analyticsLoading && <span style={{ fontSize: 10, color: 'var(--ink3)' }}>Loading…</span>}
+              {!analyticsLoading && analyticsPeriod !== 'today' && (
+                <span style={{ fontSize: 10, padding: '2px 7px', borderRadius: 10, background: analytics.hasRealData ? 'var(--green-lt)' : 'var(--amber-lt)', color: analytics.hasRealData ? 'var(--green)' : 'var(--amber)', fontWeight: 700 }}>
+                  {analytics.hasRealData ? '● DB data' : '● Live estimate'}
+                </span>
+              )}
               {analyticsPeriod === 'today'
                 ? `Live snapshot · ${new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}`
                 : analyticsPeriod === 'week'
@@ -1828,7 +1580,7 @@ export default function DashboardPage() {
           </div>
 
           {/* KPI row 1 */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 7 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 7 }}>
             <KpiCard icon="ti-route" iconColor="#c4912a"
               label={analyticsPeriod === 'today' ? 'Trips Today' : analyticsPeriod === 'week' ? 'Trips This Week' : 'Trips This Month'}
               value={analytics.trips} stripe="#c4912a" trend="up" />
@@ -1845,7 +1597,7 @@ export default function DashboardPage() {
           </div>
 
           {/* KPI row 2 */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 7 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 7 }}>
             <KpiCard icon="ti-gas-station" iconColor={analytics.avgFuel < 30 ? 'var(--red)' : analytics.avgFuel < 50 ? 'var(--amber)' : 'var(--green)'} label="Avg Fuel Level" value={analytics.avgFuel} unit="%"
               sub={analytics.avgFuel < 30 ? 'Low — refuel needed' : analytics.avgFuel < 50 ? 'Moderate' : 'Good'}
               subColor={analytics.avgFuel < 30 ? 'var(--red)' : analytics.avgFuel < 50 ? 'var(--amber)' : 'var(--green)'}
@@ -1862,9 +1614,9 @@ export default function DashboardPage() {
               subColor={analytics.topSpeeder[0]?.speedKmh && analytics.topSpeeder[0].speedKmh > 100 ? 'var(--red)' : 'var(--ink3)'}
               stripe={analytics.topSpeeder[0]?.speedKmh && analytics.topSpeeder[0].speedKmh > 100 ? 'var(--red)' : 'var(--amber)'} />
             <KpiCard icon="ti-steering-wheel" iconColor="#c4912a"
-              label={analyticsPeriod === 'today' ? 'Drivers on Duty' : analyticsPeriod === 'week' ? 'Drivers This Week' : 'Drivers This Month'}
+              label={analyticsPeriod === 'today' ? 'Drivers on Duty' : 'Total Drivers'}
               value={analytics.driversOnDuty}
-              sub={analyticsPeriod === 'today' ? 'Active right now' : analyticsPeriod === 'week' ? 'Unique drivers this week' : 'Unique drivers this month'}
+              sub={analyticsPeriod === 'today' ? 'Active right now' : 'Registered in fleet'}
               stripe="#c4912a" />
           </div>
 

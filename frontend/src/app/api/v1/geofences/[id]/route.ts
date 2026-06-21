@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, UUID_TENANT } from '@/lib/pgDb';
+import { getPool, UUID_TENANT, fromTenantUuid } from '@/lib/pgDb';
 
 function rowToGeofence(r: Record<string, unknown>) {
   return {
     id:         (r.ShortId as string) || (r.Id as string),
-    tenantId:   UUID_TENANT[(r.TenantId as string)?.toLowerCase()] ?? r.TenantId,
+    tenantId:   fromTenantUuid((r.TenantId as string)?.toLowerCase()) ?? r.TenantId,
     name:       r.Name       as string,
     type:       r.Type       as string,
     shape:      r.Shape      as 'circle' | 'polygon',

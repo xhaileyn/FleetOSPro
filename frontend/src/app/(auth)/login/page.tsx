@@ -240,6 +240,7 @@ export default function LoginPage() {
   const [error, setError]       = useState('');
   const [loading, setLoading]   = useState(false);
   const [tab, setTab]           = useState<'demo' | 'tenants'>('demo');
+  const [showQuickAccess, setShowQuickAccess] = useState(false);
   const [brand, setBrand]       = useState<BrandConfig>(BRAND_DEFAULTS);
   const [tenantLogos, setTenantLogos] = useState<Record<string, string>>({});
   const [statVals, setStatVals] = useState(STAT_TARGETS.map(() => 0));
@@ -313,111 +314,138 @@ export default function LoginPage() {
   return (
     <div className="login-root" style={{ fontFamily: 'inherit' }}>
       <style>{`
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes fadeSlideDown {
+          from { opacity: 0; transform: translateY(-8px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+
         .auth-input {
           width: 100%; box-sizing: border-box;
-          padding: 0 14px; height: 44px;
-          border: 1.5px solid var(--border); border-radius: 8px;
-          background: #fff; color: var(--ink);
+          padding: 0 14px; height: 46px;
+          border: 1.5px solid #e2e8f0; border-radius: 10px;
+          background: #fff; color: #0d1b2a;
           font-size: 14px; outline: none; font-family: inherit;
           transition: border-color 0.15s, box-shadow 0.15s;
         }
         .auth-input:focus {
           border-color: #c4912a;
-          box-shadow: 0 0 0 3px rgba(196,145,42,0.15);
+          box-shadow: 0 0 0 3px rgba(196,145,42,0.12);
         }
-        .auth-input::placeholder { color: #94a3b8; }
+        .auth-input::placeholder { color: #b0bec5; }
+
         .auth-btn-primary {
-          width: 100%; height: 44px;
+          width: 100%; height: 46px;
           background: linear-gradient(135deg, #0d1b2a 0%, #162033 100%);
           color: #f5d07a;
-          border: 1px solid rgba(196,145,42,0.38);
-          border-radius: 8px;
-          font-size: 14px; font-weight: 600; cursor: pointer;
+          border: 1px solid rgba(196,145,42,0.35);
+          border-radius: 10px;
+          font-size: 14.5px; font-weight: 600; cursor: pointer;
           font-family: inherit; letter-spacing: 0.1px;
-          transition: opacity 0.15s, box-shadow 0.15s;
-          display: flex; align-items: center; justify-content: center; gap: 7px;
+          transition: opacity 0.15s, box-shadow 0.15s, transform 0.1s;
+          display: flex; align-items: center; justify-content: center; gap: 8px;
         }
         .auth-btn-primary:hover:not(:disabled) {
           opacity: 0.92;
-          box-shadow: 0 4px 20px rgba(196,145,42,0.32);
+          box-shadow: 0 6px 24px rgba(196,145,42,0.28);
+          transform: translateY(-1px);
         }
-        .auth-btn-primary:disabled { opacity: 0.55; cursor: default; }
-        .demo-card:hover { border-color: #c4912a !important; box-shadow: 0 0 0 3px rgba(196,145,42,0.14) !important; }
-        .tenant-card:hover:not(:disabled) { border-color: #c4912a !important; box-shadow: 0 0 0 3px rgba(196,145,42,0.14) !important; }
-        .pw-toggle { background: none; border: none; cursor: pointer; padding: 4px; color: #94a3b8; transition: color 0.12s; }
-        .pw-toggle:hover { color: var(--ink2); }
+        .auth-btn-primary:active:not(:disabled) { transform: translateY(0); }
+        .auth-btn-primary:disabled { opacity: 0.5; cursor: default; }
 
-        /* ── Login responsive layout ── */
-        .login-root { display: flex; height: 100vh; overflow: hidden; }
-        .login-left  { width: 460px; flex-shrink: 0; }
-        .login-right { flex: 1; display: flex; flex-direction: column; background: #f8fafc; overflow: hidden; }
-        .login-right-grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
-        .login-form-panel {
-          display: flex; flex-direction: column; justify-content: center;
-          padding: 40px 48px; background: #fff;
-          border-right: 1px solid #e2e8f0; overflow-y: auto;
+        .demo-card { transition: border-color 0.12s, box-shadow 0.12s, transform 0.1s; }
+        .demo-card:hover { border-color: #c4912a !important; box-shadow: 0 0 0 3px rgba(196,145,42,0.12) !important; transform: translateY(-1px); }
+        .tenant-card { transition: border-color 0.12s, box-shadow 0.12s, transform 0.1s; }
+        .tenant-card:hover:not(:disabled) { border-color: #c4912a !important; box-shadow: 0 0 0 3px rgba(196,145,42,0.12) !important; transform: translateY(-1px); }
+
+        .pw-toggle { background: none; border: none; cursor: pointer; padding: 4px; color: #b0bec5; transition: color 0.12s; }
+        .pw-toggle:hover { color: #64748b; }
+
+        .qa-toggle-btn {
+          width: 100%; display: flex; align-items: center; justify-content: space-between;
+          padding: 11px 16px; border-radius: 10px;
+          background: #f8fafc; border: 1.5px solid #e9edf2;
+          cursor: pointer; font-family: inherit;
+          transition: background 0.15s, border-color 0.15s;
         }
-        .login-form-inner { max-width: 340px; width: 100%; }
-        .login-qa-panel {
-          display: flex; flex-direction: column; overflow: hidden;
-          padding: 28px 24px 20px; background: #eef1f6;
+        .qa-toggle-btn:hover { background: #f1f4f8; border-color: #d4dbe6; }
+        .qa-chevron { transition: transform 0.22s ease; color: #94a3b8; }
+        .qa-chevron.open { transform: rotate(180deg); }
+
+        .qa-panel-body {
+          animation: fadeSlideDown 0.2s ease;
         }
-        .qa-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; overflow-y: auto; }
+
+        /* ── Layout ── */
+        .login-root { display: flex; height: 100vh; overflow: hidden; background: #f0f4f8; }
+        .login-left { width: 440px; flex-shrink: 0; display: flex; flex-direction: column; }
+
+        .login-center {
+          flex: 1; min-width: 0;
+          display: flex; flex-direction: column; align-items: center;
+          overflow-y: auto; overflow-x: hidden;
+          padding: 0 24px;
+          background: radial-gradient(ellipse at 60% 0%, rgba(196,145,42,0.06) 0%, transparent 60%),
+                      linear-gradient(180deg, #f8fafc 0%, #eef1f6 100%);
+        }
+
+        .login-center-spacer { flex: 1 1 36px; min-height: 28px; }
+
+        .login-card {
+          width: 100%; max-width: 420px;
+          flex-shrink: 0;
+          background: #fff;
+          border-radius: 18px;
+          box-shadow: 0 1px 3px rgba(13,27,42,0.06), 0 8px 32px rgba(13,27,42,0.09), 0 0 0 1px rgba(13,27,42,0.05);
+        }
+
+        .login-form-section { padding: 40px 40px 32px; }
+
+        .login-qa-section {
+          border-top: 1px solid #f1f5f9;
+          padding: 0 20px 20px;
+        }
+
         .login-mobile-header { display: none; }
 
-        @media (max-width: 900px) {
-          .login-left { width: 340px; }
-          .login-form-panel { padding: 28px 28px; }
+        @media (max-width: 1024px) {
+          .login-left { width: 380px; }
         }
         @media (max-width: 768px) {
           .login-root { flex-direction: column; height: auto; min-height: 100vh; overflow-y: auto; }
-          .login-left  { display: none; }
-          .login-right { flex: 1; overflow: visible; min-height: 0; }
-          .login-right-grid { grid-template-columns: 1fr; overflow: visible; height: auto; }
-          .login-form-panel {
-            justify-content: flex-start; padding: 28px 20px 24px;
-            border-right: none; border-bottom: 1px solid #e2e8f0;
-            overflow-y: visible; align-items: center;
-          }
-          .login-form-inner { max-width: 480px; }
-          .login-qa-panel { overflow: visible; padding: 20px 20px 28px; max-height: none; }
-          .qa-cards-grid { overflow-y: visible; }
+          .login-left { display: none; }
+          .login-center { flex: none; width: 100%; min-width: 0; padding: 24px 16px 40px; }
+          .login-card { max-width: 100%; }
+          .login-form-section { padding: 32px 28px 28px; }
           .login-mobile-header {
             display: flex; align-items: center; gap: 10px;
             padding: 14px 20px; background: #0d1b2a;
             border-bottom: 1px solid rgba(196,145,42,0.18);
-            flex-shrink: 0;
+            flex-shrink: 0; width: 100%; box-sizing: border-box;
           }
         }
-        @media (max-width: 540px) {
-          .qa-cards-grid { grid-template-columns: 1fr; }
-          .login-form-panel { padding: 24px 16px 20px; }
-          .login-qa-panel { padding: 16px 16px 24px; }
-          .login-form-inner { max-width: 100%; }
-        }
-        @media (max-width: 400px) {
-          .login-form-panel { padding: 20px 14px 16px; }
-          .login-qa-panel { padding: 14px 12px 20px; }
-          .login-mobile-header { padding: 12px 14px; }
+        @media (max-width: 480px) {
+          .login-form-section { padding: 28px 22px 24px; }
+          .login-center { padding: 20px 14px 36px; }
         }
       `}</style>
 
-      {/* ── Mobile header (logo — visible only on mobile) ─────────── */}
+      {/* ── Mobile header ─────────────────────────────────────── */}
       <div className="login-mobile-header">
         <FleetOSMark size={32} accent={brand.accentColor} />
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 0 }}>
           <span style={{ color: '#fff', fontSize: 16, fontWeight: 700, letterSpacing: '-0.4px' }}>Fleet</span>
-          <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 16, fontWeight: 400, letterSpacing: '-0.3px' }}>OS</span>
+          <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 16, fontWeight: 400 }}>OS</span>
           <span style={{ marginLeft: 5, fontSize: 9, fontWeight: 800, letterSpacing: '0.8px',
             color: brand.accentColor, border: `1px solid ${brand.accentColor}50`,
             borderRadius: 3, padding: '2px 5px', lineHeight: 1, textTransform: 'uppercase', alignSelf: 'center' }}>Pro</span>
         </div>
       </div>
 
-      {/* ── Left branded panel ─────────────────────────────────────── */}
+      {/* ── Left branded panel ─────────────────────────────────── */}
       <div className="login-left" style={{
         background: panelBg,
-        display: 'flex', flexDirection: 'column',
+        flexDirection: 'column',
         padding: '28px 32px 28px',
         position: 'relative', overflow: 'hidden',
       }}>
@@ -534,232 +562,322 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* ── Right panel ────────────────────────────────────────────── */}
-      <div className="login-right">
-        <div className="login-right-grid">
+      {/* ── Centre panel ─────────────────────────────────────────── */}
+      <div className="login-center">
+        <div className="login-center-spacer" />
 
-          {/* ── Sign-in form ─────────────────────────────────────── */}
-          <div className="login-form-panel">
-            <div className="login-form-inner">
-              <div style={{ marginBottom: 32 }}>
-                <div style={{ fontSize: 24, fontWeight: 700, color: '#0d1b2a', marginBottom: 6, letterSpacing: '-0.5px' }}>
-                  Welcome back
-                </div>
-                <div style={{ fontSize: 14, color: '#64748b' }}>
-                  Sign in to your {brand.companyName} account
-                </div>
+        {/* ── Website promo banner ───────────────────────────────── */}
+        <a
+          href="/website/index.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="website-banner"
+          style={{
+            width: '100%', maxWidth: 420, flexShrink: 0,
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            padding: '12px 16px', marginBottom: 12,
+            background: 'linear-gradient(135deg, rgba(196,145,42,0.10) 0%, rgba(196,145,42,0.04) 100%)',
+            border: '1px solid rgba(196,145,42,0.30)',
+            borderRadius: 14, textDecoration: 'none',
+            transition: 'border-color 0.15s, background 0.15s, transform 0.1s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(196,145,42,0.55)'; e.currentTarget.style.background = 'linear-gradient(135deg, rgba(196,145,42,0.16) 0%, rgba(196,145,42,0.08) 100%)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(196,145,42,0.30)'; e.currentTarget.style.background = 'linear-gradient(135deg, rgba(196,145,42,0.10) 0%, rgba(196,145,42,0.04) 100%)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{
+              width: 36, height: 36, borderRadius: 9, flexShrink: 0,
+              background: 'linear-gradient(135deg, #0d1b2a 0%, #162033 100%)',
+              border: '1px solid rgba(196,145,42,0.35)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="#f5d07a" strokeWidth={1.7}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
+              </svg>
+            </div>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#0d1b2a', letterSpacing: '-0.1px' }}>
+                FleetOS Pro — Enterprise Fleet Platform
               </div>
-
-              {error && (
-                <div style={{
-                  display: 'flex', alignItems: 'center', gap: 8,
-                  background: '#fef2f2', border: '1px solid #fecaca',
-                  borderRadius: 8, padding: '10px 13px',
-                  fontSize: 13, color: '#b91c1c', marginBottom: 20,
-                }}>
-                  <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ flexShrink: 0 }}>
-                    <circle cx="12" cy="12" r="10" /><path strokeLinecap="round" d="M12 8v4m0 4h.01" />
-                  </svg>
-                  {error}
-                </div>
-              )}
-
-              <div style={{ marginBottom: 16 }}>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#374151', marginBottom: 6 }}>Work email</label>
-                <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && doLogin()} placeholder="you@company.com" className="auth-input" />
-              </div>
-
-              <div style={{ marginBottom: 24 }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-                  <label style={{ fontSize: 12, fontWeight: 600, color: '#374151' }}>Password</label>
-                  <a href="#" style={{ fontSize: 12, color: '#c4912a', textDecoration: 'none', fontWeight: 500 }}>Forgot password?</a>
-                </div>
-                <div style={{ position: 'relative' }}>
-                  <input type={showPw ? 'text' : 'password'} value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    onKeyDown={e => e.key === 'Enter' && doLogin()}
-                    placeholder="Enter your password" className="auth-input" style={{ paddingRight: 44 }} />
-                  <button onClick={() => setShowPw(!showPw)} className="pw-toggle"
-                    style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)' }}>
-                    {showPw ? (
-                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
-                      </svg>
-                    ) : (
-                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                      </svg>
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              <button onClick={() => doLogin()} disabled={loading} className="auth-btn-primary">
-                {loading ? (
-                  <>
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}
-                      style={{ animation: 'spin 0.8s linear infinite' }}>
-                      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" strokeLinecap="round" />
-                    </svg>
-                    Signing in…
-                  </>
-                ) : `Sign in to ${brand.companyName}`}
-              </button>
-              <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
-
-              <div style={{ marginTop: 24, textAlign: 'center', fontSize: 13, color: '#64748b' }}>
-                Don&apos;t have an account?{' '}
-                <a href="/signup" style={{ color: '#c4912a', fontWeight: 600, textDecoration: 'none' }}>Start free trial</a>
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginTop: 28,
-                paddingTop: 20, borderTop: '1px solid #f1f5f9' }}>
-                {['SOC 2', 'GDPR', 'ISO 27001'].map(badge => (
-                  <div key={badge} style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 10, color: '#94a3b8' }}>
-                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
-                    </svg>
-                    {badge}
-                  </div>
-                ))}
-              </div>
-
-              {/* Website link */}
-              <div style={{ marginTop: 20, textAlign: 'center' }}>
-                <a
-                  href="/website/index.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 6,
-                    fontSize: 12, color: '#94a3b8', textDecoration: 'none',
-                    fontWeight: 500, transition: 'color 0.15s',
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.color = '#c4912a')}
-                  onMouseLeave={e => (e.currentTarget.style.color = '#94a3b8')}
-                >
-                  <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
-                  </svg>
-                  Learn about FleetOS Pro →
-                </a>
+              <div style={{ fontSize: 11, color: '#c4912a', fontWeight: 500, marginTop: 1 }}>
+                www.fleetospro.com
               </div>
             </div>
           </div>
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="#c4912a" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+          </svg>
+        </a>
 
-          {/* ── Quick access panel ──────────────────────────────────── */}
-          <div className="login-qa-panel">
+        <div className="login-card">
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-              <div style={{ width: 3, height: 18, borderRadius: 2, background: '#c4912a' }} />
-              <span style={{ fontSize: 11, fontWeight: 700, color: '#0d1b2a', textTransform: 'uppercase', letterSpacing: 1.1 }}>Quick Access</span>
+          {/* ── Sign-in form ──────────────────────────────────────── */}
+          <div className="login-form-section">
+            {/* Header */}
+            <div style={{ marginBottom: 32 }}>
+              <div style={{ fontSize: 26, fontWeight: 800, color: '#0d1b2a', marginBottom: 6, letterSpacing: '-0.6px' }}>
+                Welcome back
+              </div>
+              <div style={{ fontSize: 14, color: '#64748b', lineHeight: 1.5 }}>
+                Sign in to your <span style={{ color: '#0d1b2a', fontWeight: 600 }}>{brand.companyName}</span> account
+              </div>
             </div>
 
-            <div style={{ display: 'flex', background: '#d8dde8', borderRadius: 9, padding: 3, marginBottom: 14, gap: 2 }}>
-              {(['demo', 'tenants'] as const).map(t => (
-                <button key={t} onClick={() => setTab(t)} style={{
-                  flex: 1, padding: '8px 0', borderRadius: 7,
-                  border: tab === t ? '1px solid rgba(196,145,42,0.30)' : '1px solid transparent',
-                  background: tab === t ? '#0d1b2a' : 'transparent',
-                  color: tab === t ? '#f5d07a' : '#64748b',
-                  fontSize: 12, fontWeight: tab === t ? 700 : 400,
-                  cursor: 'pointer', fontFamily: 'inherit',
-                  boxShadow: tab === t ? '0 1px 6px rgba(13,27,42,0.22)' : 'none',
-                  transition: 'all 0.15s',
-                }}>
-                  {t === 'demo' ? 'Demo roles' : 'Tenant admins'}
-                </button>
-              ))}
-            </div>
-
-            <div style={{ fontSize: 11, color: '#64748b', marginBottom: 12, lineHeight: 1.5 }}>
-              {tab === 'demo'
-                ? 'Click any card to sign in instantly — password: Demo1234!'
-                : 'Sign in as Fleet Admin for any tenant below'}
-            </div>
-
-            {tab === 'demo' && (
-              <div className="qa-cards-grid">
-                {DEMO_ACCOUNTS.map(acc => (
-                  <button key={acc.email} onClick={() => doLogin(acc.email, 'Demo1234!')}
-                    disabled={loading} className="demo-card"
-                    style={{
-                      textAlign: 'left', padding: '11px 13px 10px',
-                      border: '1.5px solid #e2e8f0', borderRadius: 9,
-                      borderLeft: `4px solid ${acc.scopeColor}`,
-                      background: '#fff', cursor: loading ? 'default' : 'pointer',
-                      fontFamily: 'inherit', transition: 'border-color 0.12s, box-shadow 0.12s',
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                      <div style={{
-                        width: 28, height: 28, borderRadius: 7,
-                        background: acc.bg, color: acc.scopeColor,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: 9, fontWeight: 800, flexShrink: 0, overflow: 'hidden', letterSpacing: 0.5,
-                      }}>
-                        {acc.tenantId && tenantLogos[acc.tenantId]
-                          ? <img src={tenantLogos[acc.tenantId]} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-                          : acc.initials}
-                      </div>
-                      <div style={{ minWidth: 0 }}>
-                        <div style={{ fontSize: 12, fontWeight: 700, color: '#0d1b2a', lineHeight: 1.2 }}>{acc.label}</div>
-                        <div style={{ fontSize: 10, fontWeight: 600, color: acc.scopeColor, marginTop: 1 }}>{acc.scope}</div>
-                      </div>
-                    </div>
-                    <div style={{ fontSize: 10, color: '#94a3b8', fontFamily: 'monospace',
-                      overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {acc.email}
-                    </div>
-                  </button>
-                ))}
+            {error && (
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 9,
+                background: '#fef2f2', border: '1px solid #fecaca',
+                borderRadius: 10, padding: '11px 14px',
+                fontSize: 13, color: '#b91c1c', marginBottom: 22,
+              }}>
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ flexShrink: 0 }}>
+                  <circle cx="12" cy="12" r="10" /><path strokeLinecap="round" d="M12 8v4m0 4h.01" />
+                </svg>
+                {error}
               </div>
             )}
 
-            {tab === 'tenants' && (
-              <div className="qa-cards-grid">
-                {TENANT_ADMINS.map(a => (
-                  <button key={a.email} onClick={() => doLogin(a.email, 'Demo1234!')}
-                    disabled={loading || a.plan === 'Suspended'} className="tenant-card"
-                    style={{
-                      display: 'flex', flexDirection: 'column', gap: 6,
-                      padding: '11px 13px 10px',
-                      border: `1.5px solid ${a.plan === 'Suspended' ? '#fecaca' : '#e2e8f0'}`,
-                      borderRadius: 9, background: '#fff',
-                      cursor: a.plan === 'Suspended' ? 'not-allowed' : 'pointer',
-                      fontFamily: 'inherit', textAlign: 'left',
-                      opacity: a.plan === 'Suspended' ? 0.5 : 1,
-                      transition: 'border-color 0.12s, box-shadow 0.12s',
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
-                        <span style={{ fontSize: 14, flexShrink: 0 }}>{a.flag}</span>
-                        <span style={{ fontSize: 12, fontWeight: 700, color: '#0d1b2a',
+            {/* Email */}
+            <div style={{ marginBottom: 18 }}>
+              <label style={{ display: 'block', fontSize: 12.5, fontWeight: 600, color: '#374151', marginBottom: 7 }}>
+                Work email
+              </label>
+              <input
+                type="email" value={email} onChange={e => setEmail(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && doLogin()}
+                placeholder="you@company.com" className="auth-input"
+              />
+            </div>
+
+            {/* Password */}
+            <div style={{ marginBottom: 28 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 7 }}>
+                <label style={{ fontSize: 12.5, fontWeight: 600, color: '#374151' }}>Password</label>
+                <a href="#" style={{ fontSize: 12, color: '#c4912a', textDecoration: 'none', fontWeight: 500 }}>
+                  Forgot password?
+                </a>
+              </div>
+              <div style={{ position: 'relative' }}>
+                <input
+                  type={showPw ? 'text' : 'password'} value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && doLogin()}
+                  placeholder="Enter your password" className="auth-input" style={{ paddingRight: 46 }}
+                />
+                <button onClick={() => setShowPw(!showPw)} className="pw-toggle"
+                  style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)' }}>
+                  {showPw ? (
+                    <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                    </svg>
+                  ) : (
+                    <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Submit */}
+            <button onClick={() => doLogin()} disabled={loading} className="auth-btn-primary">
+              {loading ? (
+                <>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}
+                    style={{ animation: 'spin 0.8s linear infinite' }}>
+                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" strokeLinecap="round" />
+                  </svg>
+                  Signing in…
+                </>
+              ) : `Sign in to ${brand.companyName}`}
+            </button>
+
+            {/* Footer links */}
+            <div style={{ marginTop: 22, textAlign: 'center', fontSize: 13, color: '#64748b' }}>
+              Don&apos;t have an account?{' '}
+              <a href="/signup" style={{ color: '#c4912a', fontWeight: 600, textDecoration: 'none' }}>
+                Request access
+              </a>
+            </div>
+
+            {/* Trust badges */}
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 20, marginTop: 24,
+              paddingTop: 20, borderTop: '1px solid #f1f5f9',
+            }}>
+              {['SOC 2', 'GDPR', 'ISO 27001'].map(badge => (
+                <div key={badge} style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 10.5, color: '#94a3b8' }}>
+                  <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                  </svg>
+                  {badge}
+                </div>
+              ))}
+            </div>
+
+            {/* Website button */}
+            <a
+              href="/website/index.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
+                marginTop: 16, padding: '10px 16px', borderRadius: 10,
+                background: '#f8fafc', border: '1.5px solid #e2e8f0',
+                fontSize: 13, fontWeight: 600, color: '#475569',
+                textDecoration: 'none', transition: 'border-color 0.15s, background 0.15s, color 0.15s',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(196,145,42,0.45)'; e.currentTarget.style.background = '#fdf8f0'; e.currentTarget.style.color = '#c4912a'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.background = '#f8fafc'; e.currentTarget.style.color = '#475569'; }}
+            >
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.9}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
+              </svg>
+              Explore FleetOS Pro Website
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+              </svg>
+            </a>
+          </div>
+
+          {/* ── Quick Access (collapsible, at the bottom) ──────────── */}
+          <div className="login-qa-section">
+            {/* Toggle button */}
+            <button
+              className="qa-toggle-btn"
+              onClick={() => setShowQuickAccess(v => !v)}
+              style={{ marginTop: 16 }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="#c4912a" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 0 1 21.75 8.25Z" />
+                </svg>
+                <span style={{ fontSize: 12.5, fontWeight: 700, color: '#0d1b2a', letterSpacing: 0.1 }}>
+                  Demo Quick Access
+                </span>
+                <span style={{ fontSize: 11, color: '#94a3b8', fontWeight: 400 }}>
+                  — one-click sign in
+                </span>
+              </div>
+              <svg
+                width="16" height="16" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" strokeWidth={2.2}
+                className={`qa-chevron${showQuickAccess ? ' open' : ''}`}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="m19 9-7 7-7-7" />
+              </svg>
+            </button>
+
+            {/* Expandable body */}
+            {showQuickAccess && (
+              <div className="qa-panel-body" style={{ marginTop: 14 }}>
+                {/* Tab switcher */}
+                <div style={{ display: 'flex', background: '#eef1f6', borderRadius: 9, padding: 3, marginBottom: 14, gap: 2 }}>
+                  {(['demo', 'tenants'] as const).map(t => (
+                    <button key={t} onClick={() => setTab(t)} style={{
+                      flex: 1, padding: '8px 0', borderRadius: 7,
+                      border: tab === t ? '1px solid rgba(196,145,42,0.30)' : '1px solid transparent',
+                      background: tab === t ? '#0d1b2a' : 'transparent',
+                      color: tab === t ? '#f5d07a' : '#64748b',
+                      fontSize: 12, fontWeight: tab === t ? 700 : 500,
+                      cursor: 'pointer', fontFamily: 'inherit',
+                      boxShadow: tab === t ? '0 1px 6px rgba(13,27,42,0.22)' : 'none',
+                      transition: 'all 0.15s',
+                    }}>
+                      {t === 'demo' ? 'Demo roles' : 'Tenant admins'}
+                    </button>
+                  ))}
+                </div>
+
+                <div style={{ fontSize: 11.5, color: '#94a3b8', marginBottom: 12, lineHeight: 1.5 }}>
+                  {tab === 'demo'
+                    ? 'Click any card to sign in instantly — password: Demo1234!'
+                    : 'Sign in as Fleet Admin for any tenant below'}
+                </div>
+
+                {tab === 'demo' && (
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 7 }}>
+                    {DEMO_ACCOUNTS.map(acc => (
+                      <button key={acc.email} onClick={() => doLogin(acc.email, 'Demo1234!')}
+                        disabled={loading} className="demo-card"
+                        style={{
+                          textAlign: 'left', padding: '10px 12px 9px',
+                          border: '1.5px solid #e9edf2', borderRadius: 9,
+                          borderLeft: `4px solid ${acc.scopeColor}`,
+                          background: '#fff', cursor: loading ? 'default' : 'pointer',
+                          fontFamily: 'inherit',
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5 }}>
+                          <div style={{
+                            width: 26, height: 26, borderRadius: 7,
+                            background: acc.bg, color: acc.scopeColor,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            fontSize: 9, fontWeight: 800, flexShrink: 0, overflow: 'hidden', letterSpacing: 0.5,
+                          }}>
+                            {acc.tenantId && tenantLogos[acc.tenantId]
+                              ? <img src={tenantLogos[acc.tenantId]} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                              : acc.initials}
+                          </div>
+                          <div style={{ minWidth: 0 }}>
+                            <div style={{ fontSize: 11.5, fontWeight: 700, color: '#0d1b2a', lineHeight: 1.2 }}>{acc.label}</div>
+                            <div style={{ fontSize: 10, fontWeight: 600, color: acc.scopeColor, marginTop: 1 }}>{acc.scope}</div>
+                          </div>
+                        </div>
+                        <div style={{ fontSize: 9.5, color: '#b0bec5', fontFamily: 'monospace',
                           overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                          {a.tenant}
-                        </span>
-                      </div>
-                      <span style={{
-                        fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 4, flexShrink: 0,
-                        background: a.planBg, color: a.planColor, textTransform: 'uppercase', letterSpacing: 0.3,
-                      }}>
-                        {a.plan}
-                      </span>
-                    </div>
-                    <div style={{ fontSize: 10, color: '#94a3b8', fontFamily: 'monospace',
-                      overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {a.email}
-                    </div>
-                  </button>
-                ))}
+                          {acc.email}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {tab === 'tenants' && (
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 7 }}>
+                    {TENANT_ADMINS.map(a => (
+                      <button key={a.email} onClick={() => doLogin(a.email, 'Demo1234!')}
+                        disabled={loading || a.plan === 'Suspended'} className="tenant-card"
+                        style={{
+                          display: 'flex', flexDirection: 'column', gap: 5,
+                          padding: '10px 12px 9px',
+                          border: `1.5px solid ${a.plan === 'Suspended' ? '#fecaca' : '#e9edf2'}`,
+                          borderRadius: 9, background: '#fff',
+                          cursor: a.plan === 'Suspended' ? 'not-allowed' : 'pointer',
+                          fontFamily: 'inherit', textAlign: 'left',
+                          opacity: a.plan === 'Suspended' ? 0.5 : 1,
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
+                            <span style={{ fontSize: 13, flexShrink: 0 }}>{a.flag}</span>
+                            <span style={{ fontSize: 11.5, fontWeight: 700, color: '#0d1b2a',
+                              overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              {a.tenant}
+                            </span>
+                          </div>
+                          <span style={{
+                            fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 4, flexShrink: 0,
+                            background: a.planBg, color: a.planColor, textTransform: 'uppercase', letterSpacing: 0.3,
+                          }}>
+                            {a.plan}
+                          </span>
+                        </div>
+                        <div style={{ fontSize: 9.5, color: '#b0bec5', fontFamily: 'monospace',
+                          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {a.email}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>
 
         </div>
+        <div className="login-center-spacer" />
       </div>
     </div>
   );

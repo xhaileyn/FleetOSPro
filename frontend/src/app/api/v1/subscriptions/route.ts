@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, TENANT_UUID, UUID_TENANT } from '@/lib/pgDb';
+import { getPool, TENANT_UUID, UUID_TENANT, toTenantUuid, fromTenantUuid } from '@/lib/pgDb';
 
 function rowToSub(r: Record<string, unknown>) {
   let smsNumbers: string[] = [];
   try { smsNumbers = JSON.parse(r.SmsNumbersJson as string || '[]'); } catch { /* keep empty */ }
   return {
     vehicleId:    r.VehicleShortId,
-    tenantId:     UUID_TENANT[(r.TenantId as string)?.toLowerCase()] ?? r.TenantId,
+    tenantId:     fromTenantUuid((r.TenantId as string)?.toLowerCase()) ?? r.TenantId,
     plan:         r.Plan,
     customPlanId: r.CustomPlanId ?? undefined,
     startDate:    r.StartDate   ? String(r.StartDate).slice(0, 10)  : '',
@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
     const wheres: string[] = [];
 
     if (tenantId) {
-      const uuid = TENANT_UUID[tenantId];
+      const uuid = toTenantUuid(tenantId);
       if (uuid) { wheres.push(`"TenantId" = $${params.length + 1}`); params.push(uuid); }
     }
     if (vehicleId) {
@@ -56,7 +56,7 @@ export async function PUT(req: NextRequest) {
   try {
     const db = getPool();
     const tenantId = req.nextUrl.searchParams.get('tenantId');
-    const uuid = tenantId ? TENANT_UUID[tenantId] : null;
+    const uuid = tenantId ? toTenantUuid(tenantId) : null;
     if (!uuid) return NextResponse.json({ message: 'invalid tenantId' }, { status: 400 });
 
     const smsJson = JSON.stringify(body.smsNumbers ?? []);

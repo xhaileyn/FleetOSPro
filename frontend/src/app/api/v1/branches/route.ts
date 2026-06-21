@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, TENANT_UUID, UUID_TENANT } from '@/lib/pgDb';
+import { getPool, TENANT_UUID, UUID_TENANT, toTenantUuid, fromTenantUuid } from '@/lib/pgDb';
 
 function rowToBranch(b: Record<string, unknown>) {
   return {
     id:           b.ShortId || b.Id,
-    tenantId:     UUID_TENANT[(b.TenantId as string)?.toLowerCase()] ?? b.TenantId,
+    tenantId:     fromTenantUuid((b.TenantId as string)?.toLowerCase()) ?? b.TenantId,
     name:         b.Name,
     city:         b.City         ?? '',
     region:       b.Region       ?? '',
@@ -21,8 +21,8 @@ export async function GET(req: NextRequest) {
   const tenantShort = req.nextUrl.searchParams.get('tenantId');
   const db = getPool();
   try {
-    const { rows } = tenantShort && TENANT_UUID[tenantShort]
-      ? await db.query(`SELECT * FROM "Branches" WHERE "TenantId" = $1 ORDER BY "Name"`, [TENANT_UUID[tenantShort]])
+    const { rows } = tenantShort && toTenantUuid(tenantShort)
+      ? await db.query(`SELECT * FROM "Branches" WHERE "TenantId" = $1 ORDER BY "Name"`, [toTenantUuid(tenantShort)])
       : await db.query(`SELECT * FROM "Branches" ORDER BY "Name"`);
     return NextResponse.json(rows.map(rowToBranch));
   } catch (err) {

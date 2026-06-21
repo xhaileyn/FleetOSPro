@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, TENANT_UUID, UUID_TENANT } from '@/lib/pgDb';
+import { getPool, TENANT_UUID, UUID_TENANT, toTenantUuid, fromTenantUuid } from '@/lib/pgDb';
 
 function rowToGeofence(r: Record<string, unknown>) {
   return {
     id:         (r.ShortId as string) || (r.Id as string),
-    tenantId:   UUID_TENANT[(r.TenantId as string)?.toLowerCase()] ?? r.TenantId,
+    tenantId:   fromTenantUuid((r.TenantId as string)?.toLowerCase()) ?? r.TenantId,
     name:       r.Name       as string,
     type:       r.Type       as string,
     shape:      r.Shape      as 'circle' | 'polygon',
@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
 
   // Tenant isolation
   if (tenantShort) {
-    const uuid = TENANT_UUID[tenantShort];
+    const uuid = toTenantUuid(tenantShort);
     if (!uuid) return NextResponse.json({ message: 'Unknown tenantId' }, { status: 400 });
     params.push(uuid);
     conditions.push(`"TenantId" = $${params.length}`);
@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
   if (!name || !tenantId) {
     return NextResponse.json({ message: 'name and tenantId are required' }, { status: 400 });
   }
-  const tenantUuid = TENANT_UUID[tenantId as string];
+  const tenantUuid = toTenantUuid(tenantId as string);
   if (!tenantUuid) return NextResponse.json({ message: 'Unknown tenantId' }, { status: 400 });
 
   const db      = getPool();

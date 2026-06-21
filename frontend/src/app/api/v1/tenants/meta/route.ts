@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getPool, UUID_TENANT } from '@/lib/pgDb';
+import { getPool, UUID_TENANT, fromTenantUuid } from '@/lib/pgDb';
 
 /**
  * GET /api/v1/tenants/meta
@@ -17,7 +17,7 @@ export async function GET() {
 
     const meta: Record<string, { name: string; country: string; plan: string; color: string; status: string }> = {};
     for (const r of rows) {
-      const shortId = UUID_TENANT[(r.Id as string).toLowerCase()];
+      const shortId = fromTenantUuid((r.Id as string).toLowerCase());
       if (shortId) {
         meta[shortId] = {
           name:    r.Name         ?? '',

@@ -7,6 +7,7 @@ import 'leaflet/dist/leaflet.css';
 interface Props {
   lat:        number;
   lng:        number;
+  hasGps?:    boolean;   // false = no real fix, just show country map without marker
   plate:      string;
   speed:      number;
   status?:    string;
@@ -74,42 +75,57 @@ function MapFlyTo({ lat, lng }: { lat: number; lng: number }) {
   return null;
 }
 
-export default function VehicleMap({ lat, lng, plate, speed, status = 'active', category = 'Car', onPinClick }: Props) {
+export default function VehicleMap({ lat, lng, hasGps = true, plate, speed, status = 'active', category = 'Car', onPinClick }: Props) {
   const icon = buildIcon(status, category);
 
   return (
-    <MapContainer
-      center={[lat, lng]}
-      zoom={13}
-      style={{ width: '100%', height: '100%' }}
-      scrollWheelZoom={false}
-    >
-      <TileLayer url={TILE_URL} attribution={TILE_ATTR} />
-      <MapFlyTo lat={lat} lng={lng} />
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+      <MapContainer
+        center={[lat, lng]}
+        zoom={hasGps ? 13 : 6}
+        style={{ width: '100%', height: '100%' }}
+        scrollWheelZoom={false}
+      >
+        <TileLayer url={TILE_URL} attribution={TILE_ATTR} />
+        <MapFlyTo lat={lat} lng={lng} />
 
-      {icon && (
-        <Marker
-          position={[lat, lng]}
-          icon={icon}
-          eventHandlers={{ click: () => onPinClick?.() }}
-        >
-          <Popup>
-            <div style={{ fontFamily: 'system-ui, sans-serif', minWidth: 140 }}>
-              <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4 }}>{plate}</div>
-              <div style={{ fontSize: 12, color: '#666' }}>Speed: <strong>{speed} km/h</strong></div>
-              <div style={{ fontSize: 11, color: '#999', marginTop: 3 }}>{lat.toFixed(5)}, {lng.toFixed(5)}</div>
-              {onPinClick && (
-                <button
-                  onClick={onPinClick}
-                  style={{ marginTop: 8, width: '100%', padding: '5px 0', fontSize: 11, fontWeight: 600, borderRadius: 5, border: 'none', background: '#c4912a', color: '#fff', cursor: 'pointer', fontFamily: 'inherit' }}
-                >
-                  ▶ Live tracking
-                </button>
-              )}
-            </div>
-          </Popup>
-        </Marker>
+        {hasGps && icon && (
+          <Marker
+            position={[lat, lng]}
+            icon={icon}
+            eventHandlers={{ click: () => onPinClick?.() }}
+          >
+            <Popup>
+              <div style={{ fontFamily: 'system-ui, sans-serif', minWidth: 140 }}>
+                <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4 }}>{plate}</div>
+                <div style={{ fontSize: 12, color: '#666' }}>Speed: <strong>{speed} km/h</strong></div>
+                <div style={{ fontSize: 11, color: '#999', marginTop: 3 }}>{lat.toFixed(5)}, {lng.toFixed(5)}</div>
+                {onPinClick && (
+                  <button
+                    onClick={onPinClick}
+                    style={{ marginTop: 8, width: '100%', padding: '5px 0', fontSize: 11, fontWeight: 600, borderRadius: 5, border: 'none', background: '#c4912a', color: '#fff', cursor: 'pointer', fontFamily: 'inherit' }}
+                  >
+                    ▶ Live tracking
+                  </button>
+                )}
+              </div>
+            </Popup>
+          </Marker>
+        )}
+      </MapContainer>
+
+      {/* Overlay when no GPS fix */}
+      {!hasGps && (
+        <div style={{
+          position: 'absolute', bottom: 10, left: '50%', transform: 'translateX(-50%)',
+          background: 'rgba(255,255,255,0.92)', borderRadius: 8, padding: '5px 12px',
+          fontSize: 11, color: 'var(--ink3)', fontWeight: 600, zIndex: 999,
+          display: 'flex', alignItems: 'center', gap: 5, boxShadow: '0 1px 6px rgba(0,0,0,0.15)',
+          whiteSpace: 'nowrap',
+        }}>
+          <i className="ti ti-map-pin-off" style={{ fontSize: 12 }} /> No GPS signal — showing country map
+        </div>
       )}
-    </MapContainer>
+    </div>
   );
 }

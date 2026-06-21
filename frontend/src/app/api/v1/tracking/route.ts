@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, TENANT_UUID } from '@/lib/pgDb';
+import { getPool, TENANT_UUID, toTenantUuid } from '@/lib/pgDb';
 
 // ── GET: live positions or historical feed ────────────────────────────
 //
@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
   const limit     = Math.min(Number(sp.get('limit') ?? '500'), 10000);
   const flags     = sp.get('flags') ? Number(sp.get('flags')) : null;
 
-  const tenantUuid = TENANT_UUID[tenantId];
+  const tenantUuid = toTenantUuid(tenantId);
   if (!tenantUuid) {
     return NextResponse.json({ error: 'Unknown tenantId' }, { status: 400 });
   }
@@ -149,6 +149,36 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'mode must be live | history | events' }, { status: 400 });
   } catch (err) {
     console.error('[tracking GET]', err);
+    // ── Demo fallback: London & New York fleet ──────────────────────────
+    const now = new Date();
+    const ago = (m: number) => new Date(now.getTime() - m * 60000).toISOString();
+    if (mode === 'live') {
+      const vehicles = [
+        // London vehicles
+        { vehicleId:'v-lon-01', vehicle_short_id:'LON01', plate:'LN71 ABC', deviceImei:'351756051523999', lat:51.5074,  lng:-0.1278,  headingDeg:45,  speedKmh:38, ignitionOn:true,  engineRpm:2100, fuelLevelPct:72, batteryV:12.8, satellites:9,  signalDbm:-72, networkType:'4G', eventFlags:0, transmittedAt:ago(2),  receivedAt:ago(2),  protocol:'Teltonika', odometerKm:42100 },
+        { vehicleId:'v-lon-02', vehicle_short_id:'LON02', plate:'LN70 XYZ', deviceImei:'351756051524001', lat:51.5155,  lng:-0.0922,  headingDeg:120, speedKmh:52, ignitionOn:true,  engineRpm:2600, fuelLevelPct:55, batteryV:12.6, satellites:8,  signalDbm:-68, networkType:'4G', eventFlags:0, transmittedAt:ago(1),  receivedAt:ago(1),  protocol:'GT06',      odometerKm:88500 },
+        { vehicleId:'v-lon-03', vehicle_short_id:'LON03', plate:'LN69 DEF', deviceImei:'351756051524002', lat:51.4994,  lng:-0.1743,  headingDeg:270, speedKmh:24, ignitionOn:true,  engineRpm:1800, fuelLevelPct:88, batteryV:12.9, satellites:10, signalDbm:-65, networkType:'4G', eventFlags:0, transmittedAt:ago(3),  receivedAt:ago(3),  protocol:'Teltonika', odometerKm:31200 },
+        { vehicleId:'v-lon-04', vehicle_short_id:'LON04', plate:'LN72 GHI', deviceImei:'351756051524003', lat:51.5289,  lng:-0.1047,  headingDeg:315, speedKmh:61, ignitionOn:true,  engineRpm:3100, fuelLevelPct:41, batteryV:12.5, satellites:7,  signalDbm:-78, networkType:'4G', eventFlags:2, transmittedAt:ago(1),  receivedAt:ago(1),  protocol:'CalAmp',    odometerKm:125000 },
+        { vehicleId:'v-lon-05', vehicle_short_id:'LON05', plate:'LN68 JKL', deviceImei:'351756051524004', lat:51.4879,  lng:-0.1560,  headingDeg:90,  speedKmh:0,  ignitionOn:false, engineRpm:0,    fuelLevelPct:93, batteryV:12.4, satellites:6,  signalDbm:-80, networkType:'4G', eventFlags:0, transmittedAt:ago(28), receivedAt:ago(28), protocol:'GT06',      odometerKm:67300 },
+        { vehicleId:'v-lon-06', vehicle_short_id:'LON06', plate:'LN67 MNO', deviceImei:'351756051524005', lat:51.5440,  lng:-0.0554,  headingDeg:200, speedKmh:44, ignitionOn:true,  engineRpm:2350, fuelLevelPct:67, batteryV:12.7, satellites:9,  signalDbm:-71, networkType:'4G', eventFlags:0, transmittedAt:ago(2),  receivedAt:ago(2),  protocol:'Queclink',  odometerKm:54800 },
+        { vehicleId:'v-lon-07', vehicle_short_id:'LON07', plate:'LN66 PQR', deviceImei:'351756051524006', lat:51.4641,  lng:-0.1173,  headingDeg:160, speedKmh:33, ignitionOn:true,  engineRpm:2050, fuelLevelPct:79, batteryV:12.9, satellites:8,  signalDbm:-69, networkType:'4G', eventFlags:0, transmittedAt:ago(4),  receivedAt:ago(4),  protocol:'Teltonika', odometerKm:19800 },
+        // New York vehicles
+        { vehicleId:'v-nyc-01', vehicle_short_id:'NYC01', plate:'NYC 4821', deviceImei:'351756051524010', lat:40.7128,  lng:-74.0060, headingDeg:90,  speedKmh:28, ignitionOn:true,  engineRpm:1950, fuelLevelPct:63, batteryV:12.7, satellites:8,  signalDbm:-74, networkType:'LTE', eventFlags:0, transmittedAt:ago(3),  receivedAt:ago(3),  protocol:'CalAmp',    odometerKm:78200 },
+        { vehicleId:'v-nyc-02', vehicle_short_id:'NYC02', plate:'NYC 9143', deviceImei:'351756051524011', lat:40.7580,  lng:-73.9855, headingDeg:180, speedKmh:47, ignitionOn:true,  engineRpm:2700, fuelLevelPct:34, batteryV:12.5, satellites:7,  signalDbm:-76, networkType:'LTE', eventFlags:1, transmittedAt:ago(1),  receivedAt:ago(1),  protocol:'Teltonika', odometerKm:142000 },
+        { vehicleId:'v-nyc-03', vehicle_short_id:'NYC03', plate:'NYC 3307', deviceImei:'351756051524012', lat:40.6892,  lng:-74.0445, headingDeg:270, speedKmh:0,  ignitionOn:false, engineRpm:0,    fuelLevelPct:91, batteryV:12.3, satellites:5,  signalDbm:-82, networkType:'LTE', eventFlags:0, transmittedAt:ago(45), receivedAt:ago(45), protocol:'GT06',      odometerKm:33100 },
+      ];
+      return NextResponse.json({ mode: 'live', count: vehicles.length, asOf: now.toISOString(), vehicles });
+    }
+    if (mode === 'history' || mode === 'events') {
+      // Simulate a London route: City → Canary Wharf → Greenwich
+      const pings = Array.from({ length: 60 }, (_, i) => {
+        const t = new Date(now.getTime() - (60 - i) * 120000);
+        const lat = 51.5074 + i * 0.0018 - 0.002 * Math.sin(i * 0.3);
+        const lng = -0.1278 + i * 0.0022 + 0.001 * Math.cos(i * 0.3);
+        return { vehicleId:'v-lon-01', vehicle_short_id:'LON01', plate:'LN71 ABC', deviceImei:'351756051523999', transmittedAt:t.toISOString(), receivedAt:t.toISOString(), lat, lng, headingDeg: (90 + i * 2) % 360, speedKmh: 30 + Math.round(Math.random()*30), odometerKm:42100+i*0.12, ignitionOn:true, engineRpm:1800+Math.round(Math.random()*800), fuelLevelPct:72 - i*0.15, batteryV:12.8, satellites:8+Math.round(Math.random()*2), signalDbm:-70, networkType:'4G', eventFlags:i===20?2:0, protocol:'Teltonika' };
+      });
+      return NextResponse.json({ mode, count: pings.length, pings });
+    }
     return NextResponse.json({ error: 'Database error' }, { status: 500 });
   }
 }
@@ -186,7 +216,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Max 200 pings per request' }, { status: 400 });
   }
 
-  const tenantUuid = TENANT_UUID[String(tenantId)];
+  const tenantUuid = toTenantUuid(String(tenantId));
   if (!tenantUuid) return NextResponse.json({ error: 'Unknown tenantId' }, { status: 400 });
 
   const db = getPool();

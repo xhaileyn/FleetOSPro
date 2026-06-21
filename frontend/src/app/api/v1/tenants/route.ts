@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, UUID_TENANT } from '@/lib/pgDb';
+import { getPool, UUID_TENANT, fromTenantUuid } from '@/lib/pgDb';
 
 /**
  * GET /api/v1/tenants
@@ -29,7 +29,7 @@ export async function GET() {
     `);
 
     const tenants = rows.map(r => {
-      const shortId = UUID_TENANT[(r.Id as string).toLowerCase()];
+      const shortId = fromTenantUuid((r.Id as string).toLowerCase());
       const created = r.CreatedAt
         ? new Date(r.CreatedAt as string).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })
         : '—';
@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
 
     const r = rows[0];
     return NextResponse.json({
-      id:         UUID_TENANT[(r.Id as string).toLowerCase()] ?? r.Id,
+      id:         fromTenantUuid((r.Id as string).toLowerCase()) ?? r.Id,
       uuid:       r.Id,
       name:       r.Name,
       plan:       r.Plan,

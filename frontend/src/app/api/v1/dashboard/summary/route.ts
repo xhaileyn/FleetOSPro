@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, TENANT_UUID } from '@/lib/pgDb';
+import { getPool, TENANT_UUID, toTenantUuid } from '@/lib/pgDb';
 
 export async function GET(req: NextRequest) {
   const tenantId = req.nextUrl.searchParams.get('tenantId');
@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     let alertWhere   = '';
 
     if (tenantId) {
-      const uuid = TENANT_UUID[tenantId];
+      const uuid = toTenantUuid(tenantId);
       if (uuid) {
         vehicleWhere = ` WHERE "TenantId" = $1`;
         driverWhere  = ` WHERE "TenantId" = $1`;
@@ -40,6 +40,7 @@ export async function GET(req: NextRequest) {
     const allAlerts  = aRows.rows;
 
     const openAlerts    = allAlerts.filter(a => !a.acknowledged);
+    const acked         = allAlerts.filter(a => a.acknowledged);
     const onDuty        = drivers.filter(d => d.Status === 'Driving' || d.Status === 'driving' || d.Status === 'on_duty').length;
 
     return NextResponse.json({
@@ -52,8 +53,11 @@ export async function GET(req: NextRequest) {
       driversOnDuty:       onDuty,
       openAlerts:          openAlerts.length,
       criticalAlerts:      openAlerts.filter(a => a.severity === 'critical').length,
-      fuelSavedToday:      840,
-      recentAlerts:        openAlerts.slice(0, 5),
+      warningAlerts:       openAlerts.filter(a => a.severity === 'warning').length,
+      infoAlerts:          openAlerts.filter(a => a.severity === 'info').length,
+      acknowledgedAlerts:  acked.length,
+      fuelSavedToday:      0,
+      recentAlerts:        openAlerts,
     });
   } catch (err) {
     console.error('[dashboard/summary] DB error', err);
@@ -61,7 +65,8 @@ export async function GET(req: NextRequest) {
       totalVehicles: 0, activeVehicles: 0, idleVehicles: 0,
       offlineVehicles: 0, maintenanceVehicles: 0,
       totalDrivers: 0, driversOnDuty: 0,
-      openAlerts: 0, criticalAlerts: 0, fuelSavedToday: 0, recentAlerts: [],
+      openAlerts: 0, criticalAlerts: 0, warningAlerts: 0, infoAlerts: 0, acknowledgedAlerts: 0,
+      fuelSavedToday: 0, recentAlerts: [],
     });
   }
 }

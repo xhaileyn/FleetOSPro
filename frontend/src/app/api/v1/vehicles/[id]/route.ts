@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, UUID_TENANT } from '@/lib/pgDb';
+import { getPool, UUID_TENANT, fromTenantUuid } from '@/lib/pgDb';
 
 function rowToVehicle(v: Record<string, unknown>) {
   return {
     id:                  v.ShortId || v.Id,
-    tenantId:            UUID_TENANT[(v.TenantId as string)?.toLowerCase()] ?? v.TenantId,
+    tenantId:            fromTenantUuid((v.TenantId as string)?.toLowerCase()) ?? v.TenantId,
     plate:               v.Plate,
     vin:                 v.Vin            ?? '',
     make:                v.Make,
@@ -36,8 +36,8 @@ function rowToVehicle(v: Record<string, unknown>) {
     customerId:          v.CustomerId      ?? null,
     customerName:        v.CustomerName    ?? null,
     department:          v.Department      ?? null,
-    driverName:          v.AssignedDriverName ?? null,
-    driverId:            v.AssignedDriverId   ?? null,
+    driverName:          v.DriverName      ?? v.AssignedDriverName ?? null,
+    driverId:            v.DriverId        ?? v.AssignedDriverId  ?? null,
     latitude:            v.Latitude  != null ? Number(v.Latitude)  : null,
     longitude:           v.Longitude != null ? Number(v.Longitude) : null,
     speedKmh:            v.SpeedKmh  != null ? Number(v.SpeedKmh)  : null,
@@ -70,30 +70,64 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   const body = await req.json().catch(() => ({}));
   try {
     const db = getPool();
-    const sets: string[] = [];
-    const vals: unknown[] = [];
-    const allowed = ['Plate','Make','Model','Year','Category','BodyType','Color','Status',
-                     'Odometer','FuelLevel','AssignedDriverName','AssignedDriverId',
-                     'OwnerType','OwnerName','OwnerIdNo','OwnerContact',
-                     'CustomerId','CustomerName','Department'];
-    const bodyMap: Record<string, string> = {
+
+    /* ── Non-driver fields (always safe) ─────────────────────────────── */
+    const safeMap: Record<string, string> = {
       plate:'Plate', make:'Make', model:'Model', year:'Year', category:'Category',
       bodyType:'BodyType', color:'Color', status:'Status', odometer:'Odometer',
-      fuelLevel:'FuelLevel', driverName:'AssignedDriverName', driverId:'AssignedDriverId',
+      fuelLevel:'FuelLevel',
       ownerType:'OwnerType', ownerName:'OwnerName', ownerIdNo:'OwnerIdNo', ownerContact:'OwnerContact',
       customerId:'CustomerId', customerName:'CustomerName', department:'Department',
     };
-    for (const [k, col] of Object.entries(bodyMap)) {
-      if (body[k] !== undefined && allowed.includes(col)) {
+    const sets: string[] = [];
+    const vals: unknown[] = [];
+    for (const [k, col] of Object.entries(safeMap)) {
+      if (body[k] !== undefined) {
         sets.push(`"${col}" = $${vals.length + 1}`);
         vals.push(body[k]);
       }
     }
+
+    /* ── Driver name — try DriverName first, fall back to AssignedDriverName ── */
+    if (body.driverName !== undefined) {
+      /* Probe which column exists and use it */
+      try {
+        const probe = await db.query(
+          `SELECT column_name FROM information_schema.columns
+           WHERE table_name = 'Vehicles'
+             AND column_name IN ('DriverName','AssignedDriverName')
+           LIMIT 1`,
+        );
+        const col = probe.rows[0]?.column_name ?? 'DriverName';
+        sets.push(`"${col}" = $${vals.length + 1}`);
+        vals.push(body.driverName);
+      } catch {
+        sets.push(`"DriverName" = $${vals.length + 1}`);
+        vals.push(body.driverName);
+      }
+    }
+
+    /* ── Driver ID — optional column, silently skip if absent ──────────── */
+    if (body.driverId !== undefined) {
+      try {
+        const probe = await db.query(
+          `SELECT column_name FROM information_schema.columns
+           WHERE table_name = 'Vehicles'
+             AND column_name IN ('DriverId','AssignedDriverId')
+           LIMIT 1`,
+        );
+        if (probe.rows[0]?.column_name) {
+          sets.push(`"${probe.rows[0].column_name}" = $${vals.length + 1}`);
+          vals.push(body.driverId);
+        }
+      } catch { /* column doesn't exist — skip */ }
+    }
+
     if (!sets.length) return new NextResponse(null, { status: 204 });
     vals.push(id);
     await db.query(
       `UPDATE "Vehicles" SET ${sets.join(', ')} WHERE "ShortId" = $${vals.length} OR "Id"::text = $${vals.length}`,
-      vals
+      vals,
     );
     return new NextResponse(null, { status: 204 });
   } catch (err) {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, TENANT_UUID } from '@/lib/pgDb';
+import { getPool, TENANT_UUID, toTenantUuid } from '@/lib/pgDb';
 
 export async function GET(req: NextRequest) {
   const sp       = req.nextUrl.searchParams;
@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   const view     = sp.get('view')     ?? 'operations';
   const period   = sp.get('period')   ?? 'week';
 
-  const tenantUuid = TENANT_UUID[tenantId];
+  const tenantUuid = toTenantUuid(tenantId);
   if (!tenantUuid) {
     return NextResponse.json({ error: 'Unknown tenantId' }, { status: 400 });
   }

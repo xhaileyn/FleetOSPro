@@ -6,6 +6,7 @@ import { useAuthStore } from '@/store/authStore';
 import { FleetMap, STATUS_COLOR, VehiclePin } from '@/components/maps/FleetMap';
 import { TENANTS_META } from '@/lib/vehiclesMaster';
 import { useVehiclesStore } from '@/store/vehiclesStore';
+import { useDevicesStore } from '@/store/devicesStore';
 import { useUIStore } from '@/store/uiStore';
 
 const FILTER_OPTS = ['all', 'active', 'idle', 'offline'];
@@ -94,7 +95,19 @@ export default function MapPage() {
   const [gzFilter,     setGzFilter]    = useState<'all' | 'Active' | 'Breached'>('all');
   const [evFilter,     setEvFilter]    = useState<'all' | 'critical' | 'warning' | 'info'>('all');
   const [selectedGz,   setSelectedGz]  = useState<string | null>(null);
-  const vehicles = useVehiclesStore(s => s.vehicles);
+  const vehicles        = useVehiclesStore(s => s.vehicles);
+  const loadVehicles    = useVehiclesStore(s => s.loadVehicles);
+  const loadDevices     = useDevicesStore(s => s.loadDevices);
+  const devicesByVehicle = useDevicesStore(s => s.getByVehicle);
+
+  /* Refresh vehicles + devices on every map page mount so newly-assigned
+     devices are immediately reflected without requiring a full page reload. */
+  useEffect(() => {
+    const tid = isSuperAdmin ? null : (user?.tenantId ?? null);
+    loadVehicles(tid);
+    loadDevices(tid);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function openTracking(pin: VehiclePin) {
     const master = sourceVehicles.find(v => v.plate === pin.id) ?? null;
@@ -114,7 +127,11 @@ export default function MapPage() {
 
   const allPins = useMemo(() =>
     sourceVehicles
-      .filter(v => v.latitude !== null && v.longitude !== null)
+      .filter(v =>
+        v.latitude !== null &&
+        v.longitude !== null &&
+        (!!v.deviceId || devicesByVehicle(v.id).length > 0),
+      )
       .map(v => ({
         id: v.plate, driver: v.driverName ?? 'No driver',
         status: toMapStatus(v.status), speed: v.speedKmh ?? 0,
@@ -134,13 +151,36 @@ export default function MapPage() {
     return matchStatus && matchTenant;
   }), [allPins, filter, tenantFilter, isSuperAdmin]);
 
+  /* Country-name → approximate centre coordinates */
+  const COUNTRY_CENTER: Record<string, [number, number]> = {
+    Kenya: [-1.2921, 36.8219], Uganda: [0.3476, 32.5825], Tanzania: [-6.369, 34.889],
+    Nigeria: [9.082, 8.6753], Ghana: [7.946, -1.023], 'South Africa': [-30.559, 22.938],
+    Ethiopia: [9.145, 40.489], Rwanda: [-1.940, 29.874],
+    'United Kingdom': [51.5074, -0.1278], UK: [51.5074, -0.1278],
+    'United States': [37.09, -95.712], USA: [37.09, -95.712],
+    India: [20.594, 78.963], Pakistan: [30.375, 69.345],
+    UAE: [23.424, 53.848], 'Saudi Arabia': [23.886, 45.079],
+    Germany: [51.165, 10.452], France: [46.227, 2.213],
+    Australia: [-25.274, 133.775], Canada: [56.130, -106.347],
+  };
+
   const center = useMemo((): [number, number] => {
-    if (!shown.length) return [-1.2921, 36.8219];
-    return [
-      shown.reduce((s, v) => s + v.lat, 0) / shown.length,
-      shown.reduce((s, v) => s + v.lng, 0) / shown.length,
-    ];
-  }, [shown]);
+    if (shown.length) {
+      return [
+        shown.reduce((s, v) => s + v.lat, 0) / shown.length,
+        shown.reduce((s, v) => s + v.lng, 0) / shown.length,
+      ];
+    }
+    /* Fall back to tenant's country centre */
+    const tenantMeta = isSuperAdmin ? null : TENANTS_META[tenantId];
+    if (tenantMeta?.country) {
+      const hit = COUNTRY_CENTER[tenantMeta.country];
+      if (hit) return hit;
+    }
+    /* Last resort: first vehicle's registration country */
+    const country = sourceVehicles[0]?.registrationCountry;
+    return COUNTRY_CENTER[country ?? ''] ?? [-1.2921, 36.8219];
+  }, [shown, isSuperAdmin, tenantId, sourceVehicles]);
 
   /* Use fitAll whenever there are multi-region vehicles (super admin all-tenant view
      or any tenant with GPS pins spread across different countries) */
@@ -439,6 +479,9 @@ export default function MapPage() {
                   {v.status === 'active' && v.speed > 0 && (
                     <div style={{ fontSize: 11, color: 'var(--ink3)', marginLeft: 16 }}>{v.speed} km/h · ⛽ {v.fuel}%</div>
                   )}
+                  <div style={{ fontSize: 10, color: 'var(--ink3)', marginLeft: 16, marginTop: 2, fontFamily: 'monospace' }}>
+                    {v.lat.toFixed(4)}, {v.lng.toFixed(4)}
+                  </div>
                   {isSuperAdmin && v.tenantId && <div style={{ marginLeft: 16, marginTop: 4 }}><TenantDot tenantId={v.tenantId} /></div>}
                   {/* Live tracking shortcut */}
                   <button
@@ -584,7 +627,7 @@ export default function MapPage() {
             ))}
           </div>
           <div style={{ fontSize: 9, color: 'var(--ink3)' }}>
-            {shown.length} of {allPins.length} vehicle{allPins.length !== 1 ? 's' : ''} have live GPS
+            {shown.length} of {allPins.length} device-linked vehicle{allPins.length !== 1 ? 's' : ''} have GPS
           </div>
         </div>
       </div>{/* end full-panel inner wrapper */}
@@ -592,23 +635,28 @@ export default function MapPage() {
 
       {/* ── Map ─────────────────────────────────────────────────────── */}
       <div style={{ flex: 1, position: 'relative' }}>
-        {shown.length === 0 ? (
-          <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#f0f4f0', gap: 12 }}>
-            <div style={{ fontSize: 40 }}>🗺️</div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink)' }}>No vehicles to display</div>
-            <div style={{ fontSize: 12, color: 'var(--ink3)' }}>Adjust filters or check that vehicles have active GPS</div>
+        <FleetMap
+          vehicles={shown}
+          height="100%"
+          zoom={shown.length === 0 ? 6 : (isSuperAdmin && tenantFilter === 'all' ? 4 : 11)}
+          center={center}
+          fitAll={useFitAll}
+          selectedId={selected}
+          onSelectId={selectVehicle}
+          onPinClick={openTracking}
+        />
+        {/* Overlay when no GPS vehicles match current filter */}
+        {shown.length === 0 && (
+          <div style={{
+            position: 'absolute', bottom: 18, left: '50%', transform: 'translateX(-50%)',
+            background: 'rgba(255,255,255,0.93)', borderRadius: 8, padding: '7px 16px',
+            fontSize: 12, color: 'var(--ink3)', fontWeight: 600, zIndex: 999,
+            display: 'flex', alignItems: 'center', gap: 7,
+            boxShadow: '0 2px 10px rgba(0,0,0,0.14)', whiteSpace: 'nowrap',
+          }}>
+            <i className="ti ti-map-pin-off" style={{ fontSize: 13 }} />
+            No GPS vehicles — showing region map
           </div>
-        ) : (
-          <FleetMap
-            vehicles={shown}
-            height="100%"
-            zoom={isSuperAdmin && tenantFilter === 'all' ? 4 : 11}
-            center={center}
-            fitAll={useFitAll}
-            selectedId={selected}
-            onSelectId={selectVehicle}
-            onPinClick={openTracking}
-          />
         )}
       </div>
       </div>{/* end flex:1 row wrapper */}

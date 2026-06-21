@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, TENANT_UUID, UUID_TENANT } from '@/lib/pgDb';
+import { getPool, TENANT_UUID, UUID_TENANT, toTenantUuid, fromTenantUuid } from '@/lib/pgDb';
 
 function rowToSchedule(r: Record<string, unknown>) {
   return {
     id:             r.ShortId,
-    tenantId:       UUID_TENANT[(r.TenantId as string)?.toLowerCase()] ?? r.TenantId,
+    tenantId:       fromTenantUuid((r.TenantId as string)?.toLowerCase()) ?? r.TenantId,
     vehicleShortId: r.VehicleShortId ?? '',
     vehiclePlate:   r.VehiclePlate   ?? '',
     vehicleMake:    r.VehicleMake    ?? '',
@@ -24,10 +24,10 @@ export async function GET(req: NextRequest) {
   const tenantShort = req.nextUrl.searchParams.get('tenantId');
   const db = getPool();
   try {
-    const { rows } = tenantShort && TENANT_UUID[tenantShort]
+    const { rows } = tenantShort && toTenantUuid(tenantShort)
       ? await db.query(
           `SELECT * FROM "MaintenanceSchedules" WHERE "TenantId" = $1 ORDER BY "CreatedAt" DESC`,
-          [TENANT_UUID[tenantShort]],
+          [toTenantUuid(tenantShort)],
         )
       : await db.query(`SELECT * FROM "MaintenanceSchedules" ORDER BY "CreatedAt" DESC`);
     return NextResponse.json(rows.map(rowToSchedule));
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
   if (!tenantId || !serviceType) {
     return NextResponse.json({ message: 'tenantId and serviceType required' }, { status: 400 });
   }
-  const tenantUuid = TENANT_UUID[tenantId];
+  const tenantUuid = toTenantUuid(tenantId);
   if (!tenantUuid) {
     return NextResponse.json({ message: 'Unknown tenantId' }, { status: 400 });
   }

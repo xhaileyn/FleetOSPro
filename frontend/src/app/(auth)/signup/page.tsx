@@ -282,7 +282,7 @@ export default function SignupPage() {
                 Tell us about your fleet
               </div>
               <div style={{ fontSize: 13, color: '#64748b', marginBottom: 24 }}>
-                Help us tailor FleetOS+ to your needs
+                Help us tailor FleetOS Pro to your needs
               </div>
 
               <Field label="Company name" mb={14}>

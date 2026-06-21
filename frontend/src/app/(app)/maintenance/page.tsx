@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import { useMaintenanceStore, type MaintenanceSchedule } from '@/store/maintenanceStore';
 import { useVehiclesStore } from '@/store/vehiclesStore';
 import { useAuthStore } from '@/store/authStore';
@@ -260,6 +261,7 @@ function ScheduleModal({
 
 /* ─── Main page ────────────────────────────────────────────────────────────── */
 export default function MaintenancePage() {
+  const isMobile = useIsMobile();
   const { user } = useAuthStore();
   const { schedules, loading, loadSchedules, addSchedule, updateSchedule } = useMaintenanceStore();
   const vehicles = useVehiclesStore(s => s.vehicles);
@@ -365,7 +367,7 @@ export default function MaintenancePage() {
       </div>
 
       {/* KPI strip */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 14 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2,1fr)' : 'repeat(4,1fr)', gap: isMobile ? 8 : 12, marginBottom: 14 }}>
         <KpiCard icon="ti-alert-octagon" iconColor="#dc2626" label="Overdue" value={overdue}
           stripe="var(--red)" active={statusFilter === 'Overdue'}
           onClick={() => setStatusFilter(statusFilter === 'Overdue' ? 'All' : 'Overdue')} />

@@ -275,7 +275,7 @@ function SessionsRBACTab() {
         ))}
       </div>
 
-      <SectionCard title="JWT token anatomy" subtitle="Every access token issued by FleetOS+ carries tenant isolation claims">
+      <SectionCard title="JWT token anatomy" subtitle="Every access token issued by FleetOS Pro carries tenant isolation claims">
         <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:16 }}>
           <div>
             <div style={{ fontSize:11,fontWeight:600,color:'var(--ink3)',marginBottom:6 }}>HEADER</div>

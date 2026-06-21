@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://www.fleetospro.com/sitemap.xml
+Sitemap: https://app.fleetospro.com/website/sitemap.xml
 
 # Crawl-delay (be polite)
 Crawl-delay: 1

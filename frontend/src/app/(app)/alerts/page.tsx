@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useRef, useMemo } from 'react';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import { useSearchParams } from 'next/navigation';
 import { FleetMap, VehiclePin, STATUS_COLOR } from '@/components/maps/FleetMap';
 import { TENANTS_META } from '@/lib/vehiclesMaster';
@@ -126,6 +127,7 @@ function SearchIcon() {
 }
 
 export default function AlertsPage() {
+  const isMobile = useIsMobile();
   const { user }     = useAuthStore();
   const searchParams = useSearchParams();
   const vehicles     = useVehiclesStore(s => s.vehicles);
@@ -421,7 +423,7 @@ export default function AlertsPage() {
       </div>
 
       {/* ── KPI summary bar ──────────────────────────────────────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 24 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: isMobile ? 8 : 12, marginBottom: 24 }}>
         {[
           {
             label: 'Active alerts', count: totalActive,

@@ -1,5 +1,6 @@
 'use client';
 import { useState, useMemo } from 'react';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import Link from 'next/link';
 import { useAuthStore } from '@/store/authStore';
 import { useConfigStore } from '@/store/configStore';
@@ -267,6 +268,7 @@ function RightsModal({
 // ── Main page ─────────────────────────────────────────────────────────────────
 
 export default function ReportsPage() {
+  const isMobile = useIsMobile();
   const { user } = useAuthStore();
   const { reportRights, setReportRights } = useConfigStore();
   const [tab,         setTab]         = useState('All');
@@ -346,7 +348,7 @@ export default function ReportsPage() {
       </div>
 
       {/* ── KPI strip ───────────────────────────────────────────────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 8, marginBottom: 14 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2,1fr)' : 'repeat(4,1fr)', gap: 8, marginBottom: 14 }}>
         <KpiCard icon="ti-truck"           iconColor="#c4912a"       label="Operations" value={REPORTS.filter(r => r.cat === 'Operations').length} stripe="#c4912a"       />
         <KpiCard icon="ti-users"           iconColor="#7c3aed"       label="HR"          value={REPORTS.filter(r => r.cat === 'HR').length}         stripe="#7c3aed"       />
         <KpiCard icon="ti-currency-dollar" iconColor="#d97706"       label="Finance"     value={REPORTS.filter(r => r.cat === 'Finance').length}    stripe="#d97706"       />

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, TENANT_UUID } from '@/lib/pgDb';
+import { getPool, TENANT_UUID, toTenantUuid } from '@/lib/pgDb';
 
 // GET /api/v1/trip-stages?tenantId=1&tripId=t1
 // Returns all stages for a trip in order, with event summaries.
@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   const tripId   = sp.get('tripId');
   const vehicleId = sp.get('vehicleId');
 
-  const tenantUuid = TENANT_UUID[tenantId];
+  const tenantUuid = toTenantUuid(tenantId);
   if (!tenantUuid) {
     return NextResponse.json({ error: 'Unknown tenantId' }, { status: 400 });
   }

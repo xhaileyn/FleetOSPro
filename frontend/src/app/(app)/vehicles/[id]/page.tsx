@@ -943,7 +943,7 @@ function AssignmentTab({ v, tenantCustomers, tenantDrivers, user }: { v: Vehicle
 }
 
 /* ── Device & IoT tab ──────────────────────────────────────────────── */
-function DeviceIoTTab({ v }: { v: VehicleMaster }) {
+function DeviceIoTTab({ v, canLink }: { v: VehicleMaster; canLink: boolean }) {
   const allDevices    = useDevicesStore(s => s.devices);
   const loadDevices   = useDevicesStore(s => s.loadDevices);
   const allSims       = useSimsStore(s => s.sims);
@@ -1328,34 +1328,38 @@ function DeviceIoTTab({ v }: { v: VehicleMaster }) {
           <div style={{ fontSize: 32, marginBottom: 8 }}>📡</div>
           <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink)', marginBottom: 4 }}>No hardware linked to {v.plate}</div>
           <div style={{ fontSize: 12, color: 'var(--ink3)' }}>
-            Assign a GPS device and / or SIM card from your available stock.
+            {canLink
+              ? 'Assign a GPS device and / or SIM card from your available stock.'
+              : 'Contact your fleet administrator to assign a GPS device or SIM card to this vehicle.'}
           </div>
         </div>
 
-        {/* Two-column assignment grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        {/* Two-column assignment grid — only for authorised roles */}
+        {canLink && (
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
 
-          {/* ── Device picker ── */}
-          <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
-            <div style={{ padding: '10px 14px', background: 'var(--cream)', borderBottom: '1px solid var(--border)', fontSize: 11, fontWeight: 700, color: 'var(--ink)', textTransform: 'uppercase' as const, letterSpacing: 0.8 }}>
-              📡 GPS Device
+            {/* ── Device picker ── */}
+            <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
+              <div style={{ padding: '10px 14px', background: 'var(--cream)', borderBottom: '1px solid var(--border)', fontSize: 11, fontWeight: 700, color: 'var(--ink)', textTransform: 'uppercase' as const, letterSpacing: 0.8 }}>
+                📡 GPS Device
+              </div>
+              <div style={{ padding: 12, maxHeight: 280, overflowY: 'auto' as const }}>
+                {renderDeviceRows()}
+              </div>
             </div>
-            <div style={{ padding: 12, maxHeight: 280, overflowY: 'auto' as const }}>
-              {renderDeviceRows()}
+
+            {/* ── SIM picker ── */}
+            <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
+              <div style={{ padding: '10px 14px', background: 'var(--cream)', borderBottom: '1px solid var(--border)', fontSize: 11, fontWeight: 700, color: 'var(--ink)', textTransform: 'uppercase' as const, letterSpacing: 0.8 }}>
+                📶 SIM Card
+              </div>
+              <div style={{ padding: 12, maxHeight: 280, overflowY: 'auto' as const }}>
+                {renderSimRows()}
+              </div>
             </div>
+
           </div>
-
-          {/* ── SIM picker ── */}
-          <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
-            <div style={{ padding: '10px 14px', background: 'var(--cream)', borderBottom: '1px solid var(--border)', fontSize: 11, fontWeight: 700, color: 'var(--ink)', textTransform: 'uppercase' as const, letterSpacing: 0.8 }}>
-              📶 SIM Card
-            </div>
-            <div style={{ padding: 12, maxHeight: 280, overflowY: 'auto' as const }}>
-              {renderSimRows()}
-            </div>
-          </div>
-
-        </div>
+        )}
       </div>
     );
   }
@@ -1421,8 +1425,8 @@ function DeviceIoTTab({ v }: { v: VehicleMaster }) {
               </div>
             </div>
 
-            {/* Delink action row */}
-            {delinkConfirm?.targetDeviceId === d.id ? (
+            {/* Delink action row — admins only */}
+            {canLink && delinkConfirm?.targetDeviceId === d.id ? (
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, padding: '10px 14px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 8, marginBottom: 4 }}>
                 <span style={{ fontSize: 12, color: '#dc2626', fontWeight: 600, flex: 1 }}>
                   {delinkConfirm.mode === 'both'   ? '⚠️ Delink device AND SIM from this vehicle?' :
@@ -1448,7 +1452,7 @@ function DeviceIoTTab({ v }: { v: VehicleMaster }) {
                   </button>
                 </div>
               </div>
-            ) : (
+            ) : canLink ? (
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 6, paddingBottom: 4 }}>
                 <span style={{ fontSize: 10, color: 'var(--ink3)', fontWeight: 600, marginRight: 4 }}>Delink:</span>
                 <button onClick={() => setDelinkConfirm({ targetDeviceId: d.id, mode: 'device' })}
@@ -1468,11 +1472,11 @@ function DeviceIoTTab({ v }: { v: VehicleMaster }) {
                   </button>
                 )}
               </div>
-            )}
+            ) : null}
 
             {/* Identity + SIM two-column */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-              <SectionCard title="Identity & Hardware" onAction={() => openEditDevice(d)}>
+              <SectionCard title="Identity & Hardware" onAction={canLink ? () => openEditDevice(d) : undefined}>
                 <InfoRow label="Device ID"      value={d.id} mono />
                 <InfoRow label="Model"          value={d.model} />
                 <InfoRow label="Type"           value={d.type} />
@@ -1485,7 +1489,7 @@ function DeviceIoTTab({ v }: { v: VehicleMaster }) {
                 {d.notes && <InfoRow label="Notes" value={d.notes} />}
               </SectionCard>
 
-              <SectionCard title="SIM & Connectivity" onAction={linkedSim ? () => openEditSim(linkedSim) : undefined}>
+              <SectionCard title="SIM & Connectivity" onAction={canLink && linkedSim ? () => openEditSim(linkedSim) : undefined}>
                 {linkedSim ? (
                   <>
                     <InfoRow label="ICCID"         value={linkedSim.iccid} mono />
@@ -1560,17 +1564,17 @@ function DeviceIoTTab({ v }: { v: VehicleMaster }) {
                     </button>
                   </div>
                 ) : (
-                  /* ── No SIM — offer to assign one ── */
+                  /* ── No SIM — offer to assign one (admins only) ── */
                   <div style={{ padding: '16px 0', textAlign: 'center' }}>
                     <div style={{ fontSize: 12, color: 'var(--ink3)', marginBottom: 10 }}>No SIM linked to this device.</div>
-                    {stockSims.length > 0 ? (
+                    {canLink && stockSims.length > 0 ? (
                       <button onClick={() => setAssigningSimFor(d.id)}
                         style={{ padding: '5px 14px', fontSize: 11, fontWeight: 600, border: '1px solid #c4912a', borderRadius: 6, background: 'rgba(196,145,42,0.12)', color: '#c4912a', cursor: 'pointer', fontFamily: 'inherit' }}>
                         📶 Assign SIM from stock
                       </button>
-                    ) : (
+                    ) : canLink ? (
                       <div style={{ fontSize: 11, color: 'var(--ink3)', fontStyle: 'italic' }}>No SIMs in stock.</div>
-                    )}
+                    ) : null}
                   </div>
                 )}
               </SectionCard>
@@ -1586,7 +1590,7 @@ function DeviceIoTTab({ v }: { v: VehicleMaster }) {
             📡 GPS Device
           </div>
           <div style={{ padding: 14 }}>
-            {assigningDevice ? (
+            {canLink && assigningDevice ? (
               <div>
                 <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--ink3)', letterSpacing: 0.7, marginBottom: 8 }}>SELECT DEVICE FROM STOCK</div>
                 {renderDeviceRows()}
@@ -1598,14 +1602,14 @@ function DeviceIoTTab({ v }: { v: VehicleMaster }) {
             ) : (
               <div style={{ textAlign: 'center', padding: '8px 0' }}>
                 <div style={{ fontSize: 12, color: 'var(--ink3)', marginBottom: 10 }}>No GPS device linked to this vehicle.</div>
-                {stockDevices.length > 0 ? (
+                {canLink && stockDevices.length > 0 ? (
                   <button onClick={() => setAssigningDevice(true)}
                     style={{ padding: '5px 14px', fontSize: 11, fontWeight: 600, border: '1px solid #c4912a', borderRadius: 6, background: 'rgba(196,145,42,0.12)', color: '#c4912a', cursor: 'pointer', fontFamily: 'inherit' }}>
                     📡 Assign GPS Device from stock
                   </button>
-                ) : (
+                ) : canLink ? (
                   <span style={{ fontSize: 11, color: 'var(--ink3)', fontStyle: 'italic' }}>No GPS devices in stock.</span>
-                )}
+                ) : null}
               </div>
             )}
           </div>
@@ -1627,7 +1631,7 @@ function DeviceIoTTab({ v }: { v: VehicleMaster }) {
         const pct = s.dataPlanMB > 0 ? Math.min(Math.round((s.dataUsedMB / s.dataPlanMB) * 100), 100) : 0;
         const barColor = pct > 90 ? 'var(--red)' : pct > 70 ? 'var(--amber)' : '#c4912a';
         return (
-          <SectionCard key={s.id} title="SIM Card" onAction={() => openEditSim(s)}>
+          <SectionCard key={s.id} title="SIM Card" onAction={canLink ? () => openEditSim(s) : undefined}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0 }}>
               <InfoRow label="ICCID"    value={s.iccid} mono />
               <InfoRow label="MSISDN"   value={s.msisdn || '—'} />
@@ -3281,7 +3285,7 @@ export default function VehicleDetailPage({ params }: { params: Promise<{ id: st
       {activeTab === 'history'      && <HistoryTab       events={vehicle.history} vehicleId={vehicle.id} tenantId={vehicle.tenantId} />}
       {activeTab === 'documents'    && <DocumentsTab     docs={vehicle.documents} canWrite={canWrite} />}
       {activeTab === 'assignment'   && <AssignmentTab    v={vehicle} tenantCustomers={allCustomers.filter(c => c.tenantId === vehicle.tenantId)} tenantDrivers={role === 'vehicle_owner' ? [] : allDrivers.filter(d => d.tenantId === vehicle.tenantId)} user={user} />}
-      {activeTab === 'device'       && <DeviceIoTTab     v={vehicle} />}
+      {activeTab === 'device'       && <DeviceIoTTab     v={vehicle} canLink={user ? hasMinRole(user, 'fleet_manager') : false} />}
       {activeTab === 'maintenance'  && <MaintenanceTab   v={vehicle} />}
       {activeTab === 'subscription' && <SubscriptionTab  vehicle={vehicle} canWrite={canWrite} />}
       {activeTab === 'security'     && <SecurityTab       vehicle={vehicle} customer={vehicle.customerId ? getCustomerById(vehicle.customerId) : undefined} user={user} />}

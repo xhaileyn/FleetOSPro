@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, TENANT_UUID } from '@/lib/pgDb';
+import { getPool, TENANT_UUID, toTenantUuid } from '@/lib/pgDb';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     const clauses: string[] = [];
 
     if (tenantId) {
-      const uuid = TENANT_UUID[tenantId];
+      const uuid = toTenantUuid(tenantId);
       if (uuid) {
         params.push(uuid);
         clauses.push(`a."TenantId" = $${params.length}`);

@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, UUID_TENANT } from '@/lib/pgDb';
+import { getPool, UUID_TENANT, fromTenantUuid } from '@/lib/pgDb';
 
 function rowToDriver(d: Record<string, unknown>) {
   return {
     id:                    d.ShortId || d.Id,
-    tenantId:              UUID_TENANT[(d.TenantId as string)?.toLowerCase()] ?? d.TenantId,
+    tenantId:              fromTenantUuid((d.TenantId as string)?.toLowerCase()) ?? d.TenantId,
     firstName:             d.FirstName ?? '',
     lastName:              d.LastName  ?? '',
     name:                  `${d.FirstName ?? ''} ${d.LastName ?? ''}`.trim(),

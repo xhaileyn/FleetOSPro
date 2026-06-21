@@ -23,9 +23,11 @@ import { type BrandConfig, darkenHex, lightenHex } from '@/components/BrandingEd
 import { useUIStore } from '@/store/uiStore';
 import { ChatBot } from '@/components/chat/ChatBot';
 import { FleetOSLockup } from '@/components/layout/FleetOSMark';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const sidebarCollapsed = useUIStore(s => s.sidebarCollapsed);
+  const isMobile = useIsMobile();
   const { user, hydrate }              = useAuthStore();
   const { activeTenant, switchTenant } = useTenantStore();
   const config                         = useConfigStore();
@@ -206,7 +208,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div style={{
       display: 'grid',
-      gridTemplateColumns: `${sidebarCollapsed ? 52 : 228}px 1fr`,
+      gridTemplateColumns: isMobile ? '1fr' : `${sidebarCollapsed ? 52 : 228}px 1fr`,
       gridTemplateRows: activeTenant ? '64px 38px 1fr auto' : '64px 1fr auto',
       minHeight: '100vh',
       transition: 'grid-template-columns 0.22s cubic-bezier(0.4,0,0.2,1)',
@@ -282,7 +284,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
       <Sidebar />
       <ChatBot />
-      <main style={{ background: 'var(--cream)', overflowY: 'auto' }}>
+      <main style={{ background: 'var(--cream)', overflowY: 'auto', overflowX: 'hidden', minWidth: 0 }}>
         {children}
       </main>
 

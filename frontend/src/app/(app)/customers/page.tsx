@@ -1,5 +1,6 @@
 'use client';
 import { useState, useMemo, useEffect } from 'react';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
@@ -166,6 +167,7 @@ function TreeRow({ c, depth, expanded, onToggle, showTenant, allCustomers }: {
 
 /* ── Page ──────────────────────────────────────────────────────────── */
 export default function CustomersPage() {
+  const isMobile = useIsMobile();
   const { user }     = useAuthStore();
   const router       = useRouter();
   const role         = user?.role ?? 'viewer';
@@ -395,7 +397,7 @@ export default function CustomersPage() {
       )}
 
       {/* KPI strip */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 12, marginBottom: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2,1fr)' : 'repeat(5,1fr)', gap: isMobile ? 8 : 12, marginBottom: 16 }}>
         <KpiCard icon="ti-users" iconColor="#c4912a" label="Total customers" value={allCustomers.length}
           sub="All accounts" stripe="#c4912a"
           active={statusFilter === 'All' && typeFilter === 'All' && hierarchyFilter === 'All'}

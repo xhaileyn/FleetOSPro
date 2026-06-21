@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { useVehiclesStore } from '@/store/vehiclesStore';
+import { TENANTS_META } from '@/lib/vehiclesMaster';
 import { fmtDuration } from '@/lib/trips';
 import { useTripsStore } from '@/store/tripsStore';
 import dynamic from 'next/dynamic';
@@ -84,6 +86,7 @@ function CardHeader({ icon, title, right }: { icon: string; title: string; right
 
 /* ─── Page ─────────────────────────────────────────────────────────── */
 export default function MyVehiclePage() {
+  const isMobile = useIsMobile();
   const router        = useRouter();
   const searchParams  = useSearchParams();
   const urlVehicleId  = searchParams.get('id');
@@ -138,6 +141,19 @@ export default function MyVehiclePage() {
   useEffect(() => { setLiveSpeed(vehicle?.speedKmh ?? 0); }, [vehicleId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [trackingOpen, setTrackingOpen] = useState(false);
+
+  /* Country-centre fallback when vehicle has no GPS fix */
+  const COUNTRY_CENTER: Record<string, [number, number]> = {
+    Kenya: [-1.2921, 36.8219], Uganda: [0.3476, 32.5825], Tanzania: [-6.369, 34.889],
+    Nigeria: [9.082, 8.6753], Ghana: [7.946, -1.023], 'South Africa': [-30.559, 22.938],
+    Ethiopia: [9.145, 40.489], Rwanda: [-1.940, 29.874],
+    'United Kingdom': [51.5074, -0.1278], UK: [51.5074, -0.1278],
+    'United States': [37.09, -95.712], USA: [37.09, -95.712],
+    India: [20.594, 78.963], Pakistan: [30.375, 69.345],
+    UAE: [23.424, 53.848], 'Saudi Arabia': [23.886, 45.079],
+    Germany: [51.165, 10.452], France: [46.227, 2.213],
+    Australia: [-25.274, 133.775], Canada: [56.130, -106.347],
+  };
 
   const scopedVehicles = isFleetOps && tenantId
     ? allVehicles.filter(v => v.tenantId === tenantId)
@@ -278,7 +294,7 @@ export default function MyVehiclePage() {
       )}
 
       {/* ── 4-up stat cards ─────────────────────────────────────────── */}
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:8, marginBottom:12 }}>
+      <div style={{ display:'grid', gridTemplateColumns: isMobile ? 'repeat(2,1fr)' : 'repeat(4,1fr)', gap:8, marginBottom:12 }}>
         <StatCard
           icon="ti-gauge"
           iconColor={liveSpeed > 90 ? '#dc2626' : liveSpeed > 60 ? '#d97706' : '#16a34a'}
@@ -349,17 +365,28 @@ export default function MyVehiclePage() {
             }
           />
           <div style={{ flex:1, minHeight:260 }}>
-            {vehicle.latitude && vehicle.longitude
-              ? <VehicleMap lat={vehicle.latitude} lng={vehicle.longitude} plate={vehicle.plate} speed={liveSpeed} status={vehicle.status} category={vehicle.category} onPinClick={() => {
-                  const latestTrip = TRIPS[0];
-                  if (latestTrip) router.push(`/playback?trip=${latestTrip.id}&from=my-vehicle`);
-                  else router.push('/playback?from=my-vehicle');
-                }} />
-              : <div style={{ height:'100%', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', background:'var(--cream2)', gap:8 }}>
-                  <i className="ti ti-map-off" style={{ fontSize:32, color:'var(--ink3)', opacity:0.35 }} />
-                  <div style={{ fontSize:12, color:'var(--ink3)' }}>No GPS signal</div>
-                </div>
-            }
+            {(() => {
+              const hasGps = !!(vehicle.latitude && vehicle.longitude);
+              const tenantCountry = TENANTS_META[vehicle.tenantId]?.country;
+              const fallback: [number, number] =
+                COUNTRY_CENTER[tenantCountry ?? ''] ??
+                COUNTRY_CENTER[vehicle.registrationCountry ?? ''] ??
+                [-1.2921, 36.8219];
+              const mapLat = vehicle.latitude ?? fallback[0];
+              const mapLng = vehicle.longitude ?? fallback[1];
+              return (
+                <VehicleMap
+                  lat={mapLat} lng={mapLng} hasGps={hasGps}
+                  plate={vehicle.plate} speed={liveSpeed}
+                  status={vehicle.status} category={vehicle.category}
+                  onPinClick={hasGps ? () => {
+                    const latestTrip = TRIPS[0];
+                    if (latestTrip) router.push(`/playback?trip=${latestTrip.id}&from=my-vehicle`);
+                    else router.push('/playback?from=my-vehicle');
+                  } : undefined}
+                />
+              );
+            })()}
           </div>
         </Card>
 
@@ -516,6 +543,83 @@ export default function MyVehiclePage() {
           </div>
         </Card>
       )}
+
+      {/* ── Reports ─────────────────────────────────────────────────── */}
+      <Card>
+        <CardHeader icon="ti-report-analytics" title="Reports" right={
+          TRIPS.length > 0 ? (
+            <button
+              onClick={() => {
+                const header = 'Date,From,To,Distance (km),Duration,Avg Speed (km/h),Max Speed (km/h),Fuel Used (L),Status';
+                const rows = TRIPS.map(t =>
+                  [t.date, t.from, t.to, t.distanceKm, fmtDuration(t.durationMin), t.avgSpeed, t.maxSpeed, t.fuelUsedL, t.status].join(',')
+                );
+                const csv = [header, ...rows].join('\n');
+                const el = document.createElement('a');
+                el.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+                el.download = `trips-${vehicle?.plate ?? 'vehicle'}-${new Date().toISOString().slice(0,10)}.csv`;
+                el.click();
+              }}
+              style={{ display:'flex', alignItems:'center', gap:5, padding:'4px 10px', fontSize:10, fontWeight:600, border:'1px solid #c4912a', borderRadius:5, background:'rgba(196,145,42,0.10)', color:'#c4912a', cursor:'pointer', fontFamily:'inherit' }}
+            >
+              <i className="ti ti-download" style={{ fontSize:11 }} /> Export CSV
+            </button>
+          ) : undefined
+        } />
+        {TRIPS.length === 0 ? (
+          <div style={{ padding:'24px 16px', textAlign:'center', color:'var(--ink3)', fontSize:12 }}>
+            No trip data recorded for this vehicle yet.
+          </div>
+        ) : (
+          <>
+            {/* Summary row */}
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:10, padding:'10px 12px', borderBottom:'1px solid var(--border)' }}>
+              {[
+                { icon:'ti-road', color:'#c4912a', label:'Total trips', value: String(TRIPS.length) },
+                { icon:'ti-map-pin-2', color:'var(--blue)', label:'Total distance', value: TRIPS.reduce((s,t)=>s+t.distanceKm,0).toFixed(0)+' km' },
+                { icon:'ti-clock', color:'var(--amber)', label:'Total drive time', value: fmtDuration(TRIPS.reduce((s,t)=>s+t.durationMin,0)) },
+                { icon:'ti-droplet', color:'var(--red)', label:'Fuel used', value: TRIPS.reduce((s,t)=>s+t.fuelUsedL,0).toFixed(1)+' L' },
+              ].map(r => (
+                <div key={r.label} style={{ textAlign:'center', padding:'6px 4px', borderRadius:6, background:'var(--cream)' }}>
+                  <i className={`ti ${r.icon}`} style={{ fontSize:16, color:r.color, display:'block', marginBottom:3 }} />
+                  <div style={{ fontSize:14, fontWeight:700, color:'var(--ink)' }}>{r.value}</div>
+                  <div style={{ fontSize:9, color:'var(--ink3)', fontWeight:600, textTransform:'uppercase', letterSpacing:'0.5px' }}>{r.label}</div>
+                </div>
+              ))}
+            </div>
+            {/* Trip list */}
+            <div style={{ overflowX:'auto' }}>
+              <table style={{ width:'100%', borderCollapse:'collapse', fontSize:11 }}>
+                <thead>
+                  <tr style={{ background:'var(--cream)', borderBottom:'1px solid var(--border)' }}>
+                    {['Date','From → To','Distance','Duration','Avg Speed','Fuel','Status'].map(h => (
+                      <th key={h} style={{ padding:'7px 10px', textAlign:'left', fontWeight:700, color:'var(--ink2)', fontSize:10, whiteSpace:'nowrap' }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {TRIPS.slice().sort((a,b)=> b.dateISO.localeCompare(a.dateISO)).map((t,i) => (
+                    <tr key={t.id} style={{ borderBottom:'1px solid var(--border)', background: i%2===0 ? '#fff' : 'var(--cream)' }}>
+                      <td style={{ padding:'7px 10px', whiteSpace:'nowrap', color:'var(--ink2)' }}>{t.date}</td>
+                      <td style={{ padding:'7px 10px', color:'var(--ink)' }}>{t.from} → {t.to}</td>
+                      <td style={{ padding:'7px 10px', fontWeight:600, color:'var(--ink)' }}>{t.distanceKm} km</td>
+                      <td style={{ padding:'7px 10px', color:'var(--ink2)' }}>{fmtDuration(t.durationMin)}</td>
+                      <td style={{ padding:'7px 10px', color:'var(--ink2)' }}>{t.avgSpeed} km/h</td>
+                      <td style={{ padding:'7px 10px', color:'var(--ink2)' }}>{t.fuelUsedL} L</td>
+                      <td style={{ padding:'7px 10px' }}>
+                        <span style={{ fontSize:9, fontWeight:700, padding:'2px 6px', borderRadius:4,
+                          background: t.status === 'Completed' ? 'rgba(196,145,42,0.12)' : '#dcfce7',
+                          color: t.status === 'Completed' ? '#c4912a' : '#166534',
+                        }}>{t.status}</span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+      </Card>
 
       {/* ── Live tracking modal ───────────────────────────────────────── */}
       {trackingOpen && vehicle && (

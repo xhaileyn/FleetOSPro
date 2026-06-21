@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import { useRouter } from 'next/navigation';
 
 /* ── Shared micro-components ────────────────────────────────────────── */
@@ -374,6 +375,7 @@ function SimModal({ mode, init, vehicles, onSave, onClose }: {
    PAGE
 ───────────────────────────────────────────────────────────────────── */
 export default function DevicesPage() {
+  const isMobile = useIsMobile();
   const { user }     = useAuthStore();
   const role         = user?.role ?? 'viewer';
   const isSuperAdmin = role === 'super_admin' || role === 'platform_admin';
@@ -793,7 +795,7 @@ export default function DevicesPage() {
       )}
 
       {/* KPI strip */}
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(6,1fr)', gap:10, marginBottom:16 }}>
+      <div style={{ display:'grid', gridTemplateColumns: isMobile ? 'repeat(3,1fr)' : 'repeat(6,1fr)', gap: isMobile ? 6 : 10, marginBottom:16 }}>
         <KpiCard icon="ti-antenna" iconColor="#c4912a" label="Devices online" value={devOnline}
           stripe="#c4912a" active={tab==='devices' && statusFilter==='Online'}
           onClick={() => { setTab('devices'); setStatusFilter('Online'); setSearch(''); }} />

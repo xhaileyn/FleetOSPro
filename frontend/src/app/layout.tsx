@@ -1,9 +1,14 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "FleetOS+ — Enterprise Fleet Management",
+  title: "FleetOS Pro — Enterprise Fleet Management",
   description: "Monitor every vehicle in real time, optimise routes with AI, and reduce operational costs.",
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

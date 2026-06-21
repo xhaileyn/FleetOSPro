@@ -1,7 +1,13 @@
 'use client';
-import { useState, useMemo, Fragment } from 'react';
+import { useState, useMemo, useEffect, Fragment } from 'react';
+import dynamic from 'next/dynamic';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import { useAuthStore } from '@/store/authStore';
 import { useVehiclesStore } from '@/store/vehiclesStore';
+import { useDriversStore } from '@/store/driversStore';
+import type { OptimizedRoute, VehiclePin } from '@/components/routes/RouteOptimizer';
+
+const RouteOptimizer = dynamic(() => import('@/components/routes/RouteOptimizer'), { ssr: false });
 
 /* ── Types ─────────────────────────────────────────────────────────── */
 type RouteStatus = 'In progress' | 'Scheduled' | 'Completed' | 'Cancelled';
@@ -111,12 +117,13 @@ function Btn({ children, onClick, variant = 'default', size = 'sm', disabled }: 
 
 /* ── Form modal ────────────────────────────────────────────────────── */
 function RouteModal({
-  initial, onSave, onClose, allowedPlates,
+  initial, onSave, onClose, allowedPlates, allowedDrivers,
 }: {
   initial: Omit<Route,'id'> & { id?: string };
   onSave: (r: Omit<Route,'id'> & { id?: string }) => void;
   onClose: () => void;
   allowedPlates?: string[];
+  allowedDrivers?: string[];
 }) {
   const [f, setF] = useState({ ...initial });
   const set = (k: keyof typeof f, v: string | number) => setF(p => ({ ...p, [k]: v }));
@@ -150,7 +157,7 @@ function RouteModal({
             <div><label style={lbl}>Driver *</label>
               <select style={inp} value={f.driver} onChange={e=>set('driver',e.target.value)}>
                 <option value="">— Select —</option>
-                {DRIVERS.map(d=><option key={d}>{d}</option>)}
+                {(allowedDrivers ?? DRIVERS).map(d=><option key={d}>{d}</option>)}
               </select>
             </div>
           </div>
@@ -213,13 +220,24 @@ function DeleteModal({ route, onConfirm, onClose }: { route: Route; onConfirm: (
 
 /* ── Main page ─────────────────────────────────────────────────────── */
 export default function RoutesPage() {
+  const isMobile = useIsMobile();
   const { user }       = useAuthStore();
   const allVehicles    = useVehiclesStore(s => s.vehicles);
+  const loadVehicles   = useVehiclesStore(s => s.loadVehicles);
+  const vehiclesLoaded = useVehiclesStore(s => s.loaded);
+  const allDrivers     = useDriversStore(s => s.drivers);
+  const loadDrivers    = useDriversStore(s => s.loadDrivers);
+  const driversLoaded  = useDriversStore(s => s.loaded);
   const role           = user?.role ?? 'viewer';
   const tenantId       = user?.tenantId ?? '1';
   const isSuperAdmin   = role === 'super_admin' || role === 'platform_admin';
   const isVehicleOwner = role === 'vehicle_owner';
   const canEdit = isSuperAdmin || role === 'fleet_admin' || role === 'tenant_admin' || role === 'fleet_manager';
+
+  useEffect(() => {
+    if (!vehiclesLoaded) loadVehicles(isSuperAdmin ? null : tenantId);
+    if (!driversLoaded)  loadDrivers(isSuperAdmin ? null : tenantId);
+  }, [vehiclesLoaded, driversLoaded, tenantId, isSuperAdmin, loadVehicles, loadDrivers]);
 
   const accessiblePlates = useMemo<Set<string>>(() => {
     if (isSuperAdmin) return new Set(allVehicles.map(v => v.plate));
@@ -231,8 +249,15 @@ export default function RoutesPage() {
   }, [isSuperAdmin, isVehicleOwner, allVehicles, tenantId, user?.vehicleId, user?.vehicleIds]);
 
   const dropdownPlates = useMemo(() =>
-    isSuperAdmin ? VEHICLES : VEHICLES.filter(p => accessiblePlates.has(p)),
-  [isSuperAdmin, accessiblePlates]);
+    Array.from(accessiblePlates).sort(),
+  [accessiblePlates]);
+
+  const dropdownDrivers = useMemo(() => {
+    const tenantDrivers = isSuperAdmin
+      ? allDrivers
+      : allDrivers.filter(d => d.tenantId === tenantId);
+    return tenantDrivers.map(d => d.name).filter(Boolean).sort();
+  }, [isSuperAdmin, allDrivers, tenantId]);
 
   const [routes,     setRoutes]     = useState<Route[]>(SEED);
   const [filter,     setFilter]     = useState('All');
@@ -241,6 +266,8 @@ export default function RoutesPage() {
   const [editModal,  setEditModal]  = useState<Route | null>(null);
   const [newModal,   setNewModal]   = useState(false);
   const [deleteConf, setDeleteConf] = useState<Route | null>(null);
+  const [optimizer,  setOptimizer]  = useState(false);
+  const [optimizedDraft, setOptimizedDraft] = useState<Partial<Omit<Route, 'id'>> | null>(null);
 
   const scopedRoutes = useMemo(() =>
     routes.filter(r => accessiblePlates.size === 0 || accessiblePlates.has(r.vehicle)),
@@ -264,9 +291,20 @@ export default function RoutesPage() {
     return list;
   }, [scopedRoutes, filter, search]);
 
+  function handleOptimizerSave(r: OptimizedRoute) {
+    const distKm  = `${r.distanceKm} km`;
+    const min     = r.durationMin;
+    const eta     = min < 60 ? `${min} min` : `${Math.floor(min / 60)}h ${min % 60}min`;
+    const name    = `${r.origin.split(',')[0]} → ${r.destination.split(',')[0]}`;
+    setOptimizedDraft({ name, origin: r.origin, dest: r.destination, distance: distKm, eta });
+    setOptimizer(false);
+    setNewModal(true);
+  }
+
   function handleCreate(f: Omit<Route,'id'>) {
     setRoutes(p => [{ ...f, id: genId() }, ...p]);
     setNewModal(false);
+    setOptimizedDraft(null);
   }
   function handleUpdate(f: Omit<Route,'id'> & { id?: string }) {
     if (!f.id) return;
@@ -323,6 +361,15 @@ export default function RoutesPage() {
               View only
             </span>
           )}
+          <button onClick={() => setOptimizer(true)} style={{
+            display: 'flex', alignItems: 'center', gap: 6,
+            padding: '7px 14px', fontSize: 12, fontWeight: 600,
+            borderRadius: 7, border: '1px solid rgba(196,145,42,0.25)',
+            background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.8)',
+            cursor: 'pointer', fontFamily: 'inherit',
+          }}>
+            <i className="ti ti-route-2" style={{ fontSize: 13 }} /> Plan Route
+          </button>
           {canEdit && (
             <button onClick={() => setNewModal(true)} style={{
               display: 'flex', alignItems: 'center', gap: 6,
@@ -338,7 +385,7 @@ export default function RoutesPage() {
       </div>
 
       {/* KPI strip */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2,1fr)' : 'repeat(4,1fr)', gap: isMobile ? 8 : 12, marginBottom: 16 }}>
         <KpiCard icon="ti-player-play" iconColor="#c4912a" label="In progress" value={inProgress}
           sub="Active routes" stripe="#c4912a" active={filter === 'In progress'}
           onClick={() => setFilter(filter === 'In progress' ? 'All' : 'In progress')} />
@@ -480,9 +527,18 @@ export default function RoutesPage() {
         </div>
       </div>
 
-      {newModal && <RouteModal initial={BLANK} onSave={handleCreate} onClose={() => setNewModal(false)} allowedPlates={dropdownPlates} />}
-      {editModal && <RouteModal initial={editModal} onSave={handleUpdate} onClose={() => setEditModal(null)} allowedPlates={dropdownPlates} />}
+      {newModal && <RouteModal initial={{ ...BLANK, ...optimizedDraft }} onSave={handleCreate} onClose={() => { setNewModal(false); setOptimizedDraft(null); }} allowedPlates={dropdownPlates} allowedDrivers={dropdownDrivers} />}
+      {editModal && <RouteModal initial={editModal} onSave={handleUpdate} onClose={() => setEditModal(null)} allowedPlates={dropdownPlates} allowedDrivers={dropdownDrivers} />}
       {deleteConf && <DeleteModal route={deleteConf} onConfirm={handleDelete} onClose={() => setDeleteConf(null)} />}
+      {optimizer && (
+        <RouteOptimizer
+          onSave={handleOptimizerSave}
+          onClose={() => setOptimizer(false)}
+          vehicles={allVehicles
+            .filter(v => v.latitude != null && v.longitude != null)
+            .map(v => ({ id: v.id, plate: v.plate, lat: v.latitude as number, lng: v.longitude as number } as VehiclePin))}
+        />
+      )}
     </div>
   );
 }

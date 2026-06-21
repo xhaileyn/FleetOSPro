@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, TENANT_UUID, UUID_TENANT } from '@/lib/pgDb';
+import { getPool, TENANT_UUID, UUID_TENANT, toTenantUuid, fromTenantUuid } from '@/lib/pgDb';
 
 function rowToRole(r: Record<string, unknown>) {
   let permissions: unknown[] = [];
@@ -8,7 +8,7 @@ function rowToRole(r: Record<string, unknown>) {
   try { featurePermissions = JSON.parse(r.FeaturePermissionsJson as string || '{}'); } catch { /* keep */ }
   return {
     id:                 r.ShortId,
-    tenantId:           UUID_TENANT[(r.TenantId as string)?.toLowerCase()] ?? r.TenantId,
+    tenantId:           fromTenantUuid((r.TenantId as string)?.toLowerCase()) ?? r.TenantId,
     name:               r.Name,
     slug:               r.Slug,
     description:        r.Description,
@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
     const params: unknown[] = [];
 
     if (tenantId) {
-      const uuid = TENANT_UUID[tenantId];
+      const uuid = toTenantUuid(tenantId);
       if (uuid) { query += ` WHERE "TenantId" = $1`; params.push(uuid); }
     }
     query += ` ORDER BY "CreatedAt"`;
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
   if (!body) return NextResponse.json({ message: 'invalid body' }, { status: 400 });
   try {
     const db = getPool();
-    const uuid = TENANT_UUID[body.tenantId];
+    const uuid = toTenantUuid(body.tenantId);
     if (!uuid) return NextResponse.json({ message: 'invalid tenantId' }, { status: 400 });
 
     const shortId = body.id ?? `tr-${Date.now().toString(36)}`;

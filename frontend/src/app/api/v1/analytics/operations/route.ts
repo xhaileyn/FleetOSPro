@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, TENANT_UUID } from '@/lib/pgDb';
+import { getPool, TENANT_UUID, toTenantUuid } from '@/lib/pgDb';
 
 type Period = 'week' | 'month' | 'quarter';
 
@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
   const tenantId = sp.get('tenantId') ?? '1';
   const period   = (sp.get('period') ?? 'week') as Period;
 
-  const tenantUuid = TENANT_UUID[tenantId];
+  const tenantUuid = toTenantUuid(tenantId);
   if (!tenantUuid) {
     return NextResponse.json({ error: 'Unknown tenantId' }, { status: 400 });
   }
@@ -90,55 +90,72 @@ export async function GET(req: NextRequest) {
     const avgOnTime  = avg(rows.map(r => Number(r.ontimeratepct)));
     const avgScore   = avg(rows.map(r => Number(r.driveravgscore)));
 
-    // prev period for deltas
-    const { rows: prevRows } = await db.query<{ v: string }>(
+    // prev period for deltas — fetch all metrics
+    const { rows: prevRows } = await db.query<{
+      totaltrips: string; distancekm: string; fleetutilizationpct: string;
+      fuelefficiencykml: string; ontimeratepct: string; driveravgscore: string;
+    }>(
       `SELECT
-        AVG("FleetUtilizationPct") AS v
+        SUM("TotalTrips")          AS totaltrips,
+        SUM("DistanceKm")          AS distancekm,
+        AVG("FleetUtilizationPct") AS fleetutilizationpct,
+        AVG("FuelEfficiencyKmL")   AS fuelefficiencykml,
+        AVG("OnTimeRatePct")       AS ontimeratepct,
+        AVG("DriverAvgScore")      AS driveravgscore
        FROM "FactOpsDaily"
        WHERE "TenantId" = $1
          AND "Date" >= CURRENT_DATE - INTERVAL '${days * 2 - 1} days'
          AND "Date"  < CURRENT_DATE - INTERVAL '${days - 1} days'`,
       [tenantUuid],
     );
-    const prevUtil = prevRows[0] ? Number(prevRows[0].v) : avgUtil;
+    const p = prevRows[0];
+    const prevTrips  = p ? Number(p.totaltrips)          : totalTrips;
+    const prevDist   = p ? Number(p.distancekm)          : totalDist;
+    const prevUtil   = p ? Number(p.fleetutilizationpct) : avgUtil;
+    const prevFuel   = p ? Number(p.fuelefficiencykml)   : avgFuel;
+    const prevOnTime = p ? Number(p.ontimeratepct)       : avgOnTime;
+    const prevScore  = p ? Number(p.driveravgscore)      : avgScore;
+
+    const pctDelta  = (cur: number, prev: number) => prev === 0 ? 0 : Math.round((cur - prev) / prev * 1000) / 10;
+    const ppDelta   = (cur: number, prev: number) => Math.round((cur - prev) * 10) / 10;
 
     // ── KPIs ─────────────────────────────────────────────────
     const kpis = [
       {
         label: 'Total trips',
         value: totalTrips.toLocaleString(),
-        delta: 9, unit: '%', goodUp: true,
+        delta: pctDelta(totalTrips, prevTrips), unit: '%', goodUp: true,
         spark: buckets.map(r => Number(r.totaltrips)),
       },
       {
         label: 'Distance covered',
         value: `${Math.round(totalDist).toLocaleString()} km`,
-        delta: 8, unit: '%', goodUp: true,
+        delta: pctDelta(totalDist, prevDist), unit: '%', goodUp: true,
         spark: buckets.map(r => Number(r.distancekm)),
       },
       {
         label: 'Fleet utilization',
         value: `${avgUtil.toFixed(1)}%`,
-        delta: Math.round((avgUtil - prevUtil) * 10) / 10,
+        delta: ppDelta(avgUtil, prevUtil),
         unit: 'pp', goodUp: true,
         spark: buckets.map(r => Number(r.fleetutilizationpct)),
       },
       {
         label: 'Fuel efficiency',
         value: `${avgFuel.toFixed(1)} km/L`,
-        delta: 2, unit: '%', goodUp: true,
+        delta: pctDelta(avgFuel, prevFuel), unit: '%', goodUp: true,
         spark: buckets.map(r => Number(r.fuelefficiencykml)),
       },
       {
         label: 'On-time rate',
         value: `${avgOnTime.toFixed(1)}%`,
-        delta: -1, unit: 'pp', goodUp: true,
+        delta: ppDelta(avgOnTime, prevOnTime), unit: 'pp', goodUp: true,
         spark: buckets.map(r => Number(r.ontimeratepct)),
       },
       {
         label: 'Driver avg score',
         value: `${avgScore.toFixed(0)} / 100`,
-        delta: 2, unit: '%', goodUp: true,
+        delta: pctDelta(avgScore, prevScore), unit: '%', goodUp: true,
         spark: buckets.map(r => Number(r.driveravgscore)),
       },
     ];

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { upsertServerUser, deleteServerUser } from '@/lib/usersServerStore';
-import { getPool, TENANT_UUID } from '@/lib/pgDb';
+import { getPool, TENANT_UUID, toTenantUuid } from '@/lib/pgDb';
 import { logAuditEvent } from '@/lib/auditLogger';
 import type { TenantUser } from '@/lib/tenantUsers';
 
@@ -35,7 +35,7 @@ export async function PUT(
     return NextResponse.json({ message: 'Invalid request body' }, { status: 400 });
   }
 
-  const tenantUuid = user.tenantId ? (TENANT_UUID[user.tenantId] ?? null) : null;
+  const tenantUuid = user.tenantId ? (toTenantUuid(user.tenantId) ?? null) : null;
 
   try {
     const db = getPool();

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useRef, useEffect } from 'react';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
@@ -645,6 +646,7 @@ const PAGE_SIZE = 25;
 
 /* ── Main page ──────────────────────────────────────────────────────── */
 export default function VehiclesPage() {
+  const isMobile = useIsMobile();
   const { user }       = useAuthStore();
   const role           = user?.role ?? 'viewer';
   const isSuperAdmin   = role === 'super_admin' || role === 'platform_admin';
@@ -902,7 +904,7 @@ export default function VehiclesPage() {
       })()}
 
       {/* ══ KPI Strip ══════════════════════════════════════════════════ */}
-      <div style={{ display: 'grid', gridTemplateColumns: `repeat(${kpis.length}, 1fr)`, gap: 7, marginBottom: 14 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? `repeat(${Math.min(kpis.length, 2)}, 1fr)` : `repeat(${kpis.length}, 1fr)`, gap: 7, marginBottom: 14 }}>
         {kpis.map(k => (
           <KpiCard key={k.label} {...k} />
         ))}

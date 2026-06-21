@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import { api } from '@/lib/api';
 import { Driver } from '@/lib/types';
 import { useAuthStore } from '@/store/authStore';
@@ -242,6 +243,7 @@ function AssignVehicleModal({
 
 /* ── Main page ───────────────────────────────────────────────────────── */
 export default function DriversPage() {
+  const isMobile = useIsMobile();
   const { user } = useAuthStore();
   const allVehicles = useVehiclesStore(s => s.vehicles);
 
@@ -364,7 +366,7 @@ export default function DriversPage() {
       </div>
 
       {/* KPI strip */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 14 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2,1fr)' : 'repeat(4,1fr)', gap: isMobile ? 8 : 12, marginBottom: 14 }}>
         <KpiCard icon="ti-users" iconColor="#c4912a" label="Total drivers" value={drivers.length} stripe="#c4912a" />
         <KpiCard icon="ti-truck" iconColor="#c4912a" label="Driving" value={drivers.filter(d => d.status === 'driving').length} stripe="#c4912a" />
         <KpiCard icon="ti-user-check" iconColor="#16a34a" label="On duty" value={drivers.filter(d => d.status === 'on_duty').length} stripe="#16a34a" />

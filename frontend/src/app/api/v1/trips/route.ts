@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, TENANT_UUID, UUID_TENANT } from '@/lib/pgDb';
+import { getPool, TENANT_UUID, UUID_TENANT, toTenantUuid, fromTenantUuid } from '@/lib/pgDb';
 
 function rowToTrip(r: Record<string, unknown>) {
   let route: unknown[] = [];
   try { route = JSON.parse(r.RouteJson as string || '[]'); } catch { /* keep empty */ }
   return {
     id:          r.ShortId,
-    tenantId:    UUID_TENANT[(r.TenantId as string)?.toLowerCase()] ?? r.TenantId,
+    tenantId:    fromTenantUuid((r.TenantId as string)?.toLowerCase()) ?? r.TenantId,
     vehicleId:   r.VehicleShortId,
     date:        r.Date,
     dateISO:     r.DateIso,
@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
     const wheres: string[] = [];
 
     if (tenantId) {
-      const uuid = TENANT_UUID[tenantId];
+      const uuid = toTenantUuid(tenantId);
       if (uuid) { wheres.push(`"TenantId" = $${params.length + 1}`); params.push(uuid); }
     }
     if (vehicleId) {

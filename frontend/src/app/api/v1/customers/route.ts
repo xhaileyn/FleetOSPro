@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, TENANT_UUID, UUID_TENANT } from '@/lib/pgDb';
+import { getPool, TENANT_UUID, UUID_TENANT, toTenantUuid, fromTenantUuid } from '@/lib/pgDb';
 
 function rowToCustomer(c: Record<string, unknown>) {
   return {
     id:                c.ShortId || c.Id,
-    tenantId:          UUID_TENANT[(c.TenantId as string)?.toLowerCase()] ?? c.TenantId,
+    tenantId:          fromTenantUuid((c.TenantId as string)?.toLowerCase()) ?? c.TenantId,
     parentId:          c.ParentId ?? null,
     name:              c.Name,
     type:              c.Type              ?? 'Company',
@@ -33,8 +33,8 @@ export async function GET(req: NextRequest) {
   const tenantShort = req.nextUrl.searchParams.get('tenantId');
   const db = getPool();
   try {
-    const { rows } = tenantShort && TENANT_UUID[tenantShort]
-      ? await db.query(`SELECT * FROM "Customers" WHERE "TenantId" = $1 ORDER BY "Name"`, [TENANT_UUID[tenantShort]])
+    const { rows } = tenantShort && toTenantUuid(tenantShort)
+      ? await db.query(`SELECT * FROM "Customers" WHERE "TenantId" = $1 ORDER BY "Name"`, [toTenantUuid(tenantShort)])
       : await db.query(`SELECT * FROM "Customers" ORDER BY "Name"`);
     return NextResponse.json(rows.map(rowToCustomer));
   } catch (err) {
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
           website, taxId, creditLimit, notes, accountManager, parentShortId } = body;
 
   if (!name || !tenantId) return NextResponse.json({ message: 'name and tenantId required' }, { status: 400 });
-  const tenantUuid = TENANT_UUID[tenantId];
+  const tenantUuid = toTenantUuid(tenantId);
   if (!tenantUuid) return NextResponse.json({ message: 'Unknown tenantId' }, { status: 400 });
 
   const db = getPool();

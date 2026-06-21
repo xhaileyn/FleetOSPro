@@ -16,25 +16,25 @@
       "source": "/",
       "has": [{ "type": "host", "value": "fleetospro.com" }],
       "destination": "/website/index.html",
-      "permanent": false
+      "permanent": true
     },
     {
       "source": "/features",
       "has": [{ "type": "host", "value": "fleetospro.com" }],
       "destination": "/website/features.html",
-      "permanent": false
+      "permanent": true
     },
     {
       "source": "/pricing",
       "has": [{ "type": "host", "value": "fleetospro.com" }],
       "destination": "/website/pricing.html",
-      "permanent": false
+      "permanent": true
     },
     {
       "source": "/contact",
       "has": [{ "type": "host", "value": "fleetospro.com" }],
       "destination": "/website/contact.html",
-      "permanent": false
+      "permanent": true
     }
   ]
 }
