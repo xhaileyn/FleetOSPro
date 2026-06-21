@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="72" viewBox="0 0 320 72" fill="none">
+  <!-- White background -->
+  <rect x="0" y="0" width="320" height="72" rx="12" fill="#ffffff"/>
+
+  <!-- Icon -->
+  <!-- Solar panels (flat gold) -->
+  <rect x="16" y="25" width="18" height="12" rx="3" fill="#c4912a"/>
+  <line x1="23" y1="25" x2="23" y2="37" stroke="rgba(13,27,42,0.35)" stroke-width="1.5"/>
+  <line x1="28" y1="25" x2="28" y2="37" stroke="rgba(13,27,42,0.35)" stroke-width="1.5"/>
+
+  <!-- Satellite body (flat dark) -->
+  <rect x="34" y="19" width="32" height="24" rx="5" fill="#0d1b2a"/>
+  <rect x="39" y="28" width="22" height="6" rx="1.6" fill="none" stroke="rgba(196,145,42,0.6)" stroke-width="1.4"/>
+  <circle cx="44" cy="31" r="2.4" fill="#fde68a"/>
+  <circle cx="50" cy="31" r="1.8" fill="white" opacity="0.8"/>
+  <circle cx="56" cy="31" r="2.4" fill="rgba(120,200,255,0.9)"/>
+
+  <rect x="66" y="25" width="18" height="12" rx="3" fill="#c4912a"/>
+  <line x1="72" y1="25" x2="72" y2="37" stroke="rgba(13,27,42,0.35)" stroke-width="1.5"/>
+  <line x1="77" y1="25" x2="77" y2="37" stroke="rgba(13,27,42,0.35)" stroke-width="1.5"/>
+
+  <!-- Antenna (dark on light bg) -->
+  <line x1="50" y1="10" x2="50" y2="19" stroke="#0d1b2a" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M43 11.5 A8 6 0 0 1 57 11.5" stroke="#0d1b2a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- GPS beam lines (flat gold) -->
+  <line x1="42" y1="43" x2="38" y2="56" stroke="#c4912a" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="2.5 3.5" opacity="0.7"/>
+  <line x1="50" y1="43" x2="50" y2="58" stroke="#c4912a" stroke-width="2"   stroke-linecap="round" stroke-dasharray="2.5 3.5" opacity="0.8"/>
+  <line x1="58" y1="43" x2="62" y2="56" stroke="#c4912a" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="2.5 3.5" opacity="0.7"/>
+
+  <!-- "Fleet" -->
+  <text x="104" y="43"
+    font-family="'Sora','Inter',system-ui,sans-serif"
+    font-size="26" font-weight="700" letter-spacing="-0.6"
+    fill="#0d1b2a">Fleet</text>
+
+  <!-- "OS" -->
+  <text x="168" y="43"
+    font-family="'Sora','Inter',system-ui,sans-serif"
+    font-size="26" font-weight="400" letter-spacing="-0.5"
+    fill="rgba(13,27,42,0.38)">OS</text>
+
+  <!-- "Pro" badge -->
+  <rect x="207" y="27" width="36" height="14" rx="3" fill="rgba(196,145,42,0.12)" stroke="rgba(196,145,42,0.50)" stroke-width="1"/>
+  <text x="225" y="38"
+    font-family="'Inter',system-ui,sans-serif"
+    font-size="9" font-weight="800" letter-spacing="1.2"
+    text-anchor="middle"
+    fill="#b07c1a">PRO</text>
+
+  <!-- Tagline -->
+  <text x="104" y="57"
+    font-family="'Inter',system-ui,sans-serif"
+    font-size="10.5" font-weight="400" letter-spacing="0.3"
+    fill="rgba(13,27,42,0.38)">Enterprise Fleet Intelligence Platform</text>
+</svg>

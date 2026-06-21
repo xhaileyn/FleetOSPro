@@ -543,9 +543,9 @@ section { padding: 100px 0; }
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  font-size: 22px; font-weight: 700; letter-spacing: -0.4px; line-height: 1; font-family: inherit;
+  font-size: 24px; font-weight: 700; letter-spacing: -0.4px; line-height: 1; font-family: inherit;
 }
-.logo-os    { color: rgba(255,255,255,0.45); font-size: 22px; font-weight: 400; letter-spacing: -0.3px; line-height: 1; font-family: inherit; }
+.logo-os    { color: rgba(255,255,255,0.45); font-size: 24px; font-weight: 400; letter-spacing: -0.3px; line-height: 1; font-family: inherit; }
 .logo-pro-badge {
   display: inline-flex; align-items: center; justify-content: center;
   margin-left: 6px; font-size: 10px; font-weight: 800; letter-spacing: 1px;
@@ -597,7 +597,7 @@ section { padding: 100px 0; }
 .hero-inner {
   display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
   align-items: center; max-width: 1280px; margin: 0 auto;
-  padding: 100px 40px 70px; min-height: calc(100vh - 66px);
+  padding: 60px 40px 50px; min-height: auto;
 }
 .hero-grid-bg {
   position: absolute; inset: 0; pointer-events: none;
@@ -1194,7 +1194,7 @@ section { padding: 100px 0; }
   .preview-layout { grid-template-columns: 1fr; }
 }
 @media (max-width: 1024px) {
-  .hero-inner { grid-template-columns: 1fr; padding-top: 80px; min-height: auto; }
+  .hero-inner { grid-template-columns: 1fr; padding-top: 50px; min-height: auto; }
   .hero-visual { display: none; }
   .stats-grid { grid-template-columns: repeat(3,1fr); gap: 0; }
   .stat-item { border-right: 1px solid rgba(255,255,255,0.06); }
@@ -1579,8 +1579,8 @@ section { padding: 100px 0; }
 
 /* ── 360px — very small phones ── */
 @media (max-width: 360px) {
-  .nav-logo svg { width: 34px; height: 34px; }
-  .logo-fleet, .logo-os { font-size: 18px; }
+  .nav-logo svg { width: 40px; height: 40px; }
+  .logo-fleet, .logo-os { font-size: 20px; }
   .logo-pro-badge { font-size: 9px; padding: 1px 3px; }
   .hero-headline { letter-spacing: -0.5px; }
   .stat-number { font-size: 22px; }

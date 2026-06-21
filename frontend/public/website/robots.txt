@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://www.fleetospro.com/sitemap.xml
+
+# Crawl-delay (be polite)
+Crawl-delay: 1
+
+# Block admin/private paths (none here, all pages are public)
