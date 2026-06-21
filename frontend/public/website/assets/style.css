@@ -1779,3 +1779,14 @@ section { padding: 100px 0; }
 .stats-ribbon .stats-grid {
   max-width: 1280px; margin: 0 auto;
 }
+
+/* ── Global Coverage section ──────────────────────────── */
+.gc-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px; }
+.gc-card { border-radius:14px;overflow:hidden;position:relative;border:1px solid rgba(196,145,42,0.18);box-shadow:0 16px 48px rgba(0,0,0,0.45); }
+.gc-card img { width:100%;display:block;height:240px;object-fit:cover;object-position:center; }
+.gc-label { position:absolute;bottom:0;left:0;right:0;padding:18px 20px 16px;background:linear-gradient(to top,rgba(6,12,26,0.97) 0%,rgba(6,12,26,0.6) 70%,transparent 100%); }
+.gc-label-title { font-size:15px;font-weight:800;color:#fff;font-family:'Sora',sans-serif;letter-spacing:-0.2px;display:flex;align-items:center;gap:8px; }
+.gc-label-sub { font-size:11px;color:rgba(196,145,42,0.85);margin-top:3px;font-weight:500; }
+.gc-dot { width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px rgba(34,197,94,0.8);flex-shrink:0;animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.4)} }
+@media(max-width:860px){.gc-grid{grid-template-columns:1fr}.gc-card img{height:200px}}
