@@ -248,48 +248,52 @@
   });
 })();
 
-// ── Counter animation for stats ribbon ───────────────────────────────
+
+// ── Screenshot showcase tab switcher ─────────────────────────────────
 (function () {
-  const statNums = document.querySelectorAll('.stat-number');
-  if (!statNums.length) return;
+  const tabs   = document.querySelectorAll('.ss-tab');
+  const imgs   = document.querySelectorAll('.ss-img');
+  const urlEls = document.querySelectorAll('#ss-url-text, #ss-url-text-features');
+  const openEls = document.querySelectorAll('.ss-open-btn');
 
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const el = entry.target;
-      const text = el.textContent;
-      // Extract number
-      const match = text.match(/[\d,.]+/);
-      if (!match) return;
-      const raw = match[0].replace(/,/g, '');
-      const num = parseFloat(raw);
-      if (isNaN(num)) return;
+  if (!tabs.length) return;
 
-      const suffix = text.replace(match[0], '');
-      const prefix = text.substring(0, text.indexOf(match[0]));
-      const duration = 1200;
-      const steps = 40;
-      const stepMs = duration / steps;
-      let current = 0;
-      const inc = num / steps;
+  function switchTo(screen, url) {
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.screen === screen));
+    imgs.forEach(i => i.classList.toggle('active', i.dataset.screen === screen));
+    urlEls.forEach(el => { el.textContent = `app.fleetospro.com/${url}`; });
+    openEls.forEach(el => { el.href = `https://app.fleetospro.com/${url}`; });
+  }
 
-      const timer = setInterval(() => {
-        current += inc;
-        if (current >= num) {
-          current = num;
-          clearInterval(timer);
-        }
-        const formatted = current >= 1000
-          ? Math.floor(current).toLocaleString()
-          : (Number.isInteger(num) ? Math.floor(current) : current.toFixed(1));
-        el.textContent = prefix + formatted + suffix;
-      }, stepMs);
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => switchTo(tab.dataset.screen, tab.dataset.url));
+  });
 
-      io.unobserve(el);
-    });
-  }, { threshold: 0.4 });
+  // Auto-cycle every 4 seconds
+  let idx = 0;
+  const tabList = Array.from(tabs);
+  setInterval(() => {
+    idx = (idx + 1) % tabList.length;
+    const t = tabList[idx];
+    switchTo(t.dataset.screen, t.dataset.url);
+  }, 4000);
+})();
 
-  statNums.forEach(el => io.observe(el));
+// ── Live vehicle counter (hero badge + hero screenshot chip) ──────────
+(function () {
+  const targets = [
+    document.getElementById('liveVehicleCount'),
+    document.getElementById('liveVehicleCountHero'),
+  ];
+  if (!targets[0] && !targets[1]) return;
+  let base = 6847;
+  setInterval(() => {
+    base += Math.floor(Math.random() * 5) - 2;
+    if (base < 6800) base = 6800;
+    if (base > 6900) base = 6900;
+    const txt = base.toLocaleString();
+    targets.forEach(el => { if (el) el.textContent = txt; });
+  }, 3500);
 })();
 
 // ── Smooth scroll for anchor links ───────────────────────────────────

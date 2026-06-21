@@ -292,6 +292,49 @@
   statNums.forEach(el => io.observe(el));
 })();
 
+// ── Screenshot showcase tab switcher ─────────────────────────────────
+(function () {
+  const tabs   = document.querySelectorAll('.ss-tab');
+  const imgs   = document.querySelectorAll('.ss-img');
+  const urlEls = document.querySelectorAll('#ss-url-text, #ss-url-text-features');
+  const openEls = document.querySelectorAll('.ss-open-btn');
+
+  if (!tabs.length) return;
+
+  function switchTo(screen, url) {
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.screen === screen));
+    imgs.forEach(i => i.classList.toggle('active', i.dataset.screen === screen));
+    urlEls.forEach(el => { el.textContent = `app.fleetospro.com/${url}`; });
+    openEls.forEach(el => { el.href = `https://app.fleetospro.com/${url}`; });
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => switchTo(tab.dataset.screen, tab.dataset.url));
+  });
+
+  // Auto-cycle every 4 seconds
+  let idx = 0;
+  const tabList = Array.from(tabs);
+  setInterval(() => {
+    idx = (idx + 1) % tabList.length;
+    const t = tabList[idx];
+    switchTo(t.dataset.screen, t.dataset.url);
+  }, 4000);
+})();
+
+// ── Live vehicle counter (hero badge) ────────────────────────────────
+(function () {
+  const el = document.getElementById('liveVehicleCount');
+  if (!el) return;
+  let base = 6847;
+  setInterval(() => {
+    base += Math.floor(Math.random() * 5) - 2;
+    if (base < 6800) base = 6800;
+    if (base > 6900) base = 6900;
+    el.textContent = base.toLocaleString();
+  }, 3500);
+})();
+
 // ── Smooth scroll for anchor links ───────────────────────────────────
 document.querySelectorAll('a[href^="#"]').forEach(link => {
   link.addEventListener('click', (e) => {
